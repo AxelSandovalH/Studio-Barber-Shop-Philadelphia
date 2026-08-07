@@ -1,0 +1,67 @@
+---
+import { galeria, negocio } from '../data/site';
+import TituloSeccion from './TituloSeccion.astro';
+
+const instagram = negocio.redes.find((red) => red.nombre === 'Instagram');
+---
+
+<section id="galeria" class="border-tinta-800 bg-tinta-900/40 border-t py-24 md:py-32">
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <TituloSeccion
+        etiqueta="Nuestro trabajo"
+        titulo="El resultado habla"
+        descripcion="Una muestra de los cortes que salen del local cada semana."
+      />
+      {
+        instagram && (
+          <a
+            href={instagram.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="border-tinta-600 text-hueso-100 hover:border-laton-500 hover:text-laton-400 inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition"
+          >
+            Ver mas en Instagram
+            <svg
+              class="size-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M7 17 17 7M9 7h8v8" />
+            </svg>
+          </a>
+        )
+      }
+    </div>
+
+    <ul class="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3">
+      {
+        galeria.map((foto, indice) => (
+          <li
+            class:list={[
+              'border-tinta-700 bg-tinta-850 aspect-square overflow-hidden rounded-2xl border',
+              // La primera ocupa un bloque de 2x2 en escritorio para romper la
+              // cuadricula. Con seis fotos las tres filas quedan completas.
+              indice === 0 ? 'md:col-span-2 md:row-span-2' : '',
+            ]}
+          >
+            <img
+              src={foto.src}
+              alt={foto.alt}
+              loading={indice < 2 ? 'eager' : 'lazy'}
+              decoding="async"
+              width="600"
+              height="600"
+              class="size-full object-cover transition duration-500 hover:scale-[1.03]"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

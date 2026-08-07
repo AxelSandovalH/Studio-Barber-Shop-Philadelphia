@@ -1,0 +1,86 @@
+@import 'tailwindcss';
+
+/* Sistema de diseno de Studio Barber Shop Philadelphia.
+   Paleta: negro carbon de fondo, laton calido como acento y hueso para el texto.
+   El rojo y el azul solo aparecen en la franja de barberia. */
+@theme {
+  --color-tinta-950: #0b0b0d;
+  --color-tinta-900: #121215;
+  --color-tinta-850: #16161b;
+  --color-tinta-800: #1b1b20;
+  --color-tinta-700: #26262d;
+  --color-tinta-600: #34343d;
+
+  --color-laton-300: #e3caa8;
+  --color-laton-400: #d8b978;
+  --color-laton-500: #c8a45c;
+  --color-laton-600: #a8863f;
+
+  --color-hueso-50: #f7f5f1;
+  --color-hueso-200: #d5cfc4;
+  --color-hueso-300: #b9b3a8;
+  --color-hueso-400: #8e887d;
+
+  --color-poste-rojo: #c8352f;
+  --color-poste-azul: #2f5fc8;
+
+  --font-display: var(--fuente-display), ui-sans-serif, system-ui, sans-serif;
+  --font-texto: var(--fuente-texto), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Compensa la cabecera fija al saltar a una seccion con #ancla. */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-tinta-950);
+    color: var(--color-hueso-200);
+    font-family: var(--font-texto);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    color: var(--color-hueso-50);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-laton-400);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Franja tricolor del poste de barbero. Se usa como separador de secciones. */
+  .franja-poste {
+    height: 3px;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--color-poste-rojo) 0 14px,
+      var(--color-hueso-50) 14px 28px,
+      var(--color-poste-azul) 28px 42px
+    );
+  }
+}
+
+/* Quien haya pedido menos movimiento no ve ninguna animacion. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

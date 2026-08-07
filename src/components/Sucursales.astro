@@ -1,0 +1,218 @@
+---
+import {
+  sucursales,
+  negocio,
+  direccionEnLinea,
+  enlaceMapa,
+  enlaceMapaEmbed,
+  enlaceTelefono,
+  enlaceWhatsapp,
+  mensajeCita,
+} from '../data/site';
+import TituloSeccion from './TituloSeccion.astro';
+
+// Solo lo que el script del navegador necesita: id y horario de cada sucursal.
+const horariosPorSucursal = sucursales.map((sucursal) => ({
+  id: sucursal.id,
+  horarios: sucursal.horarios,
+}));
+---
+
+<section id="sucursales" class="border-tinta-800 bg-tinta-900/40 border-t py-24 md:py-32">
+  <div class="mx-auto max-w-6xl px-5">
+    <TituloSeccion
+      etiqueta="Sucursales"
+      titulo="Donde encontrarnos"
+      descripcion="Dos locales en Cabo San Lucas. Cada uno con su propio telefono, asi que escribe directamente al que te quede mas cerca."
+    />
+
+    <div class="mt-14 space-y-6">
+      {
+        sucursales.map((sucursal) => (
+          <article
+            id={sucursal.id}
+            class="border-tinta-700 bg-tinta-900/70 overflow-hidden rounded-2xl border"
+          >
+            <div class="grid lg:grid-cols-2">
+              <div class="p-8">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                  <h3 class="text-4xl leading-none">
+                    Sucursal <span class="text-laton-400">{sucursal.nombre}</span>
+                  </h3>
+                  <p
+                    data-estado={sucursal.id}
+                    class="border-tinta-600 text-hueso-300 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium"
+                  >
+                    <span data-estado-punto class="bg-hueso-400 size-2 rounded-full" />
+                    <span data-estado-texto>Consultando horario…</span>
+                  </p>
+                </div>
+
+                <address class="text-hueso-200 mt-6 leading-relaxed not-italic">
+                  {sucursal.direccion.calle}
+                  <br />
+                  {`${sucursal.direccion.colonia}, ${sucursal.direccion.codigoPostal} ${sucursal.direccion.ciudad}, ${sucursal.direccion.region}`}
+                </address>
+                <p class="text-hueso-400 mt-2 text-sm">{sucursal.direccion.referencia}</p>
+
+                <a
+                  href={enlaceMapa(sucursal)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-laton-400 hover:text-laton-300 mt-4 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4 transition"
+                >
+                  Abrir en Google Maps
+                  <svg
+                    class="size-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 17 17 7M9 7h8v8" />
+                  </svg>
+                </a>
+
+                <dl class="divide-tinta-800 border-tinta-800 mt-8 divide-y border-t">
+                  {sucursal.horarios.map((franja) => (
+                    <div class="flex items-baseline justify-between gap-4 py-4">
+                      <dt class="text-hueso-200">{franja.dias}</dt>
+                      <dd
+                        class:list={[
+                          'font-medium tabular-nums',
+                          franja.cerrado ? 'text-hueso-400' : 'text-laton-400',
+                        ]}
+                      >
+                        {franja.cerrado
+                          ? 'Cerrado'
+                          : `${franja.apertura} – ${franja.cierre}`}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+
+                <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <a
+                    href={enlaceWhatsapp(sucursal, mensajeCita(sucursal))}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="bg-laton-500 text-tinta-950 hover:bg-laton-400 inline-flex flex-1 items-center justify-center gap-2.5 rounded-full px-6 py-3.5 font-semibold transition"
+                  >
+                    <svg
+                      class="size-5"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.48-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.8h-.02a9.8 9.8 0 0 1-4.99-1.37l-.36-.21-3.71.97.99-3.62-.23-.37a9.8 9.8 0 0 1-1.5-5.23c0-5.42 4.41-9.83 9.83-9.83 2.63 0 5.09 1.02 6.95 2.88a9.77 9.77 0 0 1 2.88 6.95c0 5.42-4.41 9.83-9.83 9.83M20.5 3.49A11.75 11.75 0 0 0 12.05 0C5.55 0 .26 5.29.26 11.79c0 2.08.54 4.11 1.58 5.9L.16 24l6.45-1.69a11.73 11.73 0 0 0 5.44 1.35h.01c6.5 0 11.79-5.29 11.79-11.79 0-3.15-1.23-6.11-3.45-8.34" />
+                    </svg>
+                    WhatsApp
+                  </a>
+                  <a
+                    href={enlaceTelefono(sucursal)}
+                    class="border-tinta-600 text-hueso-100 hover:border-laton-500 hover:text-laton-400 inline-flex flex-1 items-center justify-center rounded-full border px-6 py-3.5 font-semibold transition"
+                  >
+                    {sucursal.telefono}
+                  </a>
+                </div>
+              </div>
+
+              <div class="border-tinta-800 aspect-[4/3] w-full border-t lg:aspect-auto lg:border-t-0 lg:border-l">
+                <iframe
+                  src={enlaceMapaEmbed(sucursal)}
+                  title={`Mapa de la sucursal ${sucursal.nombre} de ${negocio.nombre}, en ${direccionEnLinea(sucursal)}`}
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  class="size-full contrast-[1.1] grayscale-[0.6]"
+                  style="border: 0;"
+                />
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ horariosPorSucursal }}>
+  // Estado de apertura en vivo, una por sucursal. Se calcula en el navegador y
+  // no en el build, porque una pagina estatica generada por la manana diria
+  // "abierto" toda la noche. Usa la hora local de quien visita, que en un
+  // negocio de barrio es la misma que la del local.
+  const aMinutos = (hora) => {
+    const [h, m] = hora.split(':').map(Number);
+    return h * 60 + m;
+  };
+
+  const nombresDia = [
+    'el domingo',
+    'el lunes',
+    'el martes',
+    'el miercoles',
+    'el jueves',
+    'el viernes',
+    'el sabado',
+  ];
+
+  function proximaApertura(horarios, diaActual) {
+    // Busca el siguiente dia con horario, empezando por manana.
+    for (let salto = 1; salto <= 7; salto += 1) {
+      const dia = (diaActual + salto) % 7;
+      const franja = horarios.find((f) => f.indices.includes(dia));
+      if (franja && !franja.cerrado) {
+        const cuando = salto === 1 ? 'manana' : nombresDia[dia];
+        return `abre ${cuando} a las ${franja.apertura}`;
+      }
+    }
+    return 'consulta el horario';
+  }
+
+  function estadoDe(horarios, ahora) {
+    const dia = ahora.getDay();
+    const minutos = ahora.getHours() * 60 + ahora.getMinutes();
+    const franja = horarios.find((f) => f.indices.includes(dia));
+
+    if (!franja || franja.cerrado) {
+      return { abierto: false, texto: `Cerrado hoy · ${proximaApertura(horarios, dia)}` };
+    }
+
+    if (minutos < aMinutos(franja.apertura)) {
+      return { abierto: false, texto: `Cerrado · abre hoy a las ${franja.apertura}` };
+    }
+
+    if (minutos >= aMinutos(franja.cierre)) {
+      return { abierto: false, texto: `Cerrado · ${proximaApertura(horarios, dia)}` };
+    }
+
+    return { abierto: true, texto: `Abierto ahora · cierra a las ${franja.cierre}` };
+  }
+
+  function actualizarEstados() {
+    const ahora = new Date();
+
+    for (const sucursal of horariosPorSucursal) {
+      const contenedor = document.querySelector(`[data-estado="${sucursal.id}"]`);
+      if (!contenedor) continue;
+
+      const punto = contenedor.querySelector('[data-estado-punto]');
+      const texto = contenedor.querySelector('[data-estado-texto]');
+      if (!punto || !texto) continue;
+
+      const { abierto, texto: mensaje } = estadoDe(sucursal.horarios, ahora);
+
+      texto.textContent = mensaje;
+      punto.className = `size-2 rounded-full ${abierto ? 'bg-emerald-400' : 'bg-hueso-400'}`;
+      contenedor.className = abierto
+        ? 'inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-emerald-300'
+        : 'inline-flex items-center gap-2 rounded-full border border-tinta-600 px-4 py-1.5 text-sm font-medium text-hueso-300';
+    }
+  }
+
+  actualizarEstados();
+  // Repasa cada minuto para que el estado cambie solo al abrir o cerrar.
+  setInterval(actualizarEstados, 60_000);
+</script>

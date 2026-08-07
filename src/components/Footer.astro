@@ -1,0 +1,109 @@
+---
+import { negocio, navegacion, sucursales, enlaceTelefono } from '../data/site';
+
+const anio = new Date().getFullYear();
+---
+
+<footer class="border-tinta-800 bg-tinta-950 border-t">
+  <div class="franja-poste" aria-hidden="true"></div>
+
+  <div class="mx-auto max-w-6xl px-5 py-16">
+    <div class="grid gap-12 md:grid-cols-3">
+      <div>
+        <p class="font-display text-hueso-50 text-4xl leading-none">Philadelphia</p>
+        <p
+          class="text-hueso-400 mt-1.5 text-xs font-semibold tracking-[0.22em] uppercase"
+        >
+          Studio Barber Shop
+        </p>
+        <p class="text-hueso-400 mt-6 max-w-xs text-sm leading-relaxed">
+          {negocio.eslogan}. En Cabo San Lucas desde {negocio.desde}.
+        </p>
+
+        <ul class="mt-6 flex flex-wrap gap-3">
+          {
+            negocio.redes.map((red) => (
+              <li>
+                <a
+                  href={red.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="border-tinta-700 text-hueso-300 hover:border-laton-500 hover:text-laton-400 inline-flex items-center rounded-full border px-4 py-2 text-xs font-medium transition"
+                >
+                  {red.nombre}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-laton-500 text-xs font-semibold tracking-[0.22em] uppercase">
+          Secciones
+        </h2>
+        <ul class="mt-5 space-y-3">
+          {
+            navegacion.map((enlace) => (
+              <li>
+                <a
+                  href={enlace.href}
+                  class="text-hueso-300 hover:text-laton-400 text-sm transition"
+                >
+                  {enlace.etiqueta}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-laton-500 text-xs font-semibold tracking-[0.22em] uppercase">
+          Sucursales
+        </h2>
+        <ul class="mt-5 space-y-5">
+          {
+            sucursales.map((sucursal) => (
+              <li class="text-sm">
+                <a
+                  href={`#${sucursal.id}`}
+                  class="text-hueso-100 hover:text-laton-400 font-semibold transition"
+                >
+                  {sucursal.nombre}
+                </a>
+                <p class="text-hueso-400 mt-1 leading-relaxed">
+                  {`${sucursal.direccion.colonia}, ${sucursal.direccion.ciudad}`}
+                </p>
+                <a
+                  href={enlaceTelefono(sucursal)}
+                  class="text-hueso-300 hover:text-laton-400 transition"
+                >
+                  {sucursal.telefono}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        {
+          negocio.email && (
+            <a
+              href={`mailto:${negocio.email}`}
+              class="text-hueso-300 hover:text-laton-400 mt-5 inline-block text-sm transition"
+            >
+              {negocio.email}
+            </a>
+          )
+        }
+      </div>
+    </div>
+
+    <div
+      class="border-tinta-800 text-hueso-400 mt-14 flex flex-col gap-2 border-t pt-8 text-xs sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>© {anio} {negocio.nombre}. Todos los derechos reservados.</p>
+      <p>Cabo San Lucas, Baja California Sur</p>
+    </div>
+  </div>
+</footer>

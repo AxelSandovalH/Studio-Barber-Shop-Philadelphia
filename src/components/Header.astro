@@ -1,0 +1,146 @@
+---
+import { navegacion, negocio } from '../data/site';
+---
+
+<header
+  class="border-tinta-700/70 bg-tinta-950/85 fixed inset-x-0 top-0 z-40 border-b backdrop-blur-md"
+>
+  <div class="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-5">
+    <a
+      href="#inicio"
+      class="group flex items-center gap-3"
+      aria-label={`${negocio.nombre}, inicio`}
+    >
+      <span
+        class="border-laton-500/60 font-display text-laton-400 group-hover:border-laton-400 flex size-11 shrink-0 items-center justify-center rounded-full border text-2xl leading-none transition"
+      >
+        {negocio.inicial}
+      </span>
+      <span class="leading-none">
+        <span class="font-display text-hueso-50 block text-2xl tracking-wide">
+          Philadelphia
+        </span>
+        <span
+          class="text-hueso-400 block text-[0.6rem] font-semibold tracking-[0.22em] uppercase"
+        >
+          Studio Barber Shop
+        </span>
+      </span>
+    </a>
+
+    <nav class="hidden items-center gap-8 md:flex" aria-label="Navegacion principal">
+      {
+        navegacion.map((enlace) => (
+          <a
+            href={enlace.href}
+            class="text-hueso-300 hover:text-laton-400 text-sm font-medium transition"
+          >
+            {enlace.etiqueta}
+          </a>
+        ))
+      }
+      <a
+        href="#sucursales"
+        class="bg-laton-500 text-tinta-950 hover:bg-laton-400 rounded-full px-5 py-2.5 text-sm font-semibold transition"
+      >
+        Agendar cita
+      </a>
+    </nav>
+
+    <button
+      type="button"
+      id="boton-menu"
+      class="border-tinta-700 text-hueso-200 hover:border-laton-500 hover:text-laton-400 flex size-11 items-center justify-center rounded-lg border transition md:hidden"
+      aria-expanded="false"
+      aria-controls="menu-movil"
+      aria-label="Abrir menu"
+    >
+      <svg
+        id="icono-abrir"
+        class="size-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M4 7h16M4 12h16M4 17h16"></path>
+      </svg>
+      <svg
+        id="icono-cerrar"
+        class="hidden size-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M6 6l12 12M18 6L6 18"></path>
+      </svg>
+    </button>
+  </div>
+
+  <nav
+    id="menu-movil"
+    class="border-tinta-700/70 bg-tinta-950/95 hidden border-t px-5 pt-2 pb-6 md:hidden"
+    aria-label="Navegacion principal movil"
+  >
+    <ul class="flex flex-col">
+      {
+        navegacion.map((enlace) => (
+          <li>
+            <a
+              href={enlace.href}
+              class="border-tinta-800 font-display text-hueso-100 hover:text-laton-400 block border-b py-4 text-xl tracking-wide transition"
+            >
+              {enlace.etiqueta}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a
+      href="#sucursales"
+      class="bg-laton-500 text-tinta-950 mt-6 block rounded-full px-5 py-3.5 text-center font-semibold"
+    >
+      Agendar cita
+    </a>
+  </nav>
+
+  <div class="franja-poste" aria-hidden="true"></div>
+</header>
+
+<script>
+  const boton = document.getElementById('boton-menu');
+  const menu = document.getElementById('menu-movil');
+  const iconoAbrir = document.getElementById('icono-abrir');
+  const iconoCerrar = document.getElementById('icono-cerrar');
+
+  if (boton && menu && iconoAbrir && iconoCerrar) {
+    const alternar = (abierto: boolean) => {
+      menu.classList.toggle('hidden', !abierto);
+      iconoAbrir.classList.toggle('hidden', abierto);
+      iconoCerrar.classList.toggle('hidden', !abierto);
+      boton.setAttribute('aria-expanded', String(abierto));
+      boton.setAttribute('aria-label', abierto ? 'Cerrar menu' : 'Abrir menu');
+    };
+
+    boton.addEventListener('click', () => {
+      alternar(menu.classList.contains('hidden'));
+    });
+
+    // Al elegir una seccion el menu estorba: se cierra solo.
+    menu.querySelectorAll('a').forEach((enlace) => {
+      enlace.addEventListener('click', () => alternar(false));
+    });
+
+    document.addEventListener('keydown', (evento) => {
+      if (evento.key === 'Escape' && !menu.classList.contains('hidden')) {
+        alternar(false);
+        boton.focus();
+      }
+    });
+  }
+</script>

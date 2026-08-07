@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO(datos-reales): actualizar el dominio cuando se publique el sitio.
+Sitemap: https://studiobarbershopphiladelphia.com/sitemap-index.xml

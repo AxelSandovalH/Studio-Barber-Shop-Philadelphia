@@ -1,0 +1,132 @@
+---
+import { Font } from 'astro:assets';
+import { negocio, sucursales, servicios, moneda, direccionEnLinea } from '../data/site';
+import '../styles/global.css';
+
+interface Props {
+  titulo?: string;
+  descripcion?: string;
+}
+
+const { titulo, descripcion = negocio.descripcion } = Astro.props;
+
+const tituloPagina = titulo
+  ? `${titulo} | ${negocio.nombre}`
+  : `${negocio.nombre} | Barberia en Cabo San Lucas`;
+
+const urlCanonica = new URL(Astro.url.pathname, Astro.site);
+
+// Nombres de dia como los espera schema.org, indexados igual que Date.getDay().
+const diasSchema = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
+const principal = sucursales[0]!;
+
+// Datos estructurados: una entrada por sucursal, que es lo que permite que cada
+// local aparezca por separado en las busquedas locales de Google.
+const datosEstructurados = {
+  '@context': 'https://schema.org',
+  '@graph': sucursales.map((sucursal) => ({
+    '@type': 'HairSalon',
+    '@id': `${urlCanonica.href}#${sucursal.id}`,
+    name: `${negocio.nombre} - ${sucursal.nombre}`,
+    description: negocio.descripcion,
+    url: urlCanonica.href,
+    telephone: sucursal.telefono,
+    ...(negocio.email ? { email: negocio.email } : {}),
+    currenciesAccepted: moneda.codigo,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: `${sucursal.direccion.calle}, ${sucursal.direccion.colonia}`,
+      addressLocality: sucursal.direccion.ciudad,
+      addressRegion: sucursal.direccion.region,
+      postalCode: sucursal.direccion.codigoPostal,
+      addressCountry: sucursal.direccion.paisCodigo,
+    },
+    sameAs: negocio.redes.map((red) => red.url),
+    openingHoursSpecification: sucursal.horarios
+      .filter((franja) => !franja.cerrado)
+      .map((franja) => ({
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: franja.indices.map((indice) => diasSchema[indice]),
+        opens: franja.apertura,
+        closes: franja.cierre,
+      })),
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Servicios de barberia',
+      itemListElement: servicios.map((servicio) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: servicio.nombre,
+          description: servicio.descripcion,
+        },
+        // Solo se declara el precio cuando existe de verdad: un precio
+        // inventado en los datos estructurados es peor que no ponerlo.
+        ...(servicio.precio !== undefined
+          ? { price: servicio.precio, priceCurrency: moneda.codigo }
+          : {}),
+      })),
+    },
+  })),
+};
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={urlCanonica.href} />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{tituloPagina}</title>
+    <meta name="description" content={descripcion} />
+    <meta name="theme-color" content="#0b0b0d" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={negocio.nombre} />
+    <meta property="og:title" content={tituloPagina} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={urlCanonica.href} />
+    <meta property="og:locale" content="es_MX" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={tituloPagina} />
+    <meta name="twitter:description" content={descripcion} />
+
+    <meta name="geo.region" content={`${principal.direccion.paisCodigo}-BCS`} />
+    <meta name="geo.placename" content={principal.direccion.ciudad} />
+    <meta
+      name="business:contact_data:street_address"
+      content={direccionEnLinea(principal)}
+    />
+
+    <Font cssVariable="--fuente-display" preload />
+    <Font cssVariable="--fuente-texto" preload />
+
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(datosEstructurados)}
+    />
+  </head>
+  <body>
+    <a
+      href="#contenido"
+      class="focus:bg-laton-500 focus:text-tinta-950 sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:px-5 focus:py-2 focus:font-semibold"
+    >
+      Saltar al contenido
+    </a>
+    <slot />
+  </body>
+</html>

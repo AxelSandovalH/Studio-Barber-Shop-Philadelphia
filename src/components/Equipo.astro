@@ -1,0 +1,67 @@
+---
+import { barberos, negocio } from '../data/site';
+import TituloSeccion from './TituloSeccion.astro';
+---
+
+<section id="equipo" class="border-tinta-800 border-t py-24 md:py-32">
+  <div class="mx-auto max-w-6xl px-5">
+    <TituloSeccion
+      etiqueta="El equipo"
+      titulo="Quien te atiende"
+      descripcion="Puedes pedir a tu barbero de siempre al llegar o al escribirnos."
+    />
+
+    <ul class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        barberos.map((barbero) => (
+          <li class="group border-tinta-700 bg-tinta-900/60 hover:border-laton-500/50 overflow-hidden rounded-2xl border transition">
+            <div class="bg-tinta-850 aspect-[4/5] overflow-hidden">
+              <img
+                src={barbero.foto}
+                alt={`${barbero.nombre}, ${barbero.rol} en ${negocio.nombre}`}
+                loading="lazy"
+                decoding="async"
+                width="600"
+                height="750"
+                class="size-full object-cover transition duration-500 group-hover:scale-[1.03]"
+              />
+            </div>
+
+            <div class="p-6">
+              <p class="text-laton-500 text-xs font-semibold tracking-[0.16em] uppercase">
+                {barbero.rol}
+              </p>
+              <h3 class="mt-2.5 text-3xl leading-none">{barbero.nombre}</h3>
+              <p class="text-hueso-300 mt-3 text-sm leading-relaxed">
+                {barbero.especialidad}
+              </p>
+
+              {barbero.instagram && (
+                <a
+                  href={barbero.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-hueso-400 hover:text-laton-400 mt-5 inline-flex items-center gap-2 text-sm font-medium transition"
+                >
+                  <svg
+                    class="size-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    aria-hidden="true"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                  </svg>
+                  Ver su trabajo
+                </a>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
