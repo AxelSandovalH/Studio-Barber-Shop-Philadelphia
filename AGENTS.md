@@ -26,6 +26,17 @@ mexicanos.
   `laton`, `hueso`, `poste`). No metas hex sueltos en los componentes.
 - **Fuentes**: se auto-hospedan con la API `fonts` de Astro. Se usan via las
   utilidades `font-display` y `font-texto`, no con `<link>` a Google.
+- **Fotos en `src/assets/`, videos en `public/`.** Las fotos solo se optimizan
+  (WebP + srcset) si Astro las importa desde `src/assets`; una foto en `public/`
+  se sirve tal cual. Astro no procesa video, por eso ese va en `public/` ya
+  comprimido con `scripts/comprimir-video.sh`.
+- **El carrusel es scroll nativo con `scroll-snap`.** Las flechas, los puntos y
+  el arrastre con GSAP son mejora progresiva encima, no la base: sin JavaScript
+  la galeria sigue siendo usable. No uses `Draggable` con `type:"scrollLeft"`,
+  que sustituye el scroll nativo y rompe flechas, puntos y teclado.
+- **GSAP solo en escritorio con raton y con `import()` dinamico**, para que el
+  movil no descargue 41 kB que no necesita: el scroll tactil nativo ya tiene
+  mejor inercia.
 
 ## Desarrollo
 

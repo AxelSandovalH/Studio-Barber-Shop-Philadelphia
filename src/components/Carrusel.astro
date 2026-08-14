@@ -1,0 +1,400 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { MedioGaleria } from '../data/site';
+
+interface Props {
+  medios: MedioGaleria[];
+  /** Nombre de la region para lectores de pantalla. */
+  etiqueta: string;
+}
+
+const { medios, etiqueta } = Astro.props;
+
+// Anchos de cada diapositiva, en el mismo orden que los puntos de corte de
+// abajo. Se declara una sola vez porque el `sizes` de las imagenes tiene que
+// coincidir con el ancho real o el navegador descarga el tamano equivocado.
+const TAMANOS = '(max-width: 639px) 78vw, (max-width: 1023px) 46vw, 31vw';
+
+// El poster del video se optimiza igual que una foto. Sin esto se serviria el
+// JPG original, que es justo lo que estamos evitando con el resto.
+const preparados = await Promise.all(
+  medios.map(async (medio) => {
+    if (medio.tipo !== 'video') return { medio, poster: null };
+    const poster = await getImage({ src: medio.poster, width: 800, format: 'webp' });
+    return { medio, poster: poster.src };
+  }),
+);
+---
+
+<div class="relative" data-carrusel>
+  <!-- La pista es la que hace el scroll. Es enfocable para que se pueda
+       recorrer con el teclado sin depender de las flechas.
+
+       Las diapositivas usan snap-start y no snap-center: con varias tarjetas a
+       la vista, la "actual" es la primera visible, los puntos se corresponden
+       con lo que se ve, y ni la primera ni la ultima quedan a medias. -->
+  <ul
+    data-pista
+    tabindex="0"
+    role="region"
+    aria-label={etiqueta}
+    class="flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-2 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+  >
+    {
+      preparados.map(({ medio, poster }, indice) => (
+        <li data-slide class="w-[78%] shrink-0 snap-start sm:w-[46%] lg:w-[31%]">
+          <figure class="border-tinta-700 bg-tinta-850 relative aspect-[4/5] overflow-hidden rounded-2xl border">
+            {medio.tipo === 'foto' ? (
+              <Image
+                src={medio.src}
+                alt={medio.alt}
+                widths={[400, 800, 1200]}
+                sizes={TAMANOS}
+                loading={indice < 2 ? 'eager' : 'lazy'}
+                decoding="async"
+                class="size-full object-cover"
+              />
+            ) : (
+              <>
+                <video
+                  data-video
+                  class="size-full object-cover"
+                  poster={poster ?? undefined}
+                  aria-label={medio.alt}
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                >
+                  {medio.webm && <source src={medio.webm} type="video/webm" />}
+                  <source src={medio.mp4} type="video/mp4" />
+                </video>
+
+                <span class="bg-tinta-950/75 text-hueso-100 pointer-events-none absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.65rem] font-semibold tracking-[0.12em] uppercase backdrop-blur-sm">
+                  <svg
+                    class="size-3"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  Video
+                </span>
+              </>
+            )}
+          </figure>
+        </li>
+      ))
+    }
+  </ul>
+
+  <!-- Flechas: solo en pantallas con raton. En tactil sobra, se desliza. -->
+  <button
+    type="button"
+    data-anterior
+    aria-label="Anterior"
+    class="border-tinta-600 bg-tinta-950/90 text-hueso-100 hover:border-laton-500 hover:text-laton-400 absolute top-1/2 -left-4 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm transition disabled:pointer-events-none disabled:opacity-0 lg:flex"
+  >
+    <svg
+      class="size-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M15 6l-6 6 6 6"></path>
+    </svg>
+  </button>
+
+  <button
+    type="button"
+    data-siguiente
+    aria-label="Siguiente"
+    class="border-tinta-600 bg-tinta-950/90 text-hueso-100 hover:border-laton-500 hover:text-laton-400 absolute top-1/2 -right-4 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm transition disabled:pointer-events-none disabled:opacity-0 lg:flex"
+  >
+    <svg
+      class="size-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M9 6l6 6-6 6"></path>
+    </svg>
+  </button>
+
+  <ol
+    data-puntos
+    class="mt-6 flex flex-wrap justify-center gap-2.5"
+    aria-label="Ir a un elemento"
+  >
+    {
+      medios.map((medio, indice) => (
+        <li>
+          <button
+            type="button"
+            data-punto
+            data-indice={indice}
+            aria-label={`Ir a ${medio.tipo === 'video' ? 'el video' : 'la foto'} ${indice + 1} de ${medios.length}`}
+            class="bg-tinta-600 hover:bg-hueso-400 aria-[current=true]:bg-laton-500 block h-2 w-2 rounded-full transition-all aria-[current=true]:w-6"
+          />
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<script>
+  const REDUCIR = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function iniciar(carrusel: HTMLElement) {
+    const pista = carrusel.querySelector<HTMLElement>('[data-pista]');
+    const slides = [...carrusel.querySelectorAll<HTMLElement>('[data-slide]')];
+    const puntos = [...carrusel.querySelectorAll<HTMLButtonElement>('[data-punto]')];
+    const anterior = carrusel.querySelector<HTMLButtonElement>('[data-anterior]');
+    const siguiente = carrusel.querySelector<HTMLButtonElement>('[data-siguiente]');
+    if (!pista || slides.length === 0) return;
+
+    /** Cuantas diapositivas caben a la vez en la pista. */
+    const visibles = () => {
+      const ancho = slides[0]!.getBoundingClientRect().width;
+      const hueco = parseFloat(getComputedStyle(pista).columnGap) || 0;
+      return Math.max(1, Math.round((pista.clientWidth + hueco) / (ancho + hueco)));
+    };
+
+    /**
+     * Ultima diapositiva que puede llegar a quedar pegada al borde izquierdo.
+     * Con 7 tarjetas y 3 a la vista, la pista se acaba con la 4 arriba: las dos
+     * ultimas nunca son "la actual", asi que sus puntos sobran.
+     */
+    const ultimoAlcanzable = () => Math.max(0, slides.length - visibles());
+
+    /**
+     * La activa es la primera visible, la que queda pegada al borde izquierdo
+     * por el snap-start. Dividir el scroll entre el ancho de una diapositiva no
+     * vale: los topes del contenedor hacen que las posiciones de anclado no
+     * sean multiplos exactos.
+     */
+    const indiceActual = () => {
+      if (pista.scrollLeft >= pista.scrollWidth - pista.clientWidth - 1) {
+        return ultimoAlcanzable();
+      }
+
+      const izquierda = pista.getBoundingClientRect().left;
+
+      let mejor = 0;
+      let menorDistancia = Infinity;
+
+      slides.forEach((slide, i) => {
+        const distancia = Math.abs(slide.getBoundingClientRect().left - izquierda);
+        if (distancia < menorDistancia) {
+          menorDistancia = distancia;
+          mejor = i;
+        }
+      });
+
+      return mejor;
+    };
+
+    // Arrow y no `function`: en una declaracion hoisted TypeScript pierde el
+    // estrechamiento de `pista` que hizo la guarda de arriba.
+    const pintarEstado = () => {
+      const indice = indiceActual();
+      const tope = ultimoAlcanzable();
+
+      puntos.forEach((punto, i) => {
+        // aria-current en vez de una clase: el estado tambien llega a quien usa
+        // lector de pantalla, y el CSS se cuelga del mismo atributo.
+        punto.setAttribute('aria-current', String(i === indice));
+        // Sin JS se ven todos y todos funcionan; en cuanto sabemos cuantas
+        // caben, se ocultan los que no pueden llegar a ser la actual.
+        if (punto.parentElement) punto.parentElement.hidden = i > tope;
+      });
+
+      // Margen de un pixel: el scroll rara vez cae en el valor exacto.
+      const fin = pista.scrollWidth - pista.clientWidth - 1;
+      if (anterior) anterior.disabled = pista.scrollLeft <= 1;
+      if (siguiente) siguiente.disabled = pista.scrollLeft >= fin;
+    };
+
+    // scrollIntoView y no scrollTo: deja que el navegador calcule la posicion
+    // y respeta los topes del contenedor sin replicar ese calculo a mano.
+    // block:"nearest" evita que la pagina salte en vertical.
+    const irA = (indice: number) => {
+      const destino = slides[Math.max(0, Math.min(indice, slides.length - 1))];
+      destino?.scrollIntoView({
+        behavior: REDUCIR.matches ? 'auto' : 'smooth',
+        inline: 'start',
+        block: 'nearest',
+      });
+    };
+
+    anterior?.addEventListener('click', () => irA(indiceActual() - 1));
+    siguiente?.addEventListener('click', () => irA(indiceActual() + 1));
+    puntos.forEach((punto, i) => punto.addEventListener('click', () => irA(i)));
+
+    let pendiente = false;
+    pista.addEventListener(
+      'scroll',
+      () => {
+        if (pendiente) return;
+        pendiente = true;
+        requestAnimationFrame(() => {
+          pintarEstado();
+          pendiente = false;
+        });
+      },
+      { passive: true },
+    );
+
+    window.addEventListener('resize', pintarEstado, { passive: true });
+    pintarEstado();
+
+    reproducirSoloVisible(pista);
+    mejorarConGsap(pista, slides);
+  }
+
+  /**
+   * Solo se reproduce el video que esta a la vista, y de uno en uno. Con
+   * preload="none" en el HTML, un video que nunca se ve no descarga ni un byte.
+   */
+  function reproducirSoloVisible(pista: HTMLElement) {
+    const videos = [...pista.querySelectorAll<HTMLVideoElement>('[data-video]')];
+    if (videos.length === 0) return;
+
+    // Con movimiento reducido no se reproduce nada solo: se dan los controles
+    // para que cada quien decida.
+    if (REDUCIR.matches) {
+      videos.forEach((video) => {
+        video.controls = true;
+        video.preload = 'metadata';
+      });
+      return;
+    }
+
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) {
+          const video = entrada.target as HTMLVideoElement;
+          if (entrada.isIntersecting) {
+            video.preload = 'auto';
+            // Si el archivo no existe, play() rechaza: no es motivo para
+            // romper nada, simplemente se queda el poster.
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        }
+      },
+      { root: pista, threshold: 0.6 },
+    );
+
+    videos.forEach((video) => observador.observe(video));
+  }
+
+  /**
+   * Mejora progresiva: arrastre con inercia y animacion de entrada.
+   *
+   * Solo en escritorio con raton. En tactil el scroll nativo ya tiene mejor
+   * inercia que cualquier cosa que hagamos, asi que el movil no llega ni a
+   * descargar GSAP.
+   */
+  async function mejorarConGsap(pista: HTMLElement, slides: HTMLElement[]) {
+    const enEscritorio = window.matchMedia('(min-width: 1024px) and (pointer: fine)');
+    if (!enEscritorio.matches || REDUCIR.matches) return;
+
+    const [{ gsap }, { InertiaPlugin }] = await Promise.all([
+      import('gsap'),
+      import('gsap/InertiaPlugin'),
+    ]);
+
+    gsap.registerPlugin(InertiaPlugin);
+
+    // Aqui NO se usa Draggable con type:"scrollLeft". Ese modo sustituye el
+    // scroll nativo por transforms: deja scrollWidth === clientWidth y con eso
+    // dejan de funcionar las flechas, los puntos y el teclado. Arrastramos a
+    // mano sobre el scroll real y dejamos a GSAP solo la fisica del
+    // lanzamiento, que es donde de verdad aporta.
+    InertiaPlugin.track(pista, 'scrollLeft');
+
+    // El anclado obligatorio corta el lanzamiento a media inercia. Con
+    // "proximity" el gesto termina donde lo dejas y solo ajusta si queda cerca.
+    pista.style.scrollSnapType = 'x proximity';
+    pista.style.cursor = 'grab';
+
+    let arrastrando = false;
+    let xInicial = 0;
+    let scrollInicial = 0;
+
+    // Sin esto, arrastrar sobre una foto la "coge" como si fuera un enlace.
+    pista.addEventListener('dragstart', (evento) => evento.preventDefault());
+
+    pista.addEventListener('pointerdown', (evento) => {
+      if (evento.button !== 0) return;
+      arrastrando = true;
+      xInicial = evento.clientX;
+      scrollInicial = pista.scrollLeft;
+      gsap.killTweensOf(pista);
+      pista.style.scrollSnapType = 'none';
+      pista.style.cursor = 'grabbing';
+      pista.setPointerCapture(evento.pointerId);
+    });
+
+    pista.addEventListener('pointermove', (evento) => {
+      if (!arrastrando) return;
+      pista.scrollLeft = scrollInicial - (evento.clientX - xInicial);
+    });
+
+    const soltar = (evento: PointerEvent) => {
+      if (!arrastrando) return;
+      arrastrando = false;
+      pista.style.cursor = 'grab';
+      pista.style.scrollSnapType = 'x proximity';
+      if (pista.hasPointerCapture(evento.pointerId)) {
+        pista.releasePointerCapture(evento.pointerId);
+      }
+
+      // velocity "auto" usa la velocidad que viene midiendo InertiaPlugin.track.
+      gsap.to(pista, {
+        inertia: {
+          scrollLeft: {
+            velocity: 'auto',
+            min: 0,
+            max: pista.scrollWidth - pista.clientWidth,
+          },
+        },
+      });
+    };
+
+    pista.addEventListener('pointerup', soltar);
+    pista.addEventListener('pointercancel', soltar);
+
+    // La entrada se dispara una sola vez, y para eso un IntersectionObserver
+    // hace lo mismo que ScrollTrigger sin cargar sus 42 KB.
+    const entrada = new IntersectionObserver(
+      (entradas, observador) => {
+        if (!entradas.some((e) => e.isIntersecting)) return;
+        observador.disconnect();
+        gsap.from(slides, {
+          opacity: 0,
+          y: 28,
+          duration: 0.55,
+          stagger: 0.07,
+          ease: 'power2.out',
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    entrada.observe(pista);
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-carrusel]').forEach(iniciar);
+</script>

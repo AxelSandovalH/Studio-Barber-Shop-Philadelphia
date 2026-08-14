@@ -13,6 +13,14 @@
  * desde fuera y lo tiene que rellenar el negocio.
  */
 
+import trabajo1 from '../assets/galeria/trabajo-1.jpg';
+import trabajo2 from '../assets/galeria/trabajo-2.jpg';
+import trabajo3 from '../assets/galeria/trabajo-3.jpg';
+import trabajo4 from '../assets/galeria/trabajo-4.jpg';
+import trabajo5 from '../assets/galeria/trabajo-5.jpg';
+import trabajo6 from '../assets/galeria/trabajo-6.jpg';
+import video1Poster from '../assets/galeria/video-1-poster.jpg';
+
 export interface Negocio {
   nombre: string;
   nombreCorto: string;
@@ -92,10 +100,28 @@ export interface FranjaHoraria {
   indices: number[];
 }
 
-export interface FotoGaleria {
-  src: string;
-  alt: string;
-}
+/**
+ * Un elemento de la galeria: foto o video.
+ *
+ * Las fotos se importan desde src/assets, no desde public: solo asi Astro las
+ * convierte a AVIF y WebP y genera el srcset responsive. Una foto en public/
+ * se sirve tal cual salio de la camara.
+ *
+ * Los videos si van en public/galeria/, porque Astro no procesa video. Hay que
+ * comprimirlos a mano antes (las ordenes de ffmpeg estan en el README) y darles
+ * siempre un poster, que es lo que se ve mientras no se reproducen.
+ */
+export type MedioGaleria =
+  | { tipo: 'foto'; src: ImageMetadata; alt: string }
+  | {
+      tipo: 'video';
+      /** Ruta dentro de /public. */
+      mp4: string;
+      /** Opcional pero recomendado: pesa bastante menos que el mp4. */
+      webm?: string;
+      poster: ImageMetadata;
+      alt: string;
+    };
 
 /** Moneda de los precios. En Cabo circula el dolar, asi que se dice explicito. */
 export const moneda = {
@@ -241,21 +267,36 @@ export const servicios: Servicio[] = [
 // mostrar el equipo, vaciad esta lista y la seccion desaparece sola.
 export const barberos: Barbero[] = [];
 
-// TODO(datos-reales): reemplazar los SVG de relleno por fotos reales de los
-// cortes y del local, y escribir un alt descriptivo para cada una.
-export const galeria: FotoGaleria[] = [
+// TODO(datos-reales): reemplazar estas fotos de relleno por las reales,
+// sobrescribiendo los archivos de src/assets/galeria/ con los mismos nombres, y
+// escribir un alt descriptivo para cada una. El alt es lo que leen los
+// buscadores y los lectores de pantalla, asi que describe el corte, no digas
+// "foto de un corte".
+export const galeria: MedioGaleria[] = [
   {
-    src: '/galeria/trabajo-1.svg',
+    tipo: 'foto',
+    src: trabajo1,
     alt: 'Corte a tijera con textura en la parte superior',
   },
   {
-    src: '/galeria/trabajo-2.svg',
+    // TODO(datos-reales): falta subir public/galeria/video-1.mp4 (y .webm).
+    // Mientras no exista, el carrusel muestra el poster y no intenta
+    // reproducir nada.
+    tipo: 'video',
+    mp4: '/galeria/video-1.mp4',
+    webm: '/galeria/video-1.webm',
+    poster: video1Poster,
+    alt: 'Degradado terminado, visto de perfil',
+  },
+  {
+    tipo: 'foto',
+    src: trabajo2,
     alt: 'Barba perfilada con navaja y contornos definidos',
   },
-  { src: '/galeria/trabajo-3.svg', alt: 'Degradado a maquina con contornos limpios' },
-  { src: '/galeria/trabajo-4.svg', alt: 'Interior de la barberia' },
-  { src: '/galeria/trabajo-5.svg', alt: 'Trabajo de coloracion terminado' },
-  { src: '/galeria/trabajo-6.svg', alt: 'Detalle de las herramientas de barberia' },
+  { tipo: 'foto', src: trabajo3, alt: 'Degradado a maquina con contornos limpios' },
+  { tipo: 'foto', src: trabajo4, alt: 'Interior de la barberia' },
+  { tipo: 'foto', src: trabajo5, alt: 'Trabajo de coloracion terminado' },
+  { tipo: 'foto', src: trabajo6, alt: 'Detalle de las herramientas de barberia' },
 ];
 
 /** Enlaces de la navegacion principal, en el orden en que aparecen las secciones. */

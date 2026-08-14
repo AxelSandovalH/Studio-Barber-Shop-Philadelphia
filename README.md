@@ -97,19 +97,74 @@ grep -rn "TODO(datos-reales)" src astro.config.mjs public/robots.txt
    en [`public/robots.txt`](public/robots.txt). De ahi salen las URLs absolutas
    del sitemap y de las meta etiquetas.
 
-### Fotos
+## Galeria: fotos y videos
 
-Las imagenes que se ven ahora son SVG de relleno generados a proposito. Hay que
-sustituirlos por fotos reales, manteniendo los nombres o actualizando las rutas
-en `site.ts`:
+La galeria es un carrusel que mezcla fotos y videos. Se desliza con el dedo, con
+la rueda, con el teclado y, en escritorio, arrastrando con el raton.
 
-- `public/galeria/trabajo-1.svg` … `trabajo-6.svg` — **cuadradas**, porque la
-  cuadricula usa celdas 1:1. La primera se muestra al doble de tamano.
-- `public/equipo/barbero-1.svg` … `barbero-3.svg` — **verticales 4:5**, solo si
-  se decide mostrar el equipo.
+### Donde va cada cosa, y por que
 
-Al cambiarlas, actualiza tambien el texto `alt` de cada foto: es lo que leen los
-buscadores y los lectores de pantalla.
+|                  | Carpeta               | Motivo                                                                                                  |
+| ---------------- | --------------------- | ------------------------------------------------------------------------------------------------------- |
+| Fotos            | `src/assets/galeria/` | Astro las convierte a WebP y genera tres tamanos por foto. Las de ejemplo bajan de 56 kB a 26 kB solas. |
+| Posters de video | `src/assets/galeria/` | Es una foto mas, se optimiza igual.                                                                     |
+| Videos           | `public/galeria/`     | **Astro no procesa video.** Lo que pongas ahi se sirve tal cual, asi que hay que comprimirlo antes.     |
+
+Una foto en `public/` se sirve como salga de la camara. Ese es el error que mas
+cuesta caro en una landing, asi que las fotos van **siempre** en `src/assets/`.
+
+### Anadir fotos
+
+Deja los archivos en `src/assets/galeria/`, importalos arriba de
+[`src/data/site.ts`](src/data/site.ts) y anadelos a la lista `galeria`:
+
+```ts
+import trabajo7 from '../assets/galeria/trabajo-7.jpg';
+
+// …
+{ tipo: 'foto', src: trabajo7, alt: 'Degradado con perfilado de barba' },
+```
+
+Formato **vertical 4:5**, que es la proporcion de las tarjetas. Sube el original
+grande sin miedo: Astro lo reescala.
+
+### Anadir videos
+
+Clips **cortos y sin audio** (el carrusel reproduce en silencio). Hay un script
+que comprime y genera el poster de una sola pasada:
+
+```bash
+./scripts/comprimir-video.sh ~/Desktop/corte.mov video-2
+```
+
+Necesita ffmpeg (`brew install ffmpeg`). Al terminar te imprime el fragmento que
+hay que pegar en `galeria`.
+
+Lo que hace por dentro, por si prefieres ajustarlo: reescala a 1280 px de alto,
+codifica a H.264 con `crf 26` y a VP9 con `crf 34`, quita el audio y mueve el
+indice del MP4 al principio (`+faststart`) para que empiece a reproducirse sin
+haber descargado el archivo entero. Sube el `crf` si quieres menos peso, bajalo
+si quieres mas calidad.
+
+### Como se comporta
+
+- **Solo se reproduce el video que esta a la vista**, en silencio y en bucle.
+  Con `preload="none"`, un video que nunca se ve no descarga ni un byte.
+- **El texto `alt` importa**: es lo que leen los buscadores y los lectores de
+  pantalla. Describe el corte, no escribas "foto de un corte".
+- **Sin JavaScript sigue funcionando**: el carrusel es scroll nativo con
+  `scroll-snap`, y las flechas y los puntos son la mejora, no la base.
+- **En movil no se descarga GSAP.** El scroll tactil nativo ya tiene mejor
+  inercia que cualquier cosa que programemos, asi que GSAP (unos 41 kB
+  comprimidos) solo se carga en escritorio con raton, y solo cuando hace falta.
+- **Se respeta `prefers-reduced-motion`**: si esta activo, no hay animaciones,
+  ningun video arranca solo y aparecen los controles nativos.
+
+### Fotos del equipo
+
+Solo si se decide mostrar el equipo: `public/equipo/barbero-1.svg` …
+`barbero-3.svg`, **verticales 4:5**. Esa seccion sigue oculta mientras la lista
+`barberos` este vacia.
 
 ## SEO
 
