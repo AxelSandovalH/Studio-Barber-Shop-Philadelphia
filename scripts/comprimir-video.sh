@@ -4,10 +4,15 @@
 #
 #   ./scripts/comprimir-video.sh grabacion.mov video-1
 #
-# Deja tres archivos:
-#   public/galeria/<nombre>.mp4          el que ve todo el mundo
-#   public/galeria/<nombre>.webm         mas ligero donde se soporta
+# Deja dos archivos:
+#   public/galeria/<nombre>.mp4              el video ya comprimido
 #   src/assets/galeria/<nombre>-poster.jpg   lo que se ve antes de reproducir
+#
+# Solo MP4, sin WebM. Lo normal es que VP9 pese menos que H.264, pero con este
+# material (grabado con telefono, 4K a 45 Mbps, con grano y mucho movimiento)
+# medimos lo contrario: 2,6 veces mas grande y el doble de tiempo de proceso.
+# H.264 en MP4 lo reproduce cualquier navegador, asi que anadir WebM aqui solo
+# restaria.
 #
 # Astro no procesa video, por eso hay que comprimirlo aqui y no en el build.
 # El poster si va en src/assets porque ese Astro lo optimiza como una foto mas.
@@ -39,18 +44,15 @@ escala="scale=-2:'min(1280,ih)'"
 # -an quita el audio: el carrusel reproduce en silencio, asi que solo pesaria.
 # -movflags +faststart mueve el indice al principio del archivo para que la
 # reproduccion empiece sin haber descargado el video entero.
+# crf 32 deja unos 8 s en menos de 1 MB. Se ve bien porque la tarjeta mide la
+# mitad que el video: al reducirlo se disimulan los artefactos. Bajalo a 28 si
+# alguna vez se ven en grande.
 echo "→ MP4…"
 ffmpeg -loglevel error -y -i "$entrada" \
   -vf "$escala" \
-  -c:v libx264 -crf 26 -preset slow -profile:v high -pix_fmt yuv420p \
+  -c:v libx264 -crf 32 -preset slow -profile:v high -pix_fmt yuv420p \
   -movflags +faststart -an \
   "$raiz/public/galeria/$nombre.mp4"
-
-echo "→ WebM…"
-ffmpeg -loglevel error -y -i "$entrada" \
-  -vf "$escala" \
-  -c:v libvpx-vp9 -crf 34 -b:v 0 -an \
-  "$raiz/public/galeria/$nombre.webm"
 
 echo "→ Poster…"
 ffmpeg -loglevel error -y -i "$entrada" \
@@ -59,16 +61,16 @@ ffmpeg -loglevel error -y -i "$entrada" \
 
 echo
 echo "Listo. Pesos:"
-du -h "$raiz/public/galeria/$nombre.mp4" "$raiz/public/galeria/$nombre.webm" \
-  "$raiz/src/assets/galeria/$nombre-poster.jpg"
+du -h "$raiz/public/galeria/$nombre.mp4" "$raiz/src/assets/galeria/$nombre-poster.jpg"
 echo
 echo "Ahora anadelo a la lista 'galeria' de src/data/site.ts:"
 cat <<EJEMPLO
 
+  import ${nombre//-/}Poster from '../assets/galeria/$nombre-poster.jpg';
+
   {
     tipo: 'video',
     mp4: '/galeria/$nombre.mp4',
-    webm: '/galeria/$nombre.webm',
     poster: ${nombre//-/}Poster,
     alt: 'Describe aqui lo que se ve',
   },

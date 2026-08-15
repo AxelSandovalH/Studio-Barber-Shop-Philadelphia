@@ -104,14 +104,19 @@ la rueda, con el teclado y, en escritorio, arrastrando con el raton.
 
 ### Donde va cada cosa, y por que
 
-|                  | Carpeta               | Motivo                                                                                                  |
-| ---------------- | --------------------- | ------------------------------------------------------------------------------------------------------- |
-| Fotos            | `src/assets/galeria/` | Astro las convierte a WebP y genera tres tamanos por foto. Las de ejemplo bajan de 56 kB a 26 kB solas. |
-| Posters de video | `src/assets/galeria/` | Es una foto mas, se optimiza igual.                                                                     |
-| Videos           | `public/galeria/`     | **Astro no procesa video.** Lo que pongas ahi se sirve tal cual, asi que hay que comprimirlo antes.     |
+|                       | Carpeta               | Motivo                                                                                               |
+| --------------------- | --------------------- | ---------------------------------------------------------------------------------------------------- |
+| Fotos                 | `src/assets/galeria/` | Astro las convierte a WebP y genera cuatro tamanos por foto. En movil se sirve la de 400 px, ~35 kB. |
+| Posters de video      | `src/assets/galeria/` | Es una foto mas, se optimiza igual.                                                                  |
+| Videos ya comprimidos | `public/galeria/`     | **Astro no procesa video.** Lo que pongas ahi se sirve tal cual.                                     |
+| Originales de camara  | `media-original/`     | Fuera del build y fuera de git. Es el material de partida, no forma parte del sitio.                 |
 
 Una foto en `public/` se sirve como salga de la camara. Ese es el error que mas
 cuesta caro en una landing, asi que las fotos van **siempre** en `src/assets/`.
+
+`media-original/` esta en el `.gitignore`: los originales de estos diez
+elementos pesan 450 MB, contra los 22 MB que ocupa el sitio entero ya generado.
+No los borres de tu disco, que son la unica copia en calidad completa.
 
 ### Anadir fotos
 
@@ -130,21 +135,38 @@ grande sin miedo: Astro lo reescala.
 
 ### Anadir videos
 
-Clips **cortos y sin audio** (el carrusel reproduce en silencio). Hay un script
-que comprime y genera el poster de una sola pasada:
+Deja el original en `media-original/videos/` y pasalo por el script, que
+comprime y genera el poster de una sola pasada:
 
 ```bash
-./scripts/comprimir-video.sh ~/Desktop/corte.mov video-2
+./scripts/comprimir-video.sh media-original/videos/corte.mov texturizado
 ```
 
-Necesita ffmpeg (`brew install ffmpeg`). Al terminar te imprime el fragmento que
-hay que pegar en `galeria`.
+Necesita ffmpeg (`brew install ffmpeg`). Al terminar te imprime el `import` y el
+bloque que hay que pegar en `galeria`.
 
 Lo que hace por dentro, por si prefieres ajustarlo: reescala a 1280 px de alto,
-codifica a H.264 con `crf 26` y a VP9 con `crf 34`, quita el audio y mueve el
-indice del MP4 al principio (`+faststart`) para que empiece a reproducirse sin
-haber descargado el archivo entero. Sube el `crf` si quieres menos peso, bajalo
-si quieres mas calidad.
+codifica a H.264 con `crf 32`, quita el audio y mueve el indice del MP4 al
+principio (`+faststart`) para que empiece a reproducirse sin haber descargado el
+archivo entero. Sube el `crf` si quieres menos peso, bajalo si quieres mas
+calidad.
+
+**Solo MP4, sin WebM.** Lo habitual es que VP9 pese menos que H.264, pero con
+este material —telefono, 4K a 45 Mbps, con grano y mucho movimiento— medimos lo
+contrario sobre un clip de 8 s:
+
+| Codec        | Peso    | Tiempo |
+| ------------ | ------- | ------ |
+| H.264 crf 32 | 964 kB  | 5 s    |
+| VP9 crf 40   | 1532 kB | 10 s   |
+
+Mas grande y el doble de lento. Como el MP4 lo reproduce cualquier navegador,
+anadir WebM aqui solo restaria. Si algun dia el material cambia, vuelve a medir
+antes de darlo por hecho.
+
+Los originales vienen grabados en horizontal con un metadato de rotacion, asi
+que se ven verticales. ffmpeg lo aplica solo al decodificar; no hay que rotar
+nada a mano.
 
 ### Como se comporta
 

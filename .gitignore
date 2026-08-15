@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Originales de foto y video sin comprimir. Son el material de partida, no
+# forman parte del sitio: lo que se publica son los .mp4 y .webm que genera
+# scripts/comprimir-video.sh.
+media-original/

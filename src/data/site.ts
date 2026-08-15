@@ -13,13 +13,17 @@
  * desde fuera y lo tiene que rellenar el negocio.
  */
 
-import trabajo1 from '../assets/galeria/trabajo-1.jpg';
-import trabajo2 from '../assets/galeria/trabajo-2.jpg';
-import trabajo3 from '../assets/galeria/trabajo-3.jpg';
-import trabajo4 from '../assets/galeria/trabajo-4.jpg';
-import trabajo5 from '../assets/galeria/trabajo-5.jpg';
-import trabajo6 from '../assets/galeria/trabajo-6.jpg';
-import video1Poster from '../assets/galeria/video-1-poster.jpg';
+import pixieTerminado from '../assets/galeria/pixie-terminado.jpg';
+import tazonDegradado from '../assets/galeria/tazon-degradado.jpg';
+import mulletRizado from '../assets/galeria/mullet-rizado.jpg';
+
+import pixiePoster from '../assets/galeria/pixie-poster.jpg';
+import degradadoPoster from '../assets/galeria/degradado-poster.jpg';
+import barbaPoster from '../assets/galeria/barba-poster.jpg';
+import texturizadoPoster from '../assets/galeria/texturizado-poster.jpg';
+import rayaLateralPoster from '../assets/galeria/raya-lateral-poster.jpg';
+import clasicoPoster from '../assets/galeria/clasico-poster.jpg';
+import estilizadoPoster from '../assets/galeria/estilizado-poster.jpg';
 
 export interface Negocio {
   nombre: string;
@@ -267,36 +271,76 @@ export const servicios: Servicio[] = [
 // mostrar el equipo, vaciad esta lista y la seccion desaparece sola.
 export const barberos: Barbero[] = [];
 
-// TODO(datos-reales): reemplazar estas fotos de relleno por las reales,
-// sobrescribiendo los archivos de src/assets/galeria/ con los mismos nombres, y
-// escribir un alt descriptivo para cada una. El alt es lo que leen los
-// buscadores y los lectores de pantalla, asi que describe el corte, no digas
-// "foto de un corte".
+/**
+ * Fotos y videos reales del local. Se alternan a proposito para que el carrusel
+ * no sea una fila de videos seguida de una fila de fotos, y empieza con una
+ * foto porque carga antes que el poster de un video.
+ *
+ * Los videos salen de los originales de media-original/videos/ pasados por
+ * scripts/comprimir-video.sh. Ese material no esta en el repositorio: pesa
+ * 440 MB y no forma parte del sitio.
+ */
 export const galeria: MedioGaleria[] = [
   {
     tipo: 'foto',
-    src: trabajo1,
-    alt: 'Corte a tijera con textura en la parte superior',
+    src: pixieTerminado,
+    alt: 'Corte pixie texturizado, terminado y peinado en el local',
   },
   {
-    // TODO(datos-reales): falta subir public/galeria/video-1.mp4 (y .webm).
-    // Mientras no exista, el carrusel muestra el poster y no intenta
-    // reproducir nada.
     tipo: 'video',
-    mp4: '/galeria/video-1.mp4',
-    webm: '/galeria/video-1.webm',
-    poster: video1Poster,
-    alt: 'Degradado terminado, visto de perfil',
+    mp4: '/galeria/pixie.mp4',
+    poster: pixiePoster,
+    alt: 'Resultado de un corte pixie texturizado, de perfil',
   },
   {
     tipo: 'foto',
-    src: trabajo2,
-    alt: 'Barba perfilada con navaja y contornos definidos',
+    src: tazonDegradado,
+    alt: 'Corte tazon con flequillo recto y degradado en los laterales',
   },
-  { tipo: 'foto', src: trabajo3, alt: 'Degradado a maquina con contornos limpios' },
-  { tipo: 'foto', src: trabajo4, alt: 'Interior de la barberia' },
-  { tipo: 'foto', src: trabajo5, alt: 'Trabajo de coloracion terminado' },
-  { tipo: 'foto', src: trabajo6, alt: 'Detalle de las herramientas de barberia' },
+  {
+    tipo: 'video',
+    mp4: '/galeria/degradado.mp4',
+    poster: degradadoPoster,
+    alt: 'Degradado con desvanecido en la nuca, visto por detras',
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/barba.mp4',
+    poster: barbaPoster,
+    alt: 'Perfilado de barba con navaja y toalla caliente',
+  },
+  {
+    tipo: 'foto',
+    src: mulletRizado,
+    alt: 'Mullet rizado con mechas rubias y laterales desvanecidos',
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/texturizado.mp4',
+    poster: texturizadoPoster,
+    alt: 'Corte texturizado de largo medio con raya al lado',
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/raya-lateral.mp4',
+    poster: rayaLateralPoster,
+    alt: 'Raya marcada al lado con degradado, vista por detras',
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/clasico.mp4',
+    poster: clasicoPoster,
+    alt: 'Corte clasico corto en los laterales, de perfil',
+  },
+  {
+    // TODO(datos-reales): este clip lleva un texto sobreimpreso ("Salmos
+    // 150:1-6") que viene de la publicacion original de redes. Decidid si lo
+    // quereis en la web; si no, hay que volver a exportarlo sin el.
+    tipo: 'video',
+    mp4: '/galeria/estilizado.mp4',
+    poster: estilizadoPoster,
+    alt: 'Peinado hacia atras terminado, visto desde arriba',
+  },
 ];
 
 /** Enlaces de la navegacion principal, en el orden en que aparecen las secciones. */

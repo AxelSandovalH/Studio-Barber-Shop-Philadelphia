@@ -15,6 +15,11 @@ const { medios, etiqueta } = Astro.props;
 // coincidir con el ancho real o el navegador descarga el tamano equivocado.
 const TAMANOS = '(max-width: 639px) 78vw, (max-width: 1023px) 46vw, 31vw';
 
+// En escritorio se ven tres tarjetas a la vez: esas se cargan de entrada y el
+// resto espera a que se deslice. Confiar solo en loading="lazy" para las que ya
+// estan en pantalla deja huecos en blanco al abrir la pagina.
+const CARGA_INMEDIATA = 3;
+
 // El poster del video se optimiza igual que una foto. Sin esto se serviria el
 // JPG original, que es justo lo que estamos evitando con el resto.
 const preparados = await Promise.all(
@@ -50,7 +55,7 @@ const preparados = await Promise.all(
                 alt={medio.alt}
                 widths={[400, 800, 1200]}
                 sizes={TAMANOS}
-                loading={indice < 2 ? 'eager' : 'lazy'}
+                loading={indice < CARGA_INMEDIATA ? 'eager' : 'lazy'}
                 decoding="async"
                 class="size-full object-cover"
               />
