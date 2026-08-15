@@ -12,16 +12,16 @@ const diasAbiertos = principal.horarios
   <!-- Fondo: destello calido arriba a la izquierda y rejilla tenue de barberia. -->
   <div class="absolute inset-0 -z-10" aria-hidden="true">
     <div
-      class="bg-laton-600/12 absolute -top-40 -left-40 size-[38rem] rounded-full blur-3xl"
+      class="bg-salvia-600/15 absolute -top-40 -left-40 size-[38rem] rounded-full blur-3xl"
     >
     </div>
     <div
       class="absolute inset-0 opacity-[0.06]"
-      style="background-image: linear-gradient(var(--color-hueso-50) 1px, transparent 1px), linear-gradient(90deg, var(--color-hueso-50) 1px, transparent 1px); background-size: 72px 72px;"
+      style="background-image: linear-gradient(var(--color-tinta-900) 1px, transparent 1px), linear-gradient(90deg, var(--color-tinta-900) 1px, transparent 1px); background-size: 72px 72px;"
     >
     </div>
     <div
-      class="from-tinta-950 absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t to-transparent"
+      class="from-fondo-50 absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t to-transparent"
     >
     </div>
   </div>
@@ -29,31 +29,31 @@ const diasAbiertos = principal.horarios
   <div class="mx-auto max-w-6xl px-5 py-20 md:py-32">
     <div class="max-w-3xl">
       <p
-        class="border-laton-500/30 bg-laton-500/8 text-laton-400 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase"
+        class="border-salvia-600/30 bg-salvia-600/8 text-salvia-700 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase"
       >
-        <span class="bg-laton-400 size-1.5 rounded-full"></span>
+        <span class="bg-salvia-700 size-1.5 rounded-full"></span>
         {principal.direccion.ciudad}, {principal.direccion.region}
       </p>
 
       <h1 class="mt-7 text-6xl leading-[0.92] sm:text-7xl md:text-8xl">
         Corte clasico,<br />
-        <span class="text-laton-400">cuidado moderno</span>
+        <span class="text-salvia-700">cuidado moderno</span>
       </h1>
 
-      <p class="text-hueso-300 mt-7 max-w-xl text-lg leading-relaxed">
+      <p class="text-tinta-600 mt-7 max-w-xl text-lg leading-relaxed">
         {negocio.descripcion}
       </p>
 
       <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
         <a
           href="#sucursales"
-          class="bg-laton-500 text-tinta-950 hover:bg-laton-400 inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-4 font-semibold transition"
+          class="bg-salvia-600 text-fondo-50 hover:bg-salvia-700 inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-4 font-semibold transition"
         >
           Agendar cita
         </a>
         <a
           href="#servicios"
-          class="border-tinta-600 text-hueso-100 hover:border-laton-500 hover:text-laton-400 inline-flex items-center justify-center gap-2.5 rounded-full border px-8 py-4 font-semibold transition"
+          class="border-fondo-400 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 inline-flex items-center justify-center gap-2.5 rounded-full border px-8 py-4 font-semibold transition"
         >
           Ver servicios
         </a>
@@ -63,20 +63,20 @@ const diasAbiertos = principal.horarios
            un movil estrecho sin partir palabras. -->
       <dl class="mt-14 grid max-w-lg grid-cols-3 gap-6">
         <div>
-          <dt class="text-hueso-400 text-xs tracking-[0.14em] uppercase">Sucursales</dt>
-          <dd class="font-display text-hueso-50 mt-1.5 text-2xl sm:text-3xl">
+          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">Sucursales</dt>
+          <dd class="font-display text-tinta-900 mt-1.5 text-2xl sm:text-3xl">
             {sucursales.length}
           </dd>
         </div>
         <div>
-          <dt class="text-hueso-400 text-xs tracking-[0.14em] uppercase">Abrimos</dt>
-          <dd class="font-display text-hueso-50 mt-1.5 text-2xl sm:text-3xl">
+          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">Abrimos</dt>
+          <dd class="font-display text-tinta-900 mt-1.5 text-2xl sm:text-3xl">
             {diasAbiertos} dias
           </dd>
         </div>
         <div>
-          <dt class="text-hueso-400 text-xs tracking-[0.14em] uppercase">Desde</dt>
-          <dd class="font-display text-hueso-50 mt-1.5 text-2xl sm:text-3xl">
+          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">Desde</dt>
+          <dd class="font-display text-tinta-900 mt-1.5 text-2xl sm:text-3xl">
             {negocio.desde}
           </dd>
         </div>

@@ -55,6 +55,19 @@ export interface Sucursal {
    */
   mapaUrl?: string;
   mapaEmbedUrl?: string;
+  /** Solo si la sucursal tiene ficha en Google con resenas. */
+  valoracion?: Valoracion;
+}
+
+export interface Valoracion {
+  /** De 0 a 5. */
+  puntuacion: number;
+  total: number;
+  /**
+   * Cuando se consulto. Es un dato copiado a mano, asi que envejece: sirve para
+   * saber de un vistazo si toca actualizarlo.
+   */
+  consultado: string;
 }
 
 export interface Direccion {
@@ -184,6 +197,10 @@ export const sucursales: Sucursal[] = [
       paisCodigo: 'MX',
       referencia: 'Sobre la carretera a Todos los Santos, en el local 11',
     },
+    // TODO(datos-reales): copiado de la ficha de Google. Conviene repasarlo de
+    // vez en cuando: si la web dice 71 resenas y Google ya va por 120, la web
+    // esta vendiendo menos de lo que teneis.
+    valoracion: { puntuacion: 5, total: 71, consultado: '2026-08-14' },
     // Horario publicado en Fresha.
     horarios: [
       {

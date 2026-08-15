@@ -22,8 +22,13 @@ mexicanos.
   quites al editar; solo desaparecen cuando llegan los datos reales del local.
 - **El sitio esta en espanol** y sin acentos en el codigo fuente, por
   consistencia con lo que ya hay.
-- **Los colores salen de los tokens de `src/styles/global.css`** (`tinta`,
-  `laton`, `hueso`, `poste`). No metas hex sueltos en los componentes.
+- **Los colores salen de los tokens de `src/styles/global.css`** (`fondo` para
+  superficies, `tinta` para texto, `salvia` para la marca, `poste` para la
+  franja). No metas hex sueltos en los componentes. Los tokens se nombran por su
+  funcion y no por su color, y en las dos escalas el numero mas alto es el que
+  mas contrasta: por eso un `hover:` a un numero mayor siempre oscurece.
+- **La paleta es clara**: fondo crema y verde salvia, el de las paredes del
+  local. El cliente descarto el negro expresamente.
 - **Fuentes**: se auto-hospedan con la API `fonts` de Astro. Se usan via las
   utilidades `font-display` y `font-texto`, no con `<link>` a Google.
 - **Fotos en `src/assets/`, videos en `public/`.** Las fotos solo se optimizan

@@ -18,6 +18,10 @@ const TAMANOS = '(max-width: 639px) 78vw, (max-width: 1023px) 46vw, 31vw';
 // En escritorio se ven tres tarjetas a la vez: esas se cargan de entrada y el
 // resto espera a que se deslice. Confiar solo en loading="lazy" para las que ya
 // estan en pantalla deja huecos en blanco al abrir la pagina.
+//
+// En los videos esto marca la diferencia en Safari, que con preload="none"
+// arranca completamente en frio: los primeros piden solo la cabecera (unos
+// pocos kB) para poder empezar a reproducir en cuanto entran en pantalla.
 const CARGA_INMEDIATA = 3;
 
 // El poster del video se optimiza igual que una foto. Sin esto se serviria el
@@ -48,7 +52,7 @@ const preparados = await Promise.all(
     {
       preparados.map(({ medio, poster }, indice) => (
         <li data-slide class="w-[78%] shrink-0 snap-start sm:w-[46%] lg:w-[31%]">
-          <figure class="border-tinta-700 bg-tinta-850 relative aspect-[4/5] overflow-hidden rounded-2xl border">
+          <figure class="border-fondo-300 bg-fondo-150 relative aspect-[4/5] overflow-hidden rounded-2xl border">
             {medio.tipo === 'foto' ? (
               <Image
                 src={medio.src}
@@ -69,13 +73,13 @@ const preparados = await Promise.all(
                   muted
                   loop
                   playsinline
-                  preload="none"
+                  preload={indice < CARGA_INMEDIATA ? 'metadata' : 'none'}
                 >
                   {medio.webm && <source src={medio.webm} type="video/webm" />}
                   <source src={medio.mp4} type="video/mp4" />
                 </video>
 
-                <span class="bg-tinta-950/75 text-hueso-100 pointer-events-none absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.65rem] font-semibold tracking-[0.12em] uppercase backdrop-blur-sm">
+                <span class="bg-fondo-50/75 text-tinta-900 pointer-events-none absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.65rem] font-semibold tracking-[0.12em] uppercase backdrop-blur-sm">
                   <svg
                     class="size-3"
                     viewBox="0 0 24 24"
@@ -99,7 +103,7 @@ const preparados = await Promise.all(
     type="button"
     data-anterior
     aria-label="Anterior"
-    class="border-tinta-600 bg-tinta-950/90 text-hueso-100 hover:border-laton-500 hover:text-laton-400 absolute top-1/2 -left-4 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm transition disabled:pointer-events-none disabled:opacity-0 lg:flex"
+    class="border-fondo-400 bg-fondo-50/90 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 absolute top-1/2 -left-4 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm transition disabled:pointer-events-none disabled:opacity-0 lg:flex"
   >
     <svg
       class="size-5"
@@ -119,7 +123,7 @@ const preparados = await Promise.all(
     type="button"
     data-siguiente
     aria-label="Siguiente"
-    class="border-tinta-600 bg-tinta-950/90 text-hueso-100 hover:border-laton-500 hover:text-laton-400 absolute top-1/2 -right-4 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm transition disabled:pointer-events-none disabled:opacity-0 lg:flex"
+    class="border-fondo-400 bg-fondo-50/90 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 absolute top-1/2 -right-4 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm transition disabled:pointer-events-none disabled:opacity-0 lg:flex"
   >
     <svg
       class="size-5"
@@ -148,7 +152,7 @@ const preparados = await Promise.all(
             data-punto
             data-indice={indice}
             aria-label={`Ir a ${medio.tipo === 'video' ? 'el video' : 'la foto'} ${indice + 1} de ${medios.length}`}
-            class="bg-tinta-600 hover:bg-hueso-400 aria-[current=true]:bg-laton-500 block h-2 w-2 rounded-full transition-all aria-[current=true]:w-6"
+            class="bg-fondo-400 hover:bg-tinta-500 aria-[current=true]:bg-salvia-600 block h-2 w-2 rounded-full transition-all aria-[current=true]:w-6"
           />
         </li>
       ))

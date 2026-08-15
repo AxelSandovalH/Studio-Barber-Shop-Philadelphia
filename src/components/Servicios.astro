@@ -6,7 +6,7 @@ import TituloSeccion from './TituloSeccion.astro';
 const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
 ---
 
-<section id="servicios" class="border-tinta-800 border-t py-24 md:py-32">
+<section id="servicios" class="border-fondo-200 border-t py-24 md:py-32">
   <div class="mx-auto max-w-6xl px-5">
     <TituloSeccion
       etiqueta="Carta de servicios"
@@ -21,12 +21,12 @@ const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
             class:list={[
               'group relative flex flex-col rounded-2xl border p-7 transition',
               servicio.destacado
-                ? 'border-laton-500/45 bg-laton-500/[0.06] hover:border-laton-400'
-                : 'border-tinta-700 bg-tinta-900/60 hover:border-tinta-600',
+                ? 'border-salvia-600/45 bg-salvia-600/[0.06] hover:border-salvia-700'
+                : 'border-fondo-300 bg-fondo-100/60 hover:border-fondo-400',
             ]}
           >
             {servicio.destacado && (
-              <span class="bg-laton-500 text-tinta-950 absolute -top-2.5 left-7 rounded-full px-3 py-0.5 text-[0.65rem] font-bold tracking-[0.12em] uppercase">
+              <span class="bg-salvia-600 text-fondo-50 absolute -top-2.5 left-7 rounded-full px-3 py-0.5 text-[0.65rem] font-bold tracking-[0.12em] uppercase">
                 Mas pedido
               </span>
             )}
@@ -37,20 +37,20 @@ const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
                 class:list={[
                   'shrink-0 leading-none',
                   servicio.precio !== undefined
-                    ? 'font-display text-laton-400 text-3xl'
-                    : 'text-hueso-400 text-xs font-semibold tracking-[0.12em] uppercase',
+                    ? 'font-display text-salvia-700 text-3xl'
+                    : 'text-tinta-500 text-xs font-semibold tracking-[0.12em] uppercase',
                 ]}
               >
                 {servicio.precio !== undefined ? `$${servicio.precio}` : 'Consultar'}
               </p>
             </div>
 
-            <p class="text-hueso-300 mt-4 flex-1 text-sm leading-relaxed">
+            <p class="text-tinta-600 mt-4 flex-1 text-sm leading-relaxed">
               {servicio.descripcion}
             </p>
 
             {servicio.duracion !== undefined && (
-              <p class="text-hueso-400 mt-6 flex items-center gap-2 text-xs font-medium tracking-[0.14em] uppercase">
+              <p class="text-tinta-500 mt-6 flex items-center gap-2 text-xs font-medium tracking-[0.14em] uppercase">
                 <svg
                   class="size-4"
                   viewBox="0 0 24 24"
@@ -70,11 +70,13 @@ const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
       }
     </ul>
 
-    <p class="text-hueso-400 mt-10 text-sm">
-      {hayPrecios && `${moneda.nota} `}Atendemos con y sin cita. Para asegurar tu hora,
+    <p class="text-tinta-500 mt-10 text-sm">
+      {hayPrecios && `${moneda.nota} `}Atendemos con y sin cita. Para asegurar tu hora,{
+        ' '
+      }
       <a
         href="#sucursales"
-        class="text-laton-400 hover:text-laton-300 font-semibold underline underline-offset-4"
+        class="text-salvia-700 hover:text-salvia-800 font-semibold underline underline-offset-4"
       >
         escribenos a la sucursal que prefieras</a
       >.

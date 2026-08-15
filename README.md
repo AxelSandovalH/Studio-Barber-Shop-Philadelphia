@@ -93,9 +93,14 @@ grep -rn "TODO(datos-reales)" src astro.config.mjs public/robots.txt
 4. **Que los telefonos reciban WhatsApp.** Los botones asumen que si.
 5. **Correo de contacto**, si lo hay. Si se deja vacio, no se muestra.
 6. **Equipo**, si se quiere mostrar. La lista esta vacia a proposito.
-7. **Dominio definitivo** en `site` de [`astro.config.mjs`](astro.config.mjs) y
-   en [`public/robots.txt`](public/robots.txt). De ahi salen las URLs absolutas
-   del sitemap y de las meta etiquetas.
+7. **Dominio definitivo.** Mientras no lo haya, el sitio usa el que Vercel
+   asigna. Cuando este contratado y apuntando, se define `SITE_URL` en las
+   variables de entorno del proyecto en Vercel y se ajustan solos la URL
+   canonica, el sitemap y el `robots.txt`.
+8. **Valoracion de Google.** Las 5.0 estrellas con 71 resenas estan copiadas a
+   mano de la ficha de Brisas. Conviene repasarlas de vez en cuando: si Google
+   ya va por mas, la web esta vendiendo menos de lo que teneis. La Joya no tiene
+   ficha, y por eso solo aparece una.
 
 ## Galeria: fotos y videos
 

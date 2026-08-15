@@ -5,11 +5,27 @@ import tailwindcss from '@tailwindcss/vite';
 
 import sitemap from '@astrojs/sitemap';
 
+/**
+ * Dominio del sitio. De aqui salen la URL canonica, las meta etiquetas y el
+ * sitemap, asi que si esta mal Google indexa una direccion que no existe.
+ *
+ * Por orden de preferencia:
+ *  1. SITE_URL, que es lo que hay que definir cuando haya dominio propio.
+ *  2. El dominio de produccion que inyecta Vercel en cada build.
+ *  3. localhost, para trabajar en local.
+ *
+ * TODO(datos-reales): cuando el dominio definitivo este contratado y apuntando,
+ * definir SITE_URL en las variables de entorno del proyecto en Vercel.
+ */
+const dominio =
+  process.env.SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'http://localhost:4321');
+
 // https://astro.build/config
 export default defineConfig({
-  // TODO(datos-reales): cambiar por el dominio definitivo antes de publicar.
-  // Se usa para generar URLs absolutas en el sitemap y en las meta etiquetas.
-  site: 'https://studiobarbershopphiladelphia.com',
+  site: dominio,
 
   vite: {
     plugins: [tailwindcss()],

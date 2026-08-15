@@ -4,19 +4,19 @@ import { negocio, navegacion, sucursales, enlaceTelefono } from '../data/site';
 const anio = new Date().getFullYear();
 ---
 
-<footer class="border-tinta-800 bg-tinta-950 border-t">
+<footer class="border-fondo-200 bg-fondo-50 border-t">
   <div class="franja-poste" aria-hidden="true"></div>
 
   <div class="mx-auto max-w-6xl px-5 py-16">
     <div class="grid gap-12 md:grid-cols-3">
       <div>
-        <p class="font-display text-hueso-50 text-4xl leading-none">Philadelphia</p>
+        <p class="font-display text-tinta-900 text-4xl leading-none">Philadelphia</p>
         <p
-          class="text-hueso-400 mt-1.5 text-xs font-semibold tracking-[0.22em] uppercase"
+          class="text-tinta-500 mt-1.5 text-xs font-semibold tracking-[0.22em] uppercase"
         >
           Studio Barber Shop
         </p>
-        <p class="text-hueso-400 mt-6 max-w-xs text-sm leading-relaxed">
+        <p class="text-tinta-500 mt-6 max-w-xs text-sm leading-relaxed">
           {negocio.eslogan}. En Cabo San Lucas desde {negocio.desde}.
         </p>
 
@@ -28,7 +28,7 @@ const anio = new Date().getFullYear();
                   href={red.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="border-tinta-700 text-hueso-300 hover:border-laton-500 hover:text-laton-400 inline-flex items-center rounded-full border px-4 py-2 text-xs font-medium transition"
+                  class="border-fondo-300 text-tinta-600 hover:border-salvia-600 hover:text-salvia-700 inline-flex items-center rounded-full border px-4 py-2 text-xs font-medium transition"
                 >
                   {red.nombre}
                 </a>
@@ -39,7 +39,7 @@ const anio = new Date().getFullYear();
       </div>
 
       <div>
-        <h2 class="text-laton-500 text-xs font-semibold tracking-[0.22em] uppercase">
+        <h2 class="text-salvia-600 text-xs font-semibold tracking-[0.22em] uppercase">
           Secciones
         </h2>
         <ul class="mt-5 space-y-3">
@@ -48,7 +48,7 @@ const anio = new Date().getFullYear();
               <li>
                 <a
                   href={enlace.href}
-                  class="text-hueso-300 hover:text-laton-400 text-sm transition"
+                  class="text-tinta-600 hover:text-salvia-700 text-sm transition"
                 >
                   {enlace.etiqueta}
                 </a>
@@ -59,7 +59,7 @@ const anio = new Date().getFullYear();
       </div>
 
       <div>
-        <h2 class="text-laton-500 text-xs font-semibold tracking-[0.22em] uppercase">
+        <h2 class="text-salvia-600 text-xs font-semibold tracking-[0.22em] uppercase">
           Sucursales
         </h2>
         <ul class="mt-5 space-y-5">
@@ -68,16 +68,16 @@ const anio = new Date().getFullYear();
               <li class="text-sm">
                 <a
                   href={`#${sucursal.id}`}
-                  class="text-hueso-100 hover:text-laton-400 font-semibold transition"
+                  class="text-tinta-900 hover:text-salvia-700 font-semibold transition"
                 >
                   {sucursal.nombre}
                 </a>
-                <p class="text-hueso-400 mt-1 leading-relaxed">
+                <p class="text-tinta-500 mt-1 leading-relaxed">
                   {`${sucursal.direccion.colonia}, ${sucursal.direccion.ciudad}`}
                 </p>
                 <a
                   href={enlaceTelefono(sucursal)}
-                  class="text-hueso-300 hover:text-laton-400 transition"
+                  class="text-tinta-600 hover:text-salvia-700 transition"
                 >
                   {sucursal.telefono}
                 </a>
@@ -90,7 +90,7 @@ const anio = new Date().getFullYear();
           negocio.email && (
             <a
               href={`mailto:${negocio.email}`}
-              class="text-hueso-300 hover:text-laton-400 mt-5 inline-block text-sm transition"
+              class="text-tinta-600 hover:text-salvia-700 mt-5 inline-block text-sm transition"
             >
               {negocio.email}
             </a>
@@ -100,7 +100,7 @@ const anio = new Date().getFullYear();
     </div>
 
     <div
-      class="border-tinta-800 text-hueso-400 mt-14 flex flex-col gap-2 border-t pt-8 text-xs sm:flex-row sm:items-center sm:justify-between"
+      class="border-fondo-200 text-tinta-500 mt-14 flex flex-col gap-2 border-t pt-8 text-xs sm:flex-row sm:items-center sm:justify-between"
     >
       <p>© {anio} {negocio.nombre}. Todos los derechos reservados.</p>
       <p>Cabo San Lucas, Baja California Sur</p>

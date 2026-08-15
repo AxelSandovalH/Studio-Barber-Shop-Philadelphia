@@ -18,7 +18,7 @@ const horariosPorSucursal = sucursales.map((sucursal) => ({
 }));
 ---
 
-<section id="sucursales" class="border-tinta-800 bg-tinta-900/40 border-t py-24 md:py-32">
+<section id="sucursales" class="border-fondo-200 bg-fondo-100/40 border-t py-24 md:py-32">
   <div class="mx-auto max-w-6xl px-5">
     <TituloSeccion
       etiqueta="Sucursales"
@@ -31,35 +31,35 @@ const horariosPorSucursal = sucursales.map((sucursal) => ({
         sucursales.map((sucursal) => (
           <article
             id={sucursal.id}
-            class="border-tinta-700 bg-tinta-900/70 overflow-hidden rounded-2xl border"
+            class="border-fondo-300 bg-fondo-100/70 overflow-hidden rounded-2xl border"
           >
             <div class="grid lg:grid-cols-2">
               <div class="p-8">
                 <div class="flex flex-wrap items-center justify-between gap-4">
                   <h3 class="text-4xl leading-none">
-                    Sucursal <span class="text-laton-400">{sucursal.nombre}</span>
+                    Sucursal <span class="text-salvia-700">{sucursal.nombre}</span>
                   </h3>
                   <p
                     data-estado={sucursal.id}
-                    class="border-tinta-600 text-hueso-300 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium"
+                    class="border-fondo-400 text-tinta-600 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium"
                   >
-                    <span data-estado-punto class="bg-hueso-400 size-2 rounded-full" />
+                    <span data-estado-punto class="bg-tinta-500 size-2 rounded-full" />
                     <span data-estado-texto>Consultando horario…</span>
                   </p>
                 </div>
 
-                <address class="text-hueso-200 mt-6 leading-relaxed not-italic">
+                <address class="text-tinta-700 mt-6 leading-relaxed not-italic">
                   {sucursal.direccion.calle}
                   <br />
                   {`${sucursal.direccion.colonia}, ${sucursal.direccion.codigoPostal} ${sucursal.direccion.ciudad}, ${sucursal.direccion.region}`}
                 </address>
-                <p class="text-hueso-400 mt-2 text-sm">{sucursal.direccion.referencia}</p>
+                <p class="text-tinta-500 mt-2 text-sm">{sucursal.direccion.referencia}</p>
 
                 <a
                   href={enlaceMapa(sucursal)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-laton-400 hover:text-laton-300 mt-4 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4 transition"
+                  class="text-salvia-700 hover:text-salvia-800 mt-4 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4 transition"
                 >
                   Abrir en Google Maps
                   <svg
@@ -76,14 +76,14 @@ const horariosPorSucursal = sucursales.map((sucursal) => ({
                   </svg>
                 </a>
 
-                <dl class="divide-tinta-800 border-tinta-800 mt-8 divide-y border-t">
+                <dl class="divide-fondo-200 border-fondo-200 mt-8 divide-y border-t">
                   {sucursal.horarios.map((franja) => (
                     <div class="flex items-baseline justify-between gap-4 py-4">
-                      <dt class="text-hueso-200">{franja.dias}</dt>
+                      <dt class="text-tinta-700">{franja.dias}</dt>
                       <dd
                         class:list={[
                           'font-medium tabular-nums',
-                          franja.cerrado ? 'text-hueso-400' : 'text-laton-400',
+                          franja.cerrado ? 'text-tinta-500' : 'text-salvia-700',
                         ]}
                       >
                         {franja.cerrado
@@ -99,7 +99,7 @@ const horariosPorSucursal = sucursales.map((sucursal) => ({
                     href={enlaceWhatsapp(sucursal, mensajeCita(sucursal))}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="bg-laton-500 text-tinta-950 hover:bg-laton-400 inline-flex flex-1 items-center justify-center gap-2.5 rounded-full px-6 py-3.5 font-semibold transition"
+                    class="bg-salvia-600 text-fondo-50 hover:bg-salvia-700 inline-flex flex-1 items-center justify-center gap-2.5 rounded-full px-6 py-3.5 font-semibold transition"
                   >
                     <svg
                       class="size-5"
@@ -113,14 +113,14 @@ const horariosPorSucursal = sucursales.map((sucursal) => ({
                   </a>
                   <a
                     href={enlaceTelefono(sucursal)}
-                    class="border-tinta-600 text-hueso-100 hover:border-laton-500 hover:text-laton-400 inline-flex flex-1 items-center justify-center rounded-full border px-6 py-3.5 font-semibold transition"
+                    class="border-fondo-400 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 inline-flex flex-1 items-center justify-center rounded-full border px-6 py-3.5 font-semibold transition"
                   >
                     {sucursal.telefono}
                   </a>
                 </div>
               </div>
 
-              <div class="border-tinta-800 aspect-[4/3] w-full border-t lg:aspect-auto lg:border-t-0 lg:border-l">
+              <div class="border-fondo-200 aspect-[4/3] w-full border-t lg:aspect-auto lg:border-t-0 lg:border-l">
                 <iframe
                   src={enlaceMapaEmbed(sucursal)}
                   title={`Mapa de la sucursal ${sucursal.nombre} de ${negocio.nombre}, en ${direccionEnLinea(sucursal)}`}
@@ -205,10 +205,12 @@ const horariosPorSucursal = sucursales.map((sucursal) => ({
       const { abierto, texto: mensaje } = estadoDe(sucursal.horarios, ahora);
 
       texto.textContent = mensaje;
-      punto.className = `size-2 rounded-full ${abierto ? 'bg-emerald-400' : 'bg-hueso-400'}`;
+      // Verdes oscuros: el indicador va sobre fondo claro, y un emerald-400
+      // sobre crema no se lee.
+      punto.className = `size-2 rounded-full ${abierto ? 'bg-emerald-600' : 'bg-tinta-500'}`;
       contenedor.className = abierto
-        ? 'inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-emerald-300'
-        : 'inline-flex items-center gap-2 rounded-full border border-tinta-600 px-4 py-1.5 text-sm font-medium text-hueso-300';
+        ? 'inline-flex items-center gap-2 rounded-full border border-emerald-600/35 bg-emerald-600/10 px-4 py-1.5 text-sm font-medium text-emerald-800'
+        : 'inline-flex items-center gap-2 rounded-full border border-fondo-400 px-4 py-1.5 text-sm font-medium text-tinta-600';
     }
   }
 

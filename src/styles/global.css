@@ -1,25 +1,30 @@
 @import 'tailwindcss';
 
-/* Sistema de diseno de Studio Barber Shop Philadelphia.
-   Paleta: negro carbon de fondo, laton calido como acento y hueso para el texto.
-   El rojo y el azul solo aparecen en la franja de barberia. */
+/* Sistema de diseno de Philadelphia Studio Barber Shop.
+   Paleta clara: fondo crema, verde salvia de marca y tinta casi negra.
+   El verde es el de las paredes del local, para que la web y la barberia se
+   parezcan. El rojo y el azul solo aparecen en la franja de barberia.
+
+   Los tokens se nombran por su funcion, no por su color: `fondo` va de claro a
+   menos claro y `tinta` de oscuro a menos oscuro, asi que en las dos escalas el
+   numero mas alto es el que mas contrasta con su opuesto. Eso hace que un
+   `hover:` a un numero mayor siempre oscurezca. */
 @theme {
-  --color-tinta-950: #0b0b0d;
-  --color-tinta-900: #121215;
-  --color-tinta-850: #16161b;
-  --color-tinta-800: #1b1b20;
-  --color-tinta-700: #26262d;
-  --color-tinta-600: #34343d;
+  --color-fondo-50: #f5f2ea;
+  --color-fondo-100: #efeadf;
+  --color-fondo-150: #e8e2d5;
+  --color-fondo-200: #e1dacb;
+  --color-fondo-300: #d3cab8;
+  --color-fondo-400: #bdb2a0;
 
-  --color-laton-300: #e3caa8;
-  --color-laton-400: #d8b978;
-  --color-laton-500: #c8a45c;
-  --color-laton-600: #a8863f;
+  --color-tinta-500: #6f7b73;
+  --color-tinta-600: #4c584f;
+  --color-tinta-700: #36423a;
+  --color-tinta-900: #1d2620;
 
-  --color-hueso-50: #f7f5f1;
-  --color-hueso-200: #d5cfc4;
-  --color-hueso-300: #b9b3a8;
-  --color-hueso-400: #8e887d;
+  --color-salvia-600: #4a6b57;
+  --color-salvia-700: #3d5c4b;
+  --color-salvia-800: #2f4a3b;
 
   --color-poste-rojo: #c8352f;
   --color-poste-azul: #2f5fc8;
@@ -36,8 +41,8 @@
   }
 
   body {
-    background-color: var(--color-tinta-950);
-    color: var(--color-hueso-200);
+    background-color: var(--color-fondo-50);
+    color: var(--color-tinta-700);
     font-family: var(--font-texto);
     -webkit-font-smoothing: antialiased;
   }
@@ -46,25 +51,27 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    color: var(--color-hueso-50);
+    color: var(--color-tinta-900);
     font-weight: 400;
     letter-spacing: 0.02em;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-laton-400);
+    outline: 2px solid var(--color-salvia-700);
     outline-offset: 3px;
   }
 }
 
 @layer components {
-  /* Franja tricolor del poste de barbero. Se usa como separador de secciones. */
+  /* Franja tricolor del poste de barbero. Se usa como separador de secciones.
+     El blanco va explicito y no con un token: en el poste real es blanco, no
+     el color de fondo de la pagina. */
   .franja-poste {
     height: 3px;
     background: repeating-linear-gradient(
       -45deg,
       var(--color-poste-rojo) 0 14px,
-      var(--color-hueso-50) 14px 28px,
+      #ffffff 14px 28px,
       var(--color-poste-azul) 28px 42px
     );
   }

@@ -36,21 +36,24 @@ raiz="$(cd "$(dirname "$0")/.." && pwd)"
 
 mkdir -p "$raiz/public/galeria" "$raiz/src/assets/galeria"
 
-# Altura maxima 1280: de sobra para una tarjeta que nunca pasa de 500 px de
-# ancho, incluso en pantallas de alta densidad.
+# Altura maxima 960. La tarjeta mide unos 345 px de ancho, asi que 540x960
+# sigue siendo mas del doble de lo que se ve. Se probo 1280 y a tamano real no
+# se distingue, pero pesa un 42% mas y en Safari eso se nota al arrancar.
 # -2 en el ancho lo redondea a par, que es lo que exige H.264.
-escala="scale=-2:'min(1280,ih)'"
+escala="scale=-2:'min(960,ih)'"
 
 # -an quita el audio: el carrusel reproduce en silencio, asi que solo pesaria.
 # -movflags +faststart mueve el indice al principio del archivo para que la
 # reproduccion empiece sin haber descargado el video entero.
-# crf 32 deja unos 8 s en menos de 1 MB. Se ve bien porque la tarjeta mide la
-# mitad que el video: al reducirlo se disimulan los artefactos. Bajalo a 28 si
-# alguna vez se ven en grande.
+# El tope de bitrate es lo que mas ayuda a que arranque rapido: sin el, los
+# primeros segundos de un plano con mucho movimiento se comen varios megas y
+# Safari se queda esperando. -g 48 mete un fotograma clave cada segundo y medio,
+# para que empiece a pintar antes.
 echo "→ MP4…"
 ffmpeg -loglevel error -y -i "$entrada" \
   -vf "$escala" \
-  -c:v libx264 -crf 32 -preset slow -profile:v high -pix_fmt yuv420p \
+  -c:v libx264 -crf 34 -preset slow -profile:v high -pix_fmt yuv420p \
+  -g 48 -maxrate 700k -bufsize 1400k \
   -movflags +faststart -an \
   "$raiz/public/galeria/$nombre.mp4"
 

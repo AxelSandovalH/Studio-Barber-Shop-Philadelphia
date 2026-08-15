@@ -51,6 +51,18 @@ const datosEstructurados = {
       addressCountry: sucursal.direccion.paisCodigo,
     },
     sameAs: negocio.redes.map((red) => red.url),
+    // Google exige que la valoracion que se declara aqui este tambien visible
+    // en la pagina, y lo esta: la seccion de resenas sale de este mismo dato.
+    ...(sucursal.valoracion
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: sucursal.valoracion.puntuacion,
+            reviewCount: sucursal.valoracion.total,
+            bestRating: 5,
+          },
+        }
+      : {}),
     openingHoursSpecification: sucursal.horarios
       .filter((franja) => !franja.cerrado)
       .map((franja) => ({
@@ -123,7 +135,7 @@ const datosEstructurados = {
   <body>
     <a
       href="#contenido"
-      class="focus:bg-laton-500 focus:text-tinta-950 sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:px-5 focus:py-2 focus:font-semibold"
+      class="focus:bg-salvia-600 focus:text-fondo-50 sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:px-5 focus:py-2 focus:font-semibold"
     >
       Saltar al contenido
     </a>
