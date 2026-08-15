@@ -1,0 +1,267 @@
+---
+import {
+  negocio,
+  direccionEnLinea,
+  enlaceMapa,
+  enlaceMapaEmbed,
+  enlaceTelefono,
+  enlaceWhatsapp,
+  mensajeCita,
+  type Sucursal,
+} from '../data/site';
+import { idiomaDe, rutaSucursal, t } from '../i18n/idiomas';
+import { textos } from '../i18n/textos';
+
+interface Props {
+  sucursal: Sucursal;
+  /** Enlace a la pagina propia de la sucursal. Se oculta dentro de esa pagina. */
+  conEnlace?: boolean;
+  /** En su propia pagina el h1 va arriba, asi que aqui baja a h2. */
+  encabezado?: 'h2' | 'h3';
+}
+
+const { sucursal, conEnlace = true, encabezado = 'h3' } = Astro.props;
+
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
+
+const Encabezado = encabezado;
+
+// El script del navegador lee estos dos atributos. Van por el DOM y no con
+// define:vars para que Astro pueda empaquetar el script una sola vez aunque la
+// tarjeta aparezca dos veces en la pagina.
+const horarioJson = JSON.stringify(sucursal.horarios);
+const textosJson = JSON.stringify({
+  abiertoAhora: T.abiertoAhora,
+  cerradoAbreHoy: T.cerradoAbreHoy,
+  cerradoHoy: T.cerradoHoy,
+  cerradoAhora: T.cerradoAhora,
+  abreManana: T.abreManana,
+  abreElDia: T.abreElDia,
+  consultaHorario: T.consultaHorario,
+  dias: T.dias,
+});
+---
+
+<article
+  id={sucursal.id}
+  class="border-fondo-300 bg-fondo-100/70 overflow-hidden rounded-2xl border"
+>
+  <div class="grid lg:grid-cols-2">
+    <div class="p-8">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <Encabezado class="text-4xl leading-none">
+          {`${T.sucursal} `}<span class="text-salvia-700">{sucursal.nombre}</span>
+        </Encabezado>
+        <p
+          data-estado
+          data-horario={horarioJson}
+          data-textos={textosJson}
+          class="border-fondo-400 text-tinta-600 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium"
+        >
+          <span data-estado-punto class="bg-tinta-500 size-2 rounded-full"></span>
+          <span data-estado-texto>{T.consultandoHorario}</span>
+        </p>
+      </div>
+
+      <address class="text-tinta-700 mt-6 leading-relaxed not-italic">
+        {sucursal.direccion.calle}
+        <br />
+        {
+          `${sucursal.direccion.colonia}, ${sucursal.direccion.codigoPostal} ${sucursal.direccion.ciudad}, ${sucursal.direccion.region}`
+        }
+      </address>
+      <p class="text-tinta-500 mt-2 text-sm">
+        {t(sucursal.direccion.referencia, idioma)}
+      </p>
+
+      <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
+        <a
+          href={enlaceMapa(sucursal)}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-salvia-700 hover:text-salvia-800 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4 transition"
+        >
+          {T.abrirEnMaps}
+          <svg
+            class="size-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M7 17 17 7M9 7h8v8"></path>
+          </svg>
+        </a>
+
+        {
+          conEnlace && (
+            <a
+              href={rutaSucursal(idioma, sucursal.id)}
+              class="text-tinta-600 hover:text-salvia-700 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4 transition"
+            >
+              {T.verSucursal}
+            </a>
+          )
+        }
+      </div>
+
+      <dl class="divide-fondo-200 border-fondo-200 mt-8 divide-y border-t">
+        {
+          sucursal.horarios.map((franja) => (
+            <div class="flex items-baseline justify-between gap-4 py-4">
+              <dt class="text-tinta-700">{t(franja.dias, idioma)}</dt>
+              <dd
+                class:list={[
+                  'font-medium tabular-nums',
+                  franja.cerrado ? 'text-tinta-500' : 'text-salvia-700',
+                ]}
+              >
+                {franja.cerrado ? T.cerrado : `${franja.apertura} – ${franja.cierre}`}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a
+          href={enlaceWhatsapp(sucursal, mensajeCita(sucursal, idioma))}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bg-salvia-600 text-fondo-50 hover:bg-salvia-700 inline-flex flex-1 items-center justify-center gap-2.5 rounded-full px-6 py-3.5 font-semibold transition"
+        >
+          <svg class="size-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.48-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.8h-.02a9.8 9.8 0 0 1-4.99-1.37l-.36-.21-3.71.97.99-3.62-.23-.37a9.8 9.8 0 0 1-1.5-5.23c0-5.42 4.41-9.83 9.83-9.83 2.63 0 5.09 1.02 6.95 2.88a9.77 9.77 0 0 1 2.88 6.95c0 5.42-4.41 9.83-9.83 9.83M20.5 3.49A11.75 11.75 0 0 0 12.05 0C5.55 0 .26 5.29.26 11.79c0 2.08.54 4.11 1.58 5.9L.16 24l6.45-1.69a11.73 11.73 0 0 0 5.44 1.35h.01c6.5 0 11.79-5.29 11.79-11.79 0-3.15-1.23-6.11-3.45-8.34"
+            ></path>
+          </svg>
+          WhatsApp
+        </a>
+        <a
+          href={enlaceTelefono(sucursal)}
+          class="border-fondo-400 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 inline-flex flex-1 items-center justify-center rounded-full border px-6 py-3.5 font-semibold transition"
+        >
+          {sucursal.telefono}
+        </a>
+      </div>
+    </div>
+
+    <div
+      class="border-fondo-200 aspect-[4/3] w-full border-t lg:aspect-auto lg:border-t-0 lg:border-l"
+    >
+      <iframe
+        src={enlaceMapaEmbed(sucursal)}
+        title={`${T.comoLlegar} — ${negocio.nombre} ${sucursal.nombre}, ${direccionEnLinea(sucursal)}`}
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        class="size-full"
+        style="border: 0;"></iframe>
+    </div>
+  </div>
+</article>
+
+<script>
+  /**
+   * Estado de apertura en vivo, una por tarjeta. Se calcula en el navegador y
+   * no en el build, porque una pagina estatica generada por la manana diria
+   * "abierto" toda la noche. Usa la hora local de quien visita, que en un
+   * negocio de barrio es la misma que la del local.
+   *
+   * El horario y los textos vienen en atributos del propio elemento, asi que
+   * este script sirve para cualquier numero de tarjetas y en cualquier idioma.
+   */
+  interface Franja {
+    apertura: string;
+    cierre: string;
+    cerrado?: boolean;
+    indices: number[];
+  }
+
+  interface TextosEstado {
+    abiertoAhora: string;
+    cerradoAbreHoy: string;
+    cerradoHoy: string;
+    cerradoAhora: string;
+    abreManana: string;
+    abreElDia: string;
+    consultaHorario: string;
+    dias: string[];
+  }
+
+  const rellenar = (plantilla: string, valores: Record<string, string>) =>
+    plantilla.replace(/\{(\w+)\}/g, (_, clave) => valores[clave] ?? '');
+
+  const aMinutos = (hora: string) => {
+    const [h, m] = hora.split(':').map(Number);
+    return (h ?? 0) * 60 + (m ?? 0);
+  };
+
+  function proximaApertura(horarios: Franja[], T: TextosEstado, diaActual: number) {
+    // Busca el siguiente dia con horario, empezando por manana.
+    for (let salto = 1; salto <= 7; salto += 1) {
+      const dia = (diaActual + salto) % 7;
+      const franja = horarios.find((f) => f.indices.includes(dia));
+      if (franja && !franja.cerrado) {
+        return salto === 1
+          ? rellenar(T.abreManana, { hora: franja.apertura })
+          : rellenar(T.abreElDia, { dia: T.dias[dia] ?? '', hora: franja.apertura });
+      }
+    }
+    return T.consultaHorario;
+  }
+
+  function estadoDe(horarios: Franja[], T: TextosEstado, ahora: Date) {
+    const dia = ahora.getDay();
+    const minutos = ahora.getHours() * 60 + ahora.getMinutes();
+    const franja = horarios.find((f) => f.indices.includes(dia));
+
+    if (!franja || franja.cerrado) {
+      const proxima = proximaApertura(horarios, T, dia);
+      return { abierto: false, texto: rellenar(T.cerradoHoy, { proxima }) };
+    }
+
+    if (minutos < aMinutos(franja.apertura)) {
+      return {
+        abierto: false,
+        texto: rellenar(T.cerradoAbreHoy, { hora: franja.apertura }),
+      };
+    }
+
+    if (minutos >= aMinutos(franja.cierre)) {
+      const proxima = proximaApertura(horarios, T, dia);
+      return { abierto: false, texto: rellenar(T.cerradoAhora, { proxima }) };
+    }
+
+    return { abierto: true, texto: rellenar(T.abiertoAhora, { hora: franja.cierre }) };
+  }
+
+  function actualizarEstados() {
+    const ahora = new Date();
+
+    document.querySelectorAll<HTMLElement>('[data-estado]').forEach((contenedor) => {
+      const punto = contenedor.querySelector('[data-estado-punto]');
+      const texto = contenedor.querySelector('[data-estado-texto]');
+      if (!punto || !texto) return;
+
+      const horarios: Franja[] = JSON.parse(contenedor.dataset.horario ?? '[]');
+      const T: TextosEstado = JSON.parse(contenedor.dataset.textos ?? '{}');
+      const { abierto, texto: mensaje } = estadoDe(horarios, T, ahora);
+
+      texto.textContent = mensaje;
+      // Verdes oscuros: el indicador va sobre fondo claro, y un emerald-400
+      // sobre crema no se lee.
+      punto.className = `size-2 rounded-full ${abierto ? 'bg-emerald-600' : 'bg-tinta-500'}`;
+      contenedor.className = abierto
+        ? 'inline-flex items-center gap-2 rounded-full border border-emerald-600/35 bg-emerald-600/10 px-4 py-1.5 text-sm font-medium text-emerald-800'
+        : 'inline-flex items-center gap-2 rounded-full border border-fondo-400 px-4 py-1.5 text-sm font-medium text-tinta-600';
+    });
+  }
+
+  actualizarEstados();
+  // Repasa cada minuto para que el estado cambie solo al abrir o cerrar.
+  setInterval(actualizarEstados, 60_000);
+</script>

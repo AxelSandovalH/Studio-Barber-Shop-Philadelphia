@@ -1,5 +1,10 @@
 ---
 import { negocio, sucursales } from '../data/site';
+import { idiomaDe, t } from '../i18n/idiomas';
+import { rellenar, textos } from '../i18n/textos';
+
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
 
 // Las cifras salen de los datos para que no se queden desfasadas.
 const principal = sucursales[0]!;
@@ -32,16 +37,19 @@ const diasAbiertos = principal.horarios
         class="border-salvia-600/30 bg-salvia-600/8 text-salvia-700 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase"
       >
         <span class="bg-salvia-700 size-1.5 rounded-full"></span>
-        {principal.direccion.ciudad}, {principal.direccion.region}
+        {rellenar(T.heroAntetitulo, { ano: negocio.desde, n: sucursales.length })}
       </p>
 
       <h1 class="mt-7 text-6xl leading-[0.92] sm:text-7xl md:text-8xl">
-        Corte clasico,<br />
-        <span class="text-salvia-700">cuidado moderno</span>
+        {T.heroH1}
       </h1>
 
+      <p class="font-display text-salvia-700 mt-6 text-3xl leading-none sm:text-4xl">
+        {t(negocio.eslogan, idioma)}
+      </p>
+
       <p class="text-tinta-600 mt-7 max-w-xl text-lg leading-relaxed">
-        {negocio.descripcion}
+        {t(negocio.descripcion, idioma)}
       </p>
 
       <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -49,13 +57,13 @@ const diasAbiertos = principal.horarios
           href="#sucursales"
           class="bg-salvia-600 text-fondo-50 hover:bg-salvia-700 inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-4 font-semibold transition"
         >
-          Agendar cita
+          {T.agendarCita}
         </a>
         <a
           href="#servicios"
           class="border-fondo-400 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 inline-flex items-center justify-center gap-2.5 rounded-full border px-8 py-4 font-semibold transition"
         >
-          Ver servicios
+          {T.verServicios}
         </a>
       </div>
 
@@ -63,19 +71,26 @@ const diasAbiertos = principal.horarios
            un movil estrecho sin partir palabras. -->
       <dl class="mt-14 grid max-w-lg grid-cols-3 gap-6">
         <div>
-          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">Sucursales</dt>
+          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">
+            {T.heroSucursales}
+          </dt>
           <dd class="font-display text-tinta-900 mt-1.5 text-2xl sm:text-3xl">
             {sucursales.length}
           </dd>
         </div>
         <div>
-          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">Abrimos</dt>
+          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">
+            {T.heroAbrimos}
+          </dt>
           <dd class="font-display text-tinta-900 mt-1.5 text-2xl sm:text-3xl">
-            {diasAbiertos} dias
+            {diasAbiertos}
+            {T.heroDias}
           </dd>
         </div>
         <div>
-          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">Desde</dt>
+          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">
+            {T.heroDesde}
+          </dt>
           <dd class="font-display text-tinta-900 mt-1.5 text-2xl sm:text-3xl">
             {negocio.desde}
           </dd>

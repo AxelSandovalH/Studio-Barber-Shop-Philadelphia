@@ -1,30 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
-import Servicios from '../components/Servicios.astro';
-import Galeria from '../components/Galeria.astro';
-import Resenas from '../components/Resenas.astro';
-import Equipo from '../components/Equipo.astro';
-import Sucursales from '../components/Sucursales.astro';
-import Footer from '../components/Footer.astro';
-import { barberos } from '../data/site';
+import Portada from '../components/Portada.astro';
 ---
 
-<Layout>
-  <Header />
-  <main id="contenido">
-    <Hero />
-    <Servicios />
-    <Galeria />
-    {
-      /* Las resenas van justo despues del trabajo: primero se ve, luego se
-        confirma con lo que dicen otros. */
-    }
-    <Resenas />
-    {/* La seccion de equipo solo aparece cuando hay barberos cargados. */}
-    {barberos.length > 0 && <Equipo />}
-    <Sucursales />
-  </main>
-  <Footer />
-</Layout>
+<Portada />

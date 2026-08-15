@@ -1,0 +1,15 @@
+---
+import PaginaSucursal from '../../../components/PaginaSucursal.astro';
+import { sucursales } from '../../../data/site';
+
+export function getStaticPaths() {
+  return sucursales.map((sucursal) => ({
+    params: { sucursal: sucursal.id },
+    props: { sucursal },
+  }));
+}
+
+const { sucursal } = Astro.props;
+---
+
+<PaginaSucursal sucursal={sucursal} />

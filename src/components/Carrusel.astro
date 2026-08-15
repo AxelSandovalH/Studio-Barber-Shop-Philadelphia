@@ -1,6 +1,8 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import type { MedioGaleria } from '../data/site';
+import { idiomaDe, t } from '../i18n/idiomas';
+import { rellenar, textos } from '../i18n/textos';
 
 interface Props {
   medios: MedioGaleria[];
@@ -9,6 +11,9 @@ interface Props {
 }
 
 const { medios, etiqueta } = Astro.props;
+
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
 
 // Anchos de cada diapositiva, en el mismo orden que los puntos de corte de
 // abajo. Se declara una sola vez porque el `sizes` de las imagenes tiene que
@@ -56,7 +61,7 @@ const preparados = await Promise.all(
             {medio.tipo === 'foto' ? (
               <Image
                 src={medio.src}
-                alt={medio.alt}
+                alt={t(medio.alt, idioma)}
                 widths={[400, 800, 1200]}
                 sizes={TAMANOS}
                 loading={indice < CARGA_INMEDIATA ? 'eager' : 'lazy'}
@@ -69,7 +74,7 @@ const preparados = await Promise.all(
                   data-video
                   class="size-full object-cover"
                   poster={poster ?? undefined}
-                  aria-label={medio.alt}
+                  aria-label={t(medio.alt, idioma)}
                   muted
                   loop
                   playsinline
@@ -88,7 +93,7 @@ const preparados = await Promise.all(
                   >
                     <path d="M8 5v14l11-7z" />
                   </svg>
-                  Video
+                  {T.video}
                 </span>
               </>
             )}
@@ -102,7 +107,7 @@ const preparados = await Promise.all(
   <button
     type="button"
     data-anterior
-    aria-label="Anterior"
+    aria-label={T.anterior}
     class="border-fondo-400 bg-fondo-50/90 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 absolute top-1/2 -left-4 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm transition disabled:pointer-events-none disabled:opacity-0 lg:flex"
   >
     <svg
@@ -122,7 +127,7 @@ const preparados = await Promise.all(
   <button
     type="button"
     data-siguiente
-    aria-label="Siguiente"
+    aria-label={T.siguiente}
     class="border-fondo-400 bg-fondo-50/90 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 absolute top-1/2 -right-4 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm transition disabled:pointer-events-none disabled:opacity-0 lg:flex"
   >
     <svg
@@ -142,7 +147,7 @@ const preparados = await Promise.all(
   <ol
     data-puntos
     class="mt-6 flex flex-wrap justify-center gap-2.5"
-    aria-label="Ir a un elemento"
+    aria-label={T.irAElemento}
   >
     {
       medios.map((medio, indice) => (
@@ -151,7 +156,10 @@ const preparados = await Promise.all(
             type="button"
             data-punto
             data-indice={indice}
-            aria-label={`Ir a ${medio.tipo === 'video' ? 'el video' : 'la foto'} ${indice + 1} de ${medios.length}`}
+            aria-label={rellenar(medio.tipo === 'video' ? T.irAlVideo : T.irALaFoto, {
+              n: indice + 1,
+              total: medios.length,
+            })}
             class="bg-fondo-400 hover:bg-tinta-500 aria-[current=true]:bg-salvia-600 block h-2 w-2 rounded-full transition-all aria-[current=true]:w-6"
           />
         </li>

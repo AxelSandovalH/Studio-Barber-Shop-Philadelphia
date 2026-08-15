@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Servicios from './Servicios.astro';
+import Galeria from './Galeria.astro';
+import Resenas from './Resenas.astro';
+import Equipo from './Equipo.astro';
+import Sucursales from './Sucursales.astro';
+import Footer from './Footer.astro';
+import { barberos } from '../data/site';
+import { IDIOMAS, idiomaDe, rutaInicio, type Idioma } from '../i18n/idiomas';
+import { esquemaPortada } from '../seo/schema';
+
+const idioma = idiomaDe(Astro.currentLocale);
+
+// La misma pagina en los dos idiomas, para el hreflang y el conmutador.
+const rutas = Object.fromEntries(
+  IDIOMAS.map((otro) => [otro, rutaInicio(otro)]),
+) as Record<Idioma, string>;
+
+const datosEstructurados = esquemaPortada(
+  idioma,
+  new URL(Astro.url.pathname, Astro.site),
+);
+---
+
+<Layout rutas={rutas} datosEstructurados={datosEstructurados}>
+  <Header rutas={rutas} />
+  <main id="contenido">
+    <Hero />
+    <Servicios />
+    <Galeria />
+    {
+      /* Las resenas van justo despues del trabajo: primero se ve, luego se
+        confirma con lo que dicen otros. */
+    }
+    <Resenas />
+    {/* La seccion de equipo solo aparece cuando hay barberos cargados. */}
+    {barberos.length > 0 && <Equipo />}
+    <Sucursales />
+  </main>
+  <Footer />
+</Layout>

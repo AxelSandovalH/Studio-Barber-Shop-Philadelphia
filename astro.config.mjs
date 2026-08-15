@@ -27,6 +27,15 @@ const dominio =
 export default defineConfig({
   site: dominio,
 
+  // Espanol sin prefijo en la raiz, ingles bajo /en. Cabo recibe mucho turismo
+  // estadounidense y "barber shop cabo san lucas" no lleva a una web que solo
+  // existe en espanol.
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'en'],
+    routing: { prefixDefaultLocale: false },
+  },
+
   vite: {
     plugins: [tailwindcss()],
   },

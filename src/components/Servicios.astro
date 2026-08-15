@@ -1,6 +1,11 @@
 ---
 import { servicios, moneda } from '../data/site';
+import { idiomaDe, t } from '../i18n/idiomas';
+import { rellenar, textos } from '../i18n/textos';
 import TituloSeccion from './TituloSeccion.astro';
+
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
 
 // Si todavia no hay ningun precio cargado no tiene sentido anunciar la moneda.
 const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
@@ -9,9 +14,9 @@ const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
 <section id="servicios" class="border-fondo-200 border-t py-24 md:py-32">
   <div class="mx-auto max-w-6xl px-5">
     <TituloSeccion
-      etiqueta="Carta de servicios"
-      titulo="Lo que hacemos"
-      descripcion="Corte, barba y color. Elige la sucursal que te quede mas cerca y agenda tu cita."
+      etiqueta={T.serviciosEtiqueta}
+      titulo={T.serviciosTitulo}
+      descripcion={T.serviciosDescripcion}
     />
 
     <ul class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -27,12 +32,12 @@ const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
           >
             {servicio.destacado && (
               <span class="bg-salvia-600 text-fondo-50 absolute -top-2.5 left-7 rounded-full px-3 py-0.5 text-[0.65rem] font-bold tracking-[0.12em] uppercase">
-                Mas pedido
+                {T.masPedido}
               </span>
             )}
 
             <div class="flex items-start justify-between gap-4">
-              <h3 class="text-3xl leading-none">{servicio.nombre}</h3>
+              <h3 class="text-3xl leading-none">{t(servicio.nombre, idioma)}</h3>
               <p
                 class:list={[
                   'shrink-0 leading-none',
@@ -41,12 +46,12 @@ const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
                     : 'text-tinta-500 text-xs font-semibold tracking-[0.12em] uppercase',
                 ]}
               >
-                {servicio.precio !== undefined ? `$${servicio.precio}` : 'Consultar'}
+                {servicio.precio !== undefined ? `$${servicio.precio}` : T.consultar}
               </p>
             </div>
 
             <p class="text-tinta-600 mt-4 flex-1 text-sm leading-relaxed">
-              {servicio.descripcion}
+              {t(servicio.descripcion, idioma)}
             </p>
 
             {servicio.duracion !== undefined && (
@@ -62,7 +67,7 @@ const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
                   <circle cx="12" cy="12" r="9" />
                   <path d="M12 7v5l3 2" stroke-linecap="round" />
                 </svg>
-                Unos {servicio.duracion} min
+                {rellenar(T.unosMinutos, { n: servicio.duracion })}
               </p>
             )}
           </li>
@@ -71,14 +76,12 @@ const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
     </ul>
 
     <p class="text-tinta-500 mt-10 text-sm">
-      {hayPrecios && `${moneda.nota} `}Atendemos con y sin cita. Para asegurar tu hora,{
-        ' '
-      }
+      {hayPrecios && `${t(moneda.nota, idioma)} `}{T.serviciosPie}{' '}
       <a
         href="#sucursales"
         class="text-salvia-700 hover:text-salvia-800 font-semibold underline underline-offset-4"
       >
-        escribenos a la sucursal que prefieras</a
+        {T.serviciosPieEnlace}</a
       >.
     </p>
   </div>

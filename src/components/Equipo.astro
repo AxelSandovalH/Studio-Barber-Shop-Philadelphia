@@ -1,14 +1,19 @@
 ---
 import { barberos, negocio } from '../data/site';
+import { idiomaDe, t } from '../i18n/idiomas';
+import { textos } from '../i18n/textos';
 import TituloSeccion from './TituloSeccion.astro';
+
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
 ---
 
 <section id="equipo" class="border-fondo-200 border-t py-24 md:py-32">
   <div class="mx-auto max-w-6xl px-5">
     <TituloSeccion
-      etiqueta="El equipo"
-      titulo="Quien te atiende"
-      descripcion="Puedes pedir a tu barbero de siempre al llegar o al escribirnos."
+      etiqueta={T.equipoEtiqueta}
+      titulo={T.equipoTitulo}
+      descripcion={T.equipoDescripcion}
     />
 
     <ul class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -18,7 +23,7 @@ import TituloSeccion from './TituloSeccion.astro';
             <div class="bg-fondo-150 aspect-[4/5] overflow-hidden">
               <img
                 src={barbero.foto}
-                alt={`${barbero.nombre}, ${barbero.rol} en ${negocio.nombre}`}
+                alt={`${barbero.nombre}, ${t(barbero.rol, idioma)} · ${negocio.nombre}`}
                 loading="lazy"
                 decoding="async"
                 width="600"
@@ -29,11 +34,11 @@ import TituloSeccion from './TituloSeccion.astro';
 
             <div class="p-6">
               <p class="text-salvia-600 text-xs font-semibold tracking-[0.16em] uppercase">
-                {barbero.rol}
+                {t(barbero.rol, idioma)}
               </p>
               <h3 class="mt-2.5 text-3xl leading-none">{barbero.nombre}</h3>
               <p class="text-tinta-600 mt-3 text-sm leading-relaxed">
-                {barbero.especialidad}
+                {t(barbero.especialidad, idioma)}
               </p>
 
               {barbero.instagram && (
@@ -55,7 +60,7 @@ import TituloSeccion from './TituloSeccion.astro';
                     <circle cx="12" cy="12" r="4" />
                     <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
                   </svg>
-                  Ver su trabajo
+                  {T.verSuTrabajo}
                 </a>
               )}
             </div>

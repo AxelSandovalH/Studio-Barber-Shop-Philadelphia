@@ -1,99 +1,48 @@
 ---
 import { Font } from 'astro:assets';
-import { negocio, sucursales, servicios, moneda, direccionEnLinea } from '../data/site';
+import { negocio, sucursales, direccionEnLinea } from '../data/site';
+import { IDIOMAS, LOCALE, idiomaDe, t, type Idioma } from '../i18n/idiomas';
+import { textos } from '../i18n/textos';
 import '../styles/global.css';
 
 interface Props {
   titulo?: string;
   descripcion?: string;
+  /**
+   * Esta misma pagina en cada idioma. De aqui salen las etiquetas hreflang, que
+   * son las que le dicen a Google que las dos versiones son la misma pagina y
+   * que sirva cada una a quien corresponde.
+   */
+  rutas: Record<Idioma, string>;
+  /** Datos estructurados de la pagina. Cada pagina declara los suyos. */
+  datosEstructurados: unknown;
 }
 
-const { titulo, descripcion = negocio.descripcion } = Astro.props;
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
 
+const { titulo, descripcion, rutas, datosEstructurados } = Astro.props;
+
+// En la portada el sufijo es el nombre completo, que es donde toca reforzar la
+// marca. En las paginas internas se usa el nombre corto: con el largo, el
+// titulo se pasa de los 60 caracteres que muestra Google y se corta justo por
+// donde esta la informacion util.
 const tituloPagina = titulo
-  ? `${titulo} | ${negocio.nombre}`
-  : `${negocio.nombre} | Barberia en Cabo San Lucas`;
+  ? `${titulo} | ${negocio.nombreCorto}`
+  : `${negocio.nombre} | ${T.tituloSufijo}`;
+
+const descripcionPagina = descripcion ?? t(negocio.descripcion, idioma);
 
 const urlCanonica = new URL(Astro.url.pathname, Astro.site);
-
-// Nombres de dia como los espera schema.org, indexados igual que Date.getDay().
-const diasSchema = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
-
 const principal = sucursales[0]!;
 
-// Datos estructurados: una entrada por sucursal, que es lo que permite que cada
-// local aparezca por separado en las busquedas locales de Google.
-const datosEstructurados = {
-  '@context': 'https://schema.org',
-  '@graph': sucursales.map((sucursal) => ({
-    '@type': 'HairSalon',
-    '@id': `${urlCanonica.href}#${sucursal.id}`,
-    name: `${negocio.nombre} - ${sucursal.nombre}`,
-    description: negocio.descripcion,
-    url: urlCanonica.href,
-    telephone: sucursal.telefono,
-    ...(negocio.email ? { email: negocio.email } : {}),
-    currenciesAccepted: moneda.codigo,
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: `${sucursal.direccion.calle}, ${sucursal.direccion.colonia}`,
-      addressLocality: sucursal.direccion.ciudad,
-      addressRegion: sucursal.direccion.region,
-      postalCode: sucursal.direccion.codigoPostal,
-      addressCountry: sucursal.direccion.paisCodigo,
-    },
-    sameAs: negocio.redes.map((red) => red.url),
-    // Google exige que la valoracion que se declara aqui este tambien visible
-    // en la pagina, y lo esta: la seccion de resenas sale de este mismo dato.
-    ...(sucursal.valoracion
-      ? {
-          aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: sucursal.valoracion.puntuacion,
-            reviewCount: sucursal.valoracion.total,
-            bestRating: 5,
-          },
-        }
-      : {}),
-    openingHoursSpecification: sucursal.horarios
-      .filter((franja) => !franja.cerrado)
-      .map((franja) => ({
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: franja.indices.map((indice) => diasSchema[indice]),
-        opens: franja.apertura,
-        closes: franja.cierre,
-      })),
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: 'Servicios de barberia',
-      itemListElement: servicios.map((servicio) => ({
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: servicio.nombre,
-          description: servicio.descripcion,
-        },
-        // Solo se declara el precio cuando existe de verdad: un precio
-        // inventado en los datos estructurados es peor que no ponerlo.
-        ...(servicio.precio !== undefined
-          ? { price: servicio.precio, priceCurrency: moneda.codigo }
-          : {}),
-      })),
-    },
-  })),
-};
+// La imagen de compartir vive en public/ y no en src/assets: necesita una URL
+// absoluta y estable, y no gana nada pasando por el optimizador.
+const imagenCompartir = new URL('/og.jpg', Astro.site).href;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={LOCALE[idioma]}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -102,19 +51,42 @@ const datosEstructurados = {
     <meta name="generator" content={Astro.generator} />
 
     <title>{tituloPagina}</title>
-    <meta name="description" content={descripcion} />
-    <meta name="theme-color" content="#0b0b0d" />
+    <meta name="description" content={descripcionPagina} />
+    <meta name="theme-color" content="#f5f2ea" />
+
+    {
+      IDIOMAS.map((otro) => (
+        <link
+          rel="alternate"
+          hreflang={LOCALE[otro]}
+          href={new URL(rutas[otro], Astro.site).href}
+        />
+      ))
+    }
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(rutas.es, Astro.site).href}
+    />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={negocio.nombre} />
     <meta property="og:title" content={tituloPagina} />
-    <meta property="og:description" content={descripcion} />
+    <meta property="og:description" content={descripcionPagina} />
     <meta property="og:url" content={urlCanonica.href} />
-    <meta property="og:locale" content="es_MX" />
+    <meta property="og:locale" content={LOCALE[idioma].replace('-', '_')} />
+    <meta property="og:image" content={imagenCompartir} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content={`${negocio.nombre}, ${principal.direccion.ciudad}`}
+    />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={tituloPagina} />
-    <meta name="twitter:description" content={descripcion} />
+    <meta name="twitter:description" content={descripcionPagina} />
+    <meta name="twitter:image" content={imagenCompartir} />
 
     <meta name="geo.region" content={`${principal.direccion.paisCodigo}-BCS`} />
     <meta name="geo.placename" content={principal.direccion.ciudad} />
@@ -137,7 +109,7 @@ const datosEstructurados = {
       href="#contenido"
       class="focus:bg-salvia-600 focus:text-fondo-50 sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:px-5 focus:py-2 focus:font-semibold"
     >
-      Saltar al contenido
+      {T.saltarAlContenido}
     </a>
     <slot />
   </body>

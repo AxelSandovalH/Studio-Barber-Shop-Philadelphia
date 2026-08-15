@@ -13,6 +13,8 @@
  * desde fuera y lo tiene que rellenar el negocio.
  */
 
+import type { Bilingue, Idioma } from '../i18n/idiomas';
+
 import pixieTerminado from '../assets/galeria/pixie-terminado.jpg';
 import tazonDegradado from '../assets/galeria/tazon-degradado.jpg';
 import mulletRizado from '../assets/galeria/mullet-rizado.jpg';
@@ -30,8 +32,8 @@ export interface Negocio {
   nombreCorto: string;
   /** Inicial de la marca para el logotipo. */
   inicial: string;
-  eslogan: string;
-  descripcion: string;
+  eslogan: Bilingue;
+  descripcion: Bilingue;
   /** Ano de apertura, para la seccion de cifras. */
   desde: number;
   /** Opcional: si no hay correo, la fila no se muestra. */
@@ -80,7 +82,7 @@ export interface Direccion {
   /** Codigo ISO de dos letras, para los datos estructurados. */
   paisCodigo: string;
   /** Referencia corta para orientarse al llegar. */
-  referencia: string;
+  referencia: Bilingue;
 }
 
 export interface Red {
@@ -90,8 +92,8 @@ export interface Red {
 }
 
 export interface Servicio {
-  nombre: string;
-  descripcion: string;
+  nombre: Bilingue;
+  descripcion: Bilingue;
   /** En pesos. Si no se sabe todavia, se omite y la tarjeta dice "Consultar". */
   precio?: number;
   /** Duracion aproximada en minutos. Se omite si no se sabe. */
@@ -101,15 +103,15 @@ export interface Servicio {
 
 export interface Barbero {
   nombre: string;
-  rol: string;
-  especialidad: string;
+  rol: Bilingue;
+  especialidad: Bilingue;
   /** Ruta dentro de /public. */
   foto: string;
   instagram?: string;
 }
 
 export interface FranjaHoraria {
-  dias: string;
+  dias: Bilingue;
   apertura: string;
   cierre: string;
   cerrado?: boolean;
@@ -129,7 +131,7 @@ export interface FranjaHoraria {
  * siempre un poster, que es lo que se ve mientras no se reproducen.
  */
 export type MedioGaleria =
-  | { tipo: 'foto'; src: ImageMetadata; alt: string }
+  | { tipo: 'foto'; src: ImageMetadata; alt: Bilingue }
   | {
       tipo: 'video';
       /** Ruta dentro de /public. */
@@ -137,23 +139,34 @@ export type MedioGaleria =
       /** Opcional pero recomendado: pesa bastante menos que el mp4. */
       webm?: string;
       poster: ImageMetadata;
-      alt: string;
+      alt: Bilingue;
     };
 
 /** Moneda de los precios. En Cabo circula el dolar, asi que se dice explicito. */
 export const moneda = {
   codigo: 'MXN',
-  nota: 'Todos los precios en pesos mexicanos (MXN).',
+  nota: {
+    es: 'Todos los precios en pesos mexicanos (MXN).',
+    en: 'All prices in Mexican pesos (MXN).',
+  },
 } as const;
 
 export const negocio: Negocio = {
   nombre: 'Philadelphia Studio Barber Shop',
   nombreCorto: 'Philadelphia Studio',
   inicial: 'P',
-  eslogan: 'Corte clasico, cuidado moderno',
-  descripcion:
-    'Barberia en Cabo San Lucas con dos sucursales. Corte a tijera y a ' +
-    'maquina, arreglo de barba, coloracion y decoloracion. Desde 2019.',
+  eslogan: {
+    es: 'Corte clasico, cuidado moderno',
+    en: 'Classic cuts, modern care',
+  },
+  descripcion: {
+    es:
+      'Barberia en Cabo San Lucas con dos sucursales. Corte a tijera y a ' +
+      'maquina, arreglo de barba, coloracion y decoloracion. Desde 2019.',
+    en:
+      'Barber shop in Cabo San Lucas with two locations. Scissor and clipper ' +
+      'cuts, beard trims, colour and bleaching. Open since 2019.',
+  },
   desde: 2019,
 
   // TODO(datos-reales): si hay correo de contacto, ponerlo aqui. Si no, se
@@ -173,6 +186,23 @@ export const negocio: Negocio = {
     },
   ],
 };
+
+/** Horario compartido por las dos sucursales, para no repetirlo. */
+const HORARIO_HABITUAL: FranjaHoraria[] = [
+  {
+    dias: { es: 'Lunes a sabado', en: 'Monday to Saturday' },
+    apertura: '10:00',
+    cierre: '20:30',
+    indices: [1, 2, 3, 4, 5, 6],
+  },
+  {
+    dias: { es: 'Domingo', en: 'Sunday' },
+    apertura: '',
+    cierre: '',
+    cerrado: true,
+    indices: [0],
+  },
+];
 
 /**
  * Las dos sucursales. El orden es el que se ve en la web.
@@ -195,22 +225,17 @@ export const sucursales: Sucursal[] = [
       codigoPostal: '23473',
       pais: 'Mexico',
       paisCodigo: 'MX',
-      referencia: 'Sobre la carretera a Todos los Santos, en el local 11',
+      referencia: {
+        es: 'Sobre la carretera a Todos los Santos, en el local 11',
+        en: 'On the Todos Santos highway, unit 11',
+      },
     },
     // TODO(datos-reales): copiado de la ficha de Google. Conviene repasarlo de
     // vez en cuando: si la web dice 71 resenas y Google ya va por 120, la web
     // esta vendiendo menos de lo que teneis.
     valoracion: { puntuacion: 5, total: 71, consultado: '2026-08-14' },
     // Horario publicado en Fresha.
-    horarios: [
-      {
-        dias: 'Lunes a sabado',
-        apertura: '10:00',
-        cierre: '20:30',
-        indices: [1, 2, 3, 4, 5, 6],
-      },
-      { dias: 'Domingo', apertura: '', cierre: '', cerrado: true, indices: [0] },
-    ],
+    horarios: HORARIO_HABITUAL,
   },
   {
     id: 'la-joya',
@@ -226,24 +251,20 @@ export const sucursales: Sucursal[] = [
       codigoPostal: '23474',
       pais: 'Mexico',
       paisCodigo: 'MX',
-      referencia: 'Al llegar a la esquina de Leona Vicario',
+      referencia: {
+        es: 'Al llegar a la esquina de Leona Vicario',
+        en: 'At the corner of Leona Vicario',
+      },
     },
     // TODO(datos-reales): esta sucursal NO aparece en Google con esta
-    // direccion, asi que el mapa solo muestra la zona. Hay que pegar aqui el
-    // enlace exacto de su ficha de Google Maps.
+    // direccion, asi que el mapa solo muestra la zona. Hay que darla de alta en
+    // Google Business y pegar aqui el enlace de su ficha. Sin ficha propia es
+    // invisible en las busquedas de "barberia cerca de mi".
     mapaUrl: undefined,
     mapaEmbedUrl: undefined,
     // TODO(datos-reales): confirmar el horario de esta sucursal. De momento se
     // asume el mismo que el de Brisas.
-    horarios: [
-      {
-        dias: 'Lunes a sabado',
-        apertura: '10:00',
-        cierre: '20:30',
-        indices: [1, 2, 3, 4, 5, 6],
-      },
-      { dias: 'Domingo', apertura: '', cierre: '', cerrado: true, indices: [0] },
-    ],
+    horarios: HORARIO_HABITUAL,
   },
 ];
 
@@ -257,35 +278,53 @@ export const sucursales: Sucursal[] = [
  */
 export const servicios: Servicio[] = [
   {
-    nombre: 'Corte clasico',
-    descripcion: 'Corte a maquina y tijera, perfilado de contornos y peinado final.',
+    nombre: { es: 'Corte clasico', en: 'Classic cut' },
+    descripcion: {
+      es: 'Corte a maquina y tijera, perfilado de contornos y peinado final.',
+      en: 'Clipper and scissor cut, clean edges and a finished style.',
+    },
     destacado: true,
   },
   {
-    nombre: 'Corte a tijera',
-    descripcion: 'Trabajo enteramente a tijera, en version librito o clasica.',
+    nombre: { es: 'Corte a tijera', en: 'Scissor cut' },
+    descripcion: {
+      es: 'Trabajo enteramente a tijera, en version librito o clasica.',
+      en: 'All-scissor work, in the librito or the classic shape.',
+    },
     destacado: true,
   },
   {
-    nombre: 'Corte y barba',
-    descripcion: 'El corte completo mas el arreglo de barba con navaja.',
+    nombre: { es: 'Corte y barba', en: 'Cut and beard' },
+    descripcion: {
+      es: 'El corte completo mas el arreglo de barba con navaja.',
+      en: 'The full cut plus a straight-razor beard trim.',
+    },
   },
   {
-    nombre: 'Wolf cut',
-    descripcion: 'Corte texturizado en capas para cabello largo.',
+    nombre: { es: 'Wolf cut', en: 'Wolf cut' },
+    descripcion: {
+      es: 'Corte texturizado en capas para cabello largo.',
+      en: 'Layered, textured cut for longer hair.',
+    },
   },
   {
-    nombre: 'Coloracion',
-    descripcion: 'Color a medida, desde un tono natural hasta fantasia.',
+    nombre: { es: 'Coloracion', en: 'Colour' },
+    descripcion: {
+      es: 'Color a medida, desde un tono natural hasta fantasia.',
+      en: 'Custom colour, from natural tones to fantasy shades.',
+    },
   },
   {
-    nombre: 'Decoloracion',
-    descripcion: 'Aclarado del cabello, como paso previo al color o como acabado.',
+    nombre: { es: 'Decoloracion', en: 'Bleaching' },
+    descripcion: {
+      es: 'Aclarado del cabello, como paso previo al color o como acabado.',
+      en: 'Lightening, either before colour or as the finish itself.',
+    },
   },
 ];
 
 // TODO(datos-reales): equipo real y fotos en /public/equipo/. Si preferis no
-// mostrar el equipo, vaciad esta lista y la seccion desaparece sola.
+// mostrar el equipo, dejad esta lista vacia y la seccion desaparece sola.
 export const barberos: Barbero[] = [];
 
 /**
@@ -301,53 +340,80 @@ export const galeria: MedioGaleria[] = [
   {
     tipo: 'foto',
     src: pixieTerminado,
-    alt: 'Corte pixie texturizado, terminado y peinado en el local',
+    alt: {
+      es: 'Corte pixie texturizado, terminado y peinado en el local',
+      en: 'Textured pixie cut, finished and styled in the shop',
+    },
   },
   {
     tipo: 'video',
     mp4: '/galeria/pixie.mp4',
     poster: pixiePoster,
-    alt: 'Resultado de un corte pixie texturizado, de perfil',
+    alt: {
+      es: 'Resultado de un corte pixie texturizado, de perfil',
+      en: 'A finished textured pixie cut, seen from the side',
+    },
   },
   {
     tipo: 'foto',
     src: tazonDegradado,
-    alt: 'Corte tazon con flequillo recto y degradado en los laterales',
+    alt: {
+      es: 'Corte tazon con flequillo recto y degradado en los laterales',
+      en: 'Bowl cut with a blunt fringe and faded sides',
+    },
   },
   {
     tipo: 'video',
     mp4: '/galeria/degradado.mp4',
     poster: degradadoPoster,
-    alt: 'Degradado con desvanecido en la nuca, visto por detras',
+    alt: {
+      es: 'Degradado con desvanecido en la nuca, visto por detras',
+      en: 'Fade tapered into the neckline, seen from behind',
+    },
   },
   {
     tipo: 'video',
     mp4: '/galeria/barba.mp4',
     poster: barbaPoster,
-    alt: 'Perfilado de barba con navaja y toalla caliente',
+    alt: {
+      es: 'Perfilado de barba con navaja y toalla caliente',
+      en: 'Beard shaped with a straight razor and a hot towel',
+    },
   },
   {
     tipo: 'foto',
     src: mulletRizado,
-    alt: 'Mullet rizado con mechas rubias y laterales desvanecidos',
+    alt: {
+      es: 'Mullet rizado con mechas rubias y laterales desvanecidos',
+      en: 'Curly mullet with blonde highlights and faded sides',
+    },
   },
   {
     tipo: 'video',
     mp4: '/galeria/texturizado.mp4',
     poster: texturizadoPoster,
-    alt: 'Corte texturizado de largo medio con raya al lado',
+    alt: {
+      es: 'Corte texturizado de largo medio con raya al lado',
+      en: 'Mid-length textured cut with a side part',
+    },
   },
   {
     tipo: 'video',
     mp4: '/galeria/raya-lateral.mp4',
     poster: rayaLateralPoster,
-    alt: 'Raya marcada al lado con degradado, vista por detras',
+    alt: {
+      es: 'Raya marcada al lado con degradado, vista por detras',
+      en: 'Hard side part with a fade, seen from behind',
+    },
   },
   {
     tipo: 'video',
     mp4: '/galeria/clasico.mp4',
     poster: clasicoPoster,
-    alt: 'Corte clasico corto en los laterales, de perfil',
+    alt: {
+      es: 'Corte clasico corto en los laterales, de perfil',
+      en: 'Classic cut, short on the sides, seen from the side',
+    },
   },
   {
     // TODO(datos-reales): este clip lleva un texto sobreimpreso ("Salmos
@@ -356,16 +422,12 @@ export const galeria: MedioGaleria[] = [
     tipo: 'video',
     mp4: '/galeria/estilizado.mp4',
     poster: estilizadoPoster,
-    alt: 'Peinado hacia atras terminado, visto desde arriba',
+    alt: {
+      es: 'Peinado hacia atras terminado, visto desde arriba',
+      en: 'Finished slicked-back style, seen from above',
+    },
   },
 ];
-
-/** Enlaces de la navegacion principal, en el orden en que aparecen las secciones. */
-export const navegacion = [
-  { etiqueta: 'Servicios', href: '#servicios' },
-  { etiqueta: 'Galeria', href: '#galeria' },
-  { etiqueta: 'Sucursales', href: '#sucursales' },
-] as const;
 
 /** Direccion en una sola linea, para meta etiquetas y enlaces de mapa. */
 export function direccionEnLinea(sucursal: Sucursal): string {
@@ -397,7 +459,9 @@ export function enlaceTelefono(sucursal: Sucursal): string {
   return `tel:${sucursal.telefono.replace(/[^\d+]/g, '')}`;
 }
 
-/** Mensaje por defecto para pedir cita en una sucursal concreta. */
-export function mensajeCita(sucursal: Sucursal): string {
-  return `Hola, me gustaria agendar una cita en ${negocio.nombreCorto} (sucursal ${sucursal.nombre}).`;
+/** Mensaje por defecto para pedir cita, en el idioma de quien navega. */
+export function mensajeCita(sucursal: Sucursal, idioma: Idioma): string {
+  return idioma === 'en'
+    ? `Hi, I would like to book a cut at ${negocio.nombreCorto} (${sucursal.nombre}).`
+    : `Hola, me gustaria agendar una cita en ${negocio.nombreCorto} (sucursal ${sucursal.nombre}).`;
 }

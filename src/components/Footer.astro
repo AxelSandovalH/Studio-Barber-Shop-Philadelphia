@@ -1,5 +1,11 @@
 ---
-import { negocio, navegacion, sucursales, enlaceTelefono } from '../data/site';
+import { negocio, sucursales, enlaceTelefono } from '../data/site';
+import { idiomaDe, rutaSucursal, t } from '../i18n/idiomas';
+import { navegacion, textos } from '../i18n/textos';
+
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
+const enlaces = navegacion(idioma);
 
 const anio = new Date().getFullYear();
 ---
@@ -17,7 +23,8 @@ const anio = new Date().getFullYear();
           Studio Barber Shop
         </p>
         <p class="text-tinta-500 mt-6 max-w-xs text-sm leading-relaxed">
-          {negocio.eslogan}. En Cabo San Lucas desde {negocio.desde}.
+          {t(negocio.eslogan, idioma)}. {T.pieDesde}
+          {negocio.desde}.
         </p>
 
         <ul class="mt-6 flex flex-wrap gap-3">
@@ -40,11 +47,11 @@ const anio = new Date().getFullYear();
 
       <div>
         <h2 class="text-salvia-600 text-xs font-semibold tracking-[0.22em] uppercase">
-          Secciones
+          {T.pieSecciones}
         </h2>
         <ul class="mt-5 space-y-3">
           {
-            navegacion.map((enlace) => (
+            enlaces.map((enlace) => (
               <li>
                 <a
                   href={enlace.href}
@@ -60,14 +67,14 @@ const anio = new Date().getFullYear();
 
       <div>
         <h2 class="text-salvia-600 text-xs font-semibold tracking-[0.22em] uppercase">
-          Sucursales
+          {T.pieSucursales}
         </h2>
         <ul class="mt-5 space-y-5">
           {
             sucursales.map((sucursal) => (
               <li class="text-sm">
                 <a
-                  href={`#${sucursal.id}`}
+                  href={rutaSucursal(idioma, sucursal.id)}
                   class="text-tinta-900 hover:text-salvia-700 font-semibold transition"
                 >
                   {sucursal.nombre}
@@ -102,7 +109,7 @@ const anio = new Date().getFullYear();
     <div
       class="border-fondo-200 text-tinta-500 mt-14 flex flex-col gap-2 border-t pt-8 text-xs sm:flex-row sm:items-center sm:justify-between"
     >
-      <p>© {anio} {negocio.nombre}. Todos los derechos reservados.</p>
+      <p>© {anio} {negocio.nombre}. {T.pieDerechos}</p>
       <p>Cabo San Lucas, Baja California Sur</p>
     </div>
   </div>

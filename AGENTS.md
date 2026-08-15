@@ -9,6 +9,16 @@ mexicanos.
 
 ## Reglas del proyecto
 
+- **El sitio es bilingue**: espanol en la raiz e ingles bajo `/en`. Los textos de
+  interfaz van en `src/i18n/textos.ts` y los datos de negocio traducibles son
+  `Bilingue` (`{ es, en }`) en `site.ts`. El ingles se declara como `typeof es`,
+  asi que olvidarse de una clave rompe `npm run check` en vez de dejar un hueco
+  en produccion. Los componentes sacan el idioma de `Astro.currentLocale` con
+  `idiomaDe()`, no por props.
+- **Cada idioma tiene sus propias rutas** (`/sucursales/...` y `/en/locations/...`)
+  y todas las paginas pasan `rutas` al layout, que es de donde salen el hreflang
+  y el conmutador de idioma. Si anades una pagina, tiene que existir en los dos
+  idiomas o el hreflang apuntara a un 404.
 - **Todo el contenido del negocio vive en `src/data/site.ts`.** No escribas
   textos de negocio, precios, horarios ni datos de contacto dentro de los
   componentes: importalos de ahi. Si un dato se puede derivar (numero de

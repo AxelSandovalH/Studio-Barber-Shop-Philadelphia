@@ -1,5 +1,10 @@
 ---
 import { sucursales, enlaceMapa } from '../data/site';
+import { idiomaDe } from '../i18n/idiomas';
+import { textos } from '../i18n/textos';
+
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
 
 // Solo se muestran las sucursales que tienen ficha con resenas. Si ninguna la
 // tiene, la seccion entera desaparece sola.
@@ -39,12 +44,12 @@ const conValoracion = sucursales.filter((sucursal) => sucursal.valoracion);
               </p>
 
               <p class="text-tinta-600 mt-3 text-sm">
-                {sucursal.valoracion!.total} resenas en Google
-                {conValoracion.length > 1 && ` · sucursal ${sucursal.nombre}`}
+                {sucursal.valoracion!.total} {T.resenasEnGoogle}
+                {conValoracion.length > 1 && ` · ${sucursal.nombre}`}
               </p>
 
               <span class="text-salvia-700 group-hover:text-salvia-800 mt-2 text-sm font-semibold underline underline-offset-4 transition">
-                Leerlas
+                {T.leerResenas}
               </span>
             </a>
           ))}

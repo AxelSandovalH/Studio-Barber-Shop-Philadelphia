@@ -37,6 +37,29 @@ El servidor queda en http://localhost:4321.
 | `npm run format`       | Formatea todo con Prettier                     |
 | `npm run format:check` | Comprueba el formato sin escribir              |
 
+## Idiomas
+
+El sitio esta en espanol e ingles. El espanol vive en la raiz y el ingles bajo
+`/en`, con etiquetas `hreflang` reciprocas para que Google sirva cada version a
+quien corresponde. Cabo San Lucas recibe mucho turismo estadounidense y
+"barber shop cabo san lucas" no llevaba a una web que solo existia en espanol.
+
+|          | Espanol               | Ingles                  |
+| -------- | --------------------- | ----------------------- |
+| Portada  | `/`                   | `/en/`                  |
+| Sucursal | `/sucursales/brisas/` | `/en/locations/brisas/` |
+
+Los textos de interfaz estan en [`src/i18n/textos.ts`](src/i18n/textos.ts). El
+ingles se declara como `typeof es`, asi que si anades una clave en espanol y te
+olvidas del ingles, `npm run check` falla en vez de dejar un hueco en la web.
+
+Los datos de negocio que hay que traducir (nombres de servicio, descripciones,
+textos `alt`) son objetos `{ es: '…', en: '…' }` dentro de `site.ts`. Lo que no
+se traduce —direcciones, telefonos, horas— sigue siendo texto normal.
+
+**Si anades una pagina, tiene que existir en los dos idiomas**, o el `hreflang`
+apuntara a una URL que no existe.
+
 ## Donde se edita el contenido
 
 **Todo el contenido del negocio vive en [`src/data/site.ts`](src/data/site.ts).**
