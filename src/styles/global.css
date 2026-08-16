@@ -32,6 +32,13 @@
   --color-salvia-700: #0a2c18;
   --color-salvia-800: #061c0f;
 
+  /* Verde de las paredes del local: mas claro y mas gris que el de la marca.
+     Se usa en tintes muy bajos para las bandas de seccion, de forma que el
+     fondo de la web recuerde al del sitio sin competir con el contenido. */
+  --color-pared-100: #eef2ee;
+  --color-pared-200: #dfe7e0;
+  --color-pared-400: #8fa894;
+
   --color-poste-rojo: #c8352f;
   --color-poste-azul: #2f5fc8;
 

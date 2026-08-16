@@ -37,6 +37,10 @@ mexicanos.
   franja). No metas hex sueltos en los componentes. Los tokens se nombran por su
   funcion y no por su color, y en las dos escalas el numero mas alto es el que
   mas contrasta: por eso un `hover:` a un numero mayor siempre oscurece.
+- **El diseno sale del local, no de un catalogo.** El fondo crema es el del
+  suelo, `pared` es el verde de las paredes y el arco de la galeria recoge los
+  marcos arqueados que cuelgan en la pared. Si hay que anadir un motivo nuevo,
+  sale de una foto del sitio antes que de una tendencia.
 - **La paleta es clara**: fondo crema y verde de marca. El cliente descarto el
   negro expresamente. El verde `#0f3a20` esta muestreado del logo, no elegido a
   ojo; si alguna vez cambia el logo, se vuelve a muestrear. `salvia-500` es mas

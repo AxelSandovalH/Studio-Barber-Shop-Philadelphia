@@ -212,7 +212,8 @@ export const sucursales: Sucursal[] = [
     id: 'brisas',
     nombre: 'Brisas',
     telefono: '+52 624 100 4975',
-    // TODO(datos-reales): confirmar que este numero recibe WhatsApp.
+    // Confirmado: el negocio responde "le paso WhatsApp 6241004975" en los
+    // comentarios de su propio Instagram.
     whatsapp: '526241004975',
     direccion: {
       calle: 'Carretera Cabo San Lucas - Todos los Santos 25-L 1, local 11',
