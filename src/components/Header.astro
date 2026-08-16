@@ -1,11 +1,10 @@
 ---
-import { Image } from 'astro:assets';
 import { negocio } from '../data/site';
 import { IDIOMA_POR_DEFECTO, idiomaDe, type Idioma } from '../i18n/idiomas';
 import { navegacion, textos } from '../i18n/textos';
-// El alt va vacio a proposito: el nombre del negocio esta escrito al lado, y
-// repetirlo haria que un lector de pantalla lo leyera dos veces seguidas.
-import logo from '../assets/marca/logo.jpg';
+// Va incrustado y no como <img>: asi el SVG hereda las fuentes de la pagina.
+// Un <img src="logo.svg"> es un documento aislado y no las ve.
+import Logo from '../assets/marca/logo.svg';
 
 interface Props {
   /** Esta misma pagina en cada idioma, para el conmutador. */
@@ -32,14 +31,7 @@ const otroTextos = textos(otroIdioma);
       class="group flex items-center gap-3"
       aria-label={`${negocio.nombre}, ${T.inicio}`}
     >
-      <Image
-        src={logo}
-        alt=""
-        width={88}
-        height={88}
-        loading="eager"
-        class="size-11 shrink-0 rounded-full"
-      />
+      <Logo class="size-11 shrink-0 rounded-full" />
       <span class="leading-none">
         <span class="font-display text-tinta-900 block text-2xl tracking-wide">
           Philadelphia

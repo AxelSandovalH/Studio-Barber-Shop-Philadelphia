@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img">
+  <title>Philadelphia Studio Barber Shop</title>
+
+  <rect width="500" height="500" fill="#0f3a20" />
+
+  <defs>
+    <path id="arco-marca" d="M34.80000000000001 358.5 A215.2 215.2 0 0 1 465.2 358.5" />
+  </defs>
+
+  <g fill="#f7f5f1">
+    <text
+      font-family="var(--font-slab), Georgia, serif"
+      font-weight="700"
+      font-size="30"
+      letter-spacing="7.19"
+      text-anchor="middle"
+    ><textPath href="#arco-marca" startOffset="50%">STUDIOBARBERSHOP</textPath></text>
+
+    <path d="M240 165 L276 177 L276 190.5 L240 178.5 Z M240 183.5 L276 195.5 L276 209 L240 197 Z M240 202 L276 214 L276 227.5 L240 215.5 Z M240 220.5 L276 232.5 L276 246 L240 234 Z M240 239 L276 251 L276 264.5 L240 252.5 Z" />
+
+    <text
+      x="250"
+      y="326"
+      font-family="var(--font-display), Impact, sans-serif"
+      font-size="45.5"
+      letter-spacing="16.8"
+      text-anchor="middle"
+    >PHILADELPHIA</text>
+
+    <polygon points="191.7,366.6 194.45,374.51 202.83,374.68 196.15,379.75 198.58,387.77 191.7,382.98 184.82,387.77 187.25,379.75 180.57,374.68 188.95,374.51" />
+    <polygon points="218.3,348.7 221.36,357.49 230.66,357.68 223.25,363.31 225.94,372.22 218.3,366.9 210.66,372.22 213.35,363.31 205.94,357.68 215.24,357.49" />
+    <polygon points="248.3,345 250.65,351.76 257.81,351.91 252.1,356.24 254.18,363.09 248.3,359 242.42,363.09 244.5,356.24 238.79,351.91 245.95,351.76" />
+    <polygon points="278.3,350.6 281.29,359.19 290.38,359.38 283.13,364.87 285.76,373.57 278.3,368.38 270.84,373.57 273.47,364.87 266.22,359.38 275.31,359.19" />
+    <polygon points="306.7,368.3 309.45,376.21 317.83,376.38 311.15,381.45 313.58,389.47 306.7,384.68 299.82,389.47 302.25,381.45 295.57,376.38 303.95,376.21" />
+
+    <text
+      x="250"
+      y="421"
+      font-family="var(--font-slab), Georgia, serif"
+      font-weight="700"
+      font-size="13.5"
+      letter-spacing="6.3"
+      text-anchor="middle"
+    >EST. 2019</text>
+  </g>
+</svg>

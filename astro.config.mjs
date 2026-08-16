@@ -57,6 +57,15 @@ export default defineConfig({
       weights: [400, 500, 600, 700],
       subsets: ['latin'],
     },
+    {
+      // Solo la usa el logo. El original lleva serifas en el arco y en
+      // "EST. 2019", y con una sans esas dos lineas no parecen la misma marca.
+      provider: fontProviders.google(),
+      name: 'Roboto Slab',
+      cssVariable: '--fuente-slab',
+      weights: [700],
+      subsets: ['latin'],
+    },
   ],
 
   integrations: [sitemap()],

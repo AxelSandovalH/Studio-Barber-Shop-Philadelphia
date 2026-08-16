@@ -37,6 +37,8 @@
 
   --font-display: var(--fuente-display), ui-sans-serif, system-ui, sans-serif;
   --font-texto: var(--fuente-texto), ui-sans-serif, system-ui, sans-serif;
+  /* Solo la usa el logo. */
+  --font-slab: var(--fuente-slab), Georgia, serif;
 }
 
 @layer base {

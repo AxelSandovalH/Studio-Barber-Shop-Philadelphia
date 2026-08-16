@@ -42,8 +42,12 @@ mexicanos.
   ojo; si alguna vez cambia el logo, se vuelve a muestrear. `salvia-500` es mas
   claro a proposito: a tamano grande el verde del logo se lee casi como negro,
   asi que los titulos usan el 500 y los rellenos solidos el 600.
-- **El logo esta en `src/assets/marca/logo.jpg`** y el original en
-  `media-original/marca/`. Los iconos de navegador de `public/` salen de ahi.
+- **El logo es `src/assets/marca/logo.svg`**, una reconstruccion vectorial del
+  JPEG original, que sigue en `media-original/marca/`. Se regenera con
+  `node scripts/generar-logo.mjs`, donde estan todas las medidas. Va
+  **incrustado** (`import Logo from '...svg'` y `<Logo />`), no como `<img>`:
+  usa `<text>` con las fuentes del sitio y un `<img>` es un documento aislado
+  que no las ve. Los iconos de `public/` se generan del JPEG, que es exacto.
 - **Fuentes**: se auto-hospedan con la API `fonts` de Astro. Se usan via las
   utilidades `font-display` y `font-texto`, no con `<link>` a Google.
 - **Fotos en `src/assets/`, videos en `public/`.** Las fotos solo se optimizan
