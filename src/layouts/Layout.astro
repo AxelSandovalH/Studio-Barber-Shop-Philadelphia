@@ -46,6 +46,10 @@ const imagenCompartir = new URL('/og.jpg', Astro.site).href;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- El SVG lo usan Chrome, Firefox y Edge; el PNG es el respaldo para
+         Safari y navegadores antiguos. Los dos son el poste del logo: el logo
+         entero a 16 px se convierte en un cuadrado verde sin nada dentro. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="canonical" href={urlCanonica.href} />

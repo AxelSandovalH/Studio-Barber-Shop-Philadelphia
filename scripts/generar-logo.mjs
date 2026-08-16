@@ -107,4 +107,31 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role=
 `;
 
 writeFileSync(join(RAIZ, 'src/assets/marca/logo.svg'), svg);
-console.log('logo.svg generado');
+console.log('src/assets/marca/logo.svg');
+
+// ---- Icono del navegador ----------------------------------------------------
+// El logo entero a 16 px es una mancha: el texto desaparece y solo queda un
+// cuadrado verde. El poste, en cambio, se lee a cualquier tamano, asi que el
+// icono es solo el poste. Ademas no lleva texto, y por tanto no depende de
+// ninguna fuente: un favicon es un documento aislado y no ve las del sitio.
+const ICONO = 100;
+const escala = 76 / (POSTE.paso * 4 + POSTE.alto); // el poste ocupa 76 de 100
+const anchoPoste = (POSTE.x1 - POSTE.x0) * escala;
+const x0 = (ICONO - anchoPoste) / 2;
+
+const bandasIcono = Array.from({ length: 5 }, (_, i) => {
+  const y = 12 + i * POSTE.paso * escala;
+  const caida = POSTE.caida * escala;
+  const alto = POSTE.alto * escala;
+  return `M${r2(x0)} ${r2(y)} L${r2(x0 + anchoPoste)} ${r2(y + caida)} L${r2(x0 + anchoPoste)} ${r2(y + caida + alto)} L${r2(x0)} ${r2(y + alto)} Z`;
+}).join(' ');
+
+const icono = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ICONO} ${ICONO}" role="img">
+  <title>Philadelphia Studio Barber Shop</title>
+  <rect width="${ICONO}" height="${ICONO}" rx="18" fill="${VERDE}" />
+  <path d="${bandasIcono}" fill="${BLANCO}" />
+</svg>
+`;
+
+writeFileSync(join(RAIZ, 'public/favicon.svg'), icono);
+console.log('public/favicon.svg');
