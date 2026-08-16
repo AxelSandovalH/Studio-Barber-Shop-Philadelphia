@@ -37,8 +37,13 @@ mexicanos.
   franja). No metas hex sueltos en los componentes. Los tokens se nombran por su
   funcion y no por su color, y en las dos escalas el numero mas alto es el que
   mas contrasta: por eso un `hover:` a un numero mayor siempre oscurece.
-- **La paleta es clara**: fondo crema y verde salvia, el de las paredes del
-  local. El cliente descarto el negro expresamente.
+- **La paleta es clara**: fondo crema y verde de marca. El cliente descarto el
+  negro expresamente. El verde `#0f3a20` esta muestreado del logo, no elegido a
+  ojo; si alguna vez cambia el logo, se vuelve a muestrear. `salvia-500` es mas
+  claro a proposito: a tamano grande el verde del logo se lee casi como negro,
+  asi que los titulos usan el 500 y los rellenos solidos el 600.
+- **El logo esta en `src/assets/marca/logo.jpg`** y el original en
+  `media-original/marca/`. Los iconos de navegador de `public/` salen de ahi.
 - **Fuentes**: se auto-hospedan con la API `fonts` de Astro. Se usan via las
   utilidades `font-display` y `font-texto`, no con `<link>` a Google.
 - **Fotos en `src/assets/`, videos en `public/`.** Las fotos solo se optimizan

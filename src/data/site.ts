@@ -30,8 +30,6 @@ import estilizadoPoster from '../assets/galeria/estilizado-poster.jpg';
 export interface Negocio {
   nombre: string;
   nombreCorto: string;
-  /** Inicial de la marca para el logotipo. */
-  inicial: string;
   eslogan: Bilingue;
   descripcion: Bilingue;
   /** Ano de apertura, para la seccion de cifras. */
@@ -154,7 +152,6 @@ export const moneda = {
 export const negocio: Negocio = {
   nombre: 'Philadelphia Studio Barber Shop',
   nombreCorto: 'Philadelphia Studio',
-  inicial: 'P',
   eslogan: {
     es: 'Corte clasico, cuidado moderno',
     en: 'Classic cuts, modern care',

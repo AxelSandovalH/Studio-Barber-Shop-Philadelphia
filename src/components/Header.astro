@@ -1,7 +1,11 @@
 ---
+import { Image } from 'astro:assets';
 import { negocio } from '../data/site';
 import { IDIOMA_POR_DEFECTO, idiomaDe, type Idioma } from '../i18n/idiomas';
 import { navegacion, textos } from '../i18n/textos';
+// El alt va vacio a proposito: el nombre del negocio esta escrito al lado, y
+// repetirlo haria que un lector de pantalla lo leyera dos veces seguidas.
+import logo from '../assets/marca/logo.jpg';
 
 interface Props {
   /** Esta misma pagina en cada idioma, para el conmutador. */
@@ -28,11 +32,14 @@ const otroTextos = textos(otroIdioma);
       class="group flex items-center gap-3"
       aria-label={`${negocio.nombre}, ${T.inicio}`}
     >
-      <span
-        class="border-salvia-600/60 font-display text-salvia-700 group-hover:border-salvia-700 flex size-11 shrink-0 items-center justify-center rounded-full border text-2xl leading-none transition"
-      >
-        {negocio.inicial}
-      </span>
+      <Image
+        src={logo}
+        alt=""
+        width={88}
+        height={88}
+        loading="eager"
+        class="size-11 shrink-0 rounded-full"
+      />
       <span class="leading-none">
         <span class="font-display text-tinta-900 block text-2xl tracking-wide">
           Philadelphia

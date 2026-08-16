@@ -22,9 +22,15 @@
   --color-tinta-700: #36423a;
   --color-tinta-900: #1d2620;
 
-  --color-salvia-600: #4a6b57;
-  --color-salvia-700: #3d5c4b;
-  --color-salvia-800: #2f4a3b;
+  /* Verde de marca, muestreado del logo: #0f3a20.
+     El 500 existe para los textos grandes: a ese tamano el verde del logo se
+     lee casi como negro, y el cliente descarto el negro. Los rellenos solidos
+     (botones, distintivos) si usan el verde exacto, que ahi no hay confusion
+     posible. */
+  --color-salvia-500: #2f6b45;
+  --color-salvia-600: #0f3a20;
+  --color-salvia-700: #0a2c18;
+  --color-salvia-800: #061c0f;
 
   --color-poste-rojo: #c8352f;
   --color-poste-azul: #2f5fc8;
