@@ -57,11 +57,10 @@ const preparados = await Promise.all(
     {
       preparados.map(({ medio, poster }, indice) => (
         <li data-slide class="w-[78%] shrink-0 snap-start sm:w-[46%] lg:w-[31%]">
-          {/* El arco recoge los marcos arqueados que hay en la pared del
-              local. Abajo se queda recto para que la tarjeta siga asentada.
-              El mismo radio se repite en el <video> de dentro: el navegador lo
-              compone en su propia capa y el overflow-hidden no lo recorta. */}
-          <figure class="border-fondo-300 bg-fondo-150 relative aspect-[4/5] overflow-hidden rounded-t-full rounded-b-2xl border">
+          {/* Esquinas normales y no en arco: el material son retratos
+              verticales, y un arco arriba recorta la cabeza. El guino al local
+              se queda en el color de las bandas de seccion. */}
+          <figure class="border-fondo-300 bg-fondo-150 relative aspect-[4/5] overflow-hidden rounded-2xl border">
             {medio.tipo === 'foto' ? (
               <Image
                 src={medio.src}
@@ -76,7 +75,7 @@ const preparados = await Promise.all(
               <>
                 <video
                   data-video
-                  class="size-full rounded-t-full rounded-b-2xl object-cover"
+                  class="size-full rounded-2xl object-cover"
                   poster={poster ?? undefined}
                   aria-label={t(medio.alt, idioma)}
                   muted
@@ -88,7 +87,7 @@ const preparados = await Promise.all(
                   <source src={medio.mp4} type="video/mp4" />
                 </video>
 
-                <span class="bg-fondo-50/80 text-tinta-900 pointer-events-none absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.65rem] font-semibold tracking-[0.12em] uppercase backdrop-blur-sm">
+                <span class="bg-fondo-50/80 text-tinta-900 pointer-events-none absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.65rem] font-semibold tracking-[0.12em] uppercase backdrop-blur-sm">
                   <svg
                     class="size-3"
                     viewBox="0 0 24 24"
