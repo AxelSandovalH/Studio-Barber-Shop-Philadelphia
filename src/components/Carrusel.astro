@@ -247,7 +247,12 @@ const preparados = await Promise.all(
     // scrollIntoView y no scrollTo: deja que el navegador calcule la posicion
     // y respeta los topes del contenedor sin replicar ese calculo a mano.
     // block:"nearest" evita que la pagina salte en vertical.
-    const irA = (indice: number) => {
+    //
+    // Es `let` porque con el carrusel anclado hay que navegar de otra forma:
+    // mover la pista a mano no vale, el scrub la devuelve en el siguiente
+    // fotograma. mejorarConGsap sustituye esta funcion por una que mueve el
+    // scroll de la pagina, que es lo que de verdad manda entonces.
+    let irA = (indice: number) => {
       const destino = slides[Math.max(0, Math.min(indice, slides.length - 1))];
       destino?.scrollIntoView({
         behavior: REDUCIR.matches ? 'auto' : 'smooth',
@@ -278,7 +283,11 @@ const preparados = await Promise.all(
     pintarEstado();
 
     reproducirSoloVisible(pista);
-    mejorarConGsap(pista, slides);
+
+    anclarConGsap(carrusel, pista, slides, ultimoAlcanzable).then((navegar) => {
+      if (navegar) irA = navegar;
+      pintarEstado();
+    });
   }
 
   /**
@@ -320,100 +329,105 @@ const preparados = await Promise.all(
   }
 
   /**
-   * Mejora progresiva: arrastre con inercia y animacion de entrada.
+   * Mejora progresiva: la seccion se ancla y el scroll vertical se convierte en
+   * avance horizontal del carrusel.
    *
-   * Solo en escritorio con raton. En tactil el scroll nativo ya tiene mejor
-   * inercia que cualquier cosa que hagamos, asi que el movil no llega ni a
-   * descargar GSAP.
+   * Solo en escritorio con raton. En tactil anclar pelea con el gesto nativo de
+   * desplazar, que ahi ya funciona bien, asi que el movil ni descarga GSAP. Con
+   * "prefers-reduced-motion" tampoco: secuestrar el scroll es justo lo que esa
+   * preferencia pide evitar.
+   *
+   * Devuelve la funcion con la que hay que navegar mientras esta anclado, o
+   * null si no se activo.
    */
-  async function mejorarConGsap(pista: HTMLElement, slides: HTMLElement[]) {
+  async function anclarConGsap(
+    carrusel: HTMLElement,
+    pista: HTMLElement,
+    slides: HTMLElement[],
+    ultimoAlcanzable: () => number,
+  ) {
     const enEscritorio = window.matchMedia('(min-width: 1024px) and (pointer: fine)');
-    if (!enEscritorio.matches || REDUCIR.matches) return;
+    if (!enEscritorio.matches || REDUCIR.matches) return null;
 
-    const [{ gsap }, { InertiaPlugin }] = await Promise.all([
+    const seccion = carrusel.closest('section');
+    if (!seccion) return null;
+
+    const [{ gsap }, { ScrollTrigger }] = await Promise.all([
       import('gsap'),
-      import('gsap/InertiaPlugin'),
+      import('gsap/ScrollTrigger'),
     ]);
 
-    gsap.registerPlugin(InertiaPlugin);
+    gsap.registerPlugin(ScrollTrigger);
 
-    // Aqui NO se usa Draggable con type:"scrollLeft". Ese modo sustituye el
-    // scroll nativo por transforms: deja scrollWidth === clientWidth y con eso
-    // dejan de funcionar las flechas, los puntos y el teclado. Arrastramos a
-    // mano sobre el scroll real y dejamos a GSAP solo la fisica del
-    // lanzamiento, que es donde de verdad aporta.
-    InertiaPlugin.track(pista, 'scrollLeft');
+    /** Lo que le queda por recorrer a la pista de un extremo al otro. */
+    const recorrido = () => pista.scrollWidth - pista.clientWidth;
+    if (recorrido() <= 0) return null;
 
-    // El anclado obligatorio corta el lanzamiento a media inercia. Con
-    // "proximity" el gesto termina donde lo dejas y solo ajusta si queda cerca.
-    pista.style.scrollSnapType = 'x proximity';
-    pista.style.cursor = 'grab';
+    // Anclar una seccion mas alta que la ventana deja parte fuera de vista todo
+    // el rato. Primero se le quita aire vertical, que es de donde se puede
+    // recortar sin tocar el contenido, y si aun asi no cabe se renuncia al
+    // efecto y se deja el scroll normal, que nunca estorba.
+    //
+    // Va en estilo en linea y no con una clase: en Tailwind las utilidades
+    // pesan mas que la capa de componentes, asi que un `py-32` en el HTML
+    // ganaria a cualquier regla que escribieramos.
+    const espaciadoOriginal = {
+      arriba: seccion.style.paddingTop,
+      abajo: seccion.style.paddingBottom,
+    };
+    seccion.style.paddingTop = '2.5rem';
+    seccion.style.paddingBottom = '2.5rem';
 
-    let arrastrando = false;
-    let xInicial = 0;
-    let scrollInicial = 0;
+    if (seccion.getBoundingClientRect().height > window.innerHeight) {
+      seccion.style.paddingTop = espaciadoOriginal.arriba;
+      seccion.style.paddingBottom = espaciadoOriginal.abajo;
+      return null;
+    }
 
-    // Sin esto, arrastrar sobre una foto la "coge" como si fuera un enlace.
-    pista.addEventListener('dragstart', (evento) => evento.preventDefault());
+    // Se mueve el scrollLeft real y no un transform sobre la pista. Un
+    // transform deja scrollWidth === clientWidth, y con eso se caen las
+    // flechas, los puntos, el teclado y el observador que reproduce el video
+    // visible. Moviendo el scroll nativo, todo eso sigue funcionando igual.
+    //
+    // El anclado obligatorio hay que quitarlo: reengancha la pista en cada
+    // fotograma y el avance sale a tirones.
+    pista.style.scrollSnapType = 'none';
+    // La pista lleva scroll-smooth para las flechas. Durante el anclaje estorba:
+    // cada asignacion de scrollLeft se animaria, y como el scrub asigna en cada
+    // fotograma, el avance saldria a rastras.
+    pista.style.scrollBehavior = 'auto';
 
-    pista.addEventListener('pointerdown', (evento) => {
-      if (evento.button !== 0) return;
-      arrastrando = true;
-      xInicial = evento.clientX;
-      scrollInicial = pista.scrollLeft;
-      gsap.killTweensOf(pista);
-      pista.style.scrollSnapType = 'none';
-      pista.style.cursor = 'grabbing';
-      pista.setPointerCapture(evento.pointerId);
+    const anclaje = ScrollTrigger.create({
+      trigger: seccion,
+      start: 'top top',
+      // Se recorre en vertical exactamente lo que mide en horizontal, para que
+      // el gesto se sienta uno a uno.
+      end: () => '+=' + recorrido(),
+      pin: true,
+      // Un pelin de scrub suaviza el paso sin llegar a sentirse a la deriva.
+      scrub: 0.5,
+      // Sin esto, al cambiar el tamano de la ventana el final se queda con el
+      // recorrido viejo y la ultima tarjeta no llega a verse.
+      invalidateOnRefresh: true,
+      anticipatePin: 1,
+      onUpdate: (self) => {
+        pista.scrollLeft = self.progress * recorrido();
+      },
     });
 
-    pista.addEventListener('pointermove', (evento) => {
-      if (!arrastrando) return;
-      pista.scrollLeft = scrollInicial - (evento.clientX - xInicial);
-    });
+    // Con el carrusel anclado, las flechas y los puntos tienen que mover la
+    // pagina, no la pista: la posicion horizontal es un reflejo del scroll
+    // vertical, asi que es ahi donde hay que actuar.
+    return (indice: number) => {
+      const destino = Math.max(0, Math.min(indice, ultimoAlcanzable()));
+      const avance = slides[destino]!.offsetLeft - slides[0]!.offsetLeft;
+      const progreso = Math.min(1, Math.max(0, avance / recorrido()));
 
-    const soltar = (evento: PointerEvent) => {
-      if (!arrastrando) return;
-      arrastrando = false;
-      pista.style.cursor = 'grab';
-      pista.style.scrollSnapType = 'x proximity';
-      if (pista.hasPointerCapture(evento.pointerId)) {
-        pista.releasePointerCapture(evento.pointerId);
-      }
-
-      // velocity "auto" usa la velocidad que viene midiendo InertiaPlugin.track.
-      gsap.to(pista, {
-        inertia: {
-          scrollLeft: {
-            velocity: 'auto',
-            min: 0,
-            max: pista.scrollWidth - pista.clientWidth,
-          },
-        },
+      window.scrollTo({
+        top: anclaje.start + progreso * (anclaje.end - anclaje.start),
+        behavior: 'smooth',
       });
     };
-
-    pista.addEventListener('pointerup', soltar);
-    pista.addEventListener('pointercancel', soltar);
-
-    // La entrada se dispara una sola vez, y para eso un IntersectionObserver
-    // hace lo mismo que ScrollTrigger sin cargar sus 42 KB.
-    const entrada = new IntersectionObserver(
-      (entradas, observador) => {
-        if (!entradas.some((e) => e.isIntersecting)) return;
-        observador.disconnect();
-        gsap.from(slides, {
-          opacity: 0,
-          y: 28,
-          duration: 0.55,
-          stagger: 0.07,
-          ease: 'power2.out',
-        });
-      },
-      { threshold: 0.15 },
-    );
-
-    entrada.observe(pista);
   }
 
   document.querySelectorAll<HTMLElement>('[data-carrusel]').forEach(iniciar);

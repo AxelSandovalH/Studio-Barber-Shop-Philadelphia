@@ -62,12 +62,25 @@ mexicanos.
   se sirve tal cual. Astro no procesa video, por eso ese va en `public/` ya
   comprimido con `scripts/comprimir-video.sh`.
 - **El carrusel es scroll nativo con `scroll-snap`.** Las flechas, los puntos y
-  el arrastre con GSAP son mejora progresiva encima, no la base: sin JavaScript
-  la galeria sigue siendo usable. No uses `Draggable` con `type:"scrollLeft"`,
-  que sustituye el scroll nativo y rompe flechas, puntos y teclado.
+  el anclaje con GSAP son mejora progresiva encima, no la base: sin JavaScript
+  la galeria sigue siendo usable.
+- **En escritorio la galeria se ancla y el scroll vertical la mueve en
+  horizontal** (ScrollTrigger con `pin` y `scrub`). Lo que se mueve es el
+  `scrollLeft` real de la pista, no un `transform`: con un transform
+  `scrollWidth === clientWidth` y se caen las flechas, los puntos, el teclado y
+  el observador que reproduce solo el video visible. Por lo mismo, no uses
+  `Draggable` con `type:"scrollLeft"`.
+- **Mientras esta anclado hay que desactivar `scroll-snap` y `scroll-behavior`
+  en la pista.** El anclado reengancha en cada fotograma y el suave anima cada
+  asignacion del scrub; con cualquiera de los dos el avance sale a tirones.
+- **Anclar solo si la seccion cabe en la ventana.** Si sobresale se queda parte
+  fuera de vista todo el rato. Se le quita aire vertical (en estilo en linea: en
+  Tailwind las utilidades ganan a la capa de componentes) y, si aun asi no cabe,
+  se renuncia al efecto.
 - **GSAP solo en escritorio con raton y con `import()` dinamico**, para que el
-  movil no descargue 41 kB que no necesita: el scroll tactil nativo ya tiene
-  mejor inercia.
+  movil no descargue 43 kB que no necesita: ahi el gesto tactil nativo ya
+  funciona y anclar pelearia con el. Con `prefers-reduced-motion` tampoco se
+  ancla: secuestrar el scroll es justo lo que esa preferencia pide evitar.
 
 ## Desarrollo
 
