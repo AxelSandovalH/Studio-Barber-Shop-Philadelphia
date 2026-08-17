@@ -218,6 +218,16 @@ Solo si se decide mostrar el equipo: `public/equipo/barbero-1.svg` …
 
 ## SEO
 
+Las **preguntas frecuentes** de la portada se generan en
+[`src/data/faq.ts`](src/data/faq.ts) a partir de los mismos datos del negocio:
+si cambias un horario o anades una sucursal, la respuesta cambia sola. Solo se
+responde lo que consta en `site.ts`, nada de suponer que hay estacionamiento o
+que se atiende en ingles.
+
+Emiten ademas `FAQPage`, que es lo que puede hacer que Google despliegue las
+preguntas debajo del resultado. Requisito suyo: la respuesta declarada tiene que
+estar visible en la pagina, y lo esta porque sale del mismo sitio.
+
 La pagina emite datos estructurados con **una entrada `HairSalon` por
 sucursal**, generadas a partir de `site.ts`, con direccion, telefono y horario
 de cada local. Es lo que permite que cada sucursal aparezca por separado en las

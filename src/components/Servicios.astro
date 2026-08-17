@@ -1,6 +1,6 @@
 ---
 import { servicios, moneda } from '../data/site';
-import { idiomaDe, t } from '../i18n/idiomas';
+import { idiomaDe, rutaInicio, t } from '../i18n/idiomas';
 import { rellenar, textos } from '../i18n/textos';
 import TituloSeccion from './TituloSeccion.astro';
 
@@ -9,6 +9,10 @@ const T = textos(idioma);
 
 // Si todavia no hay ningun precio cargado no tiene sentido anunciar la moneda.
 const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
+
+// Absoluto y no "#sucursales": este bloque tambien se usa en las paginas de
+// sucursal, donde ese ancla no existe y el enlace no llevaria a ninguna parte.
+const enlaceSucursales = `${rutaInicio(idioma)}#sucursales`;
 ---
 
 <section id="servicios" class="border-fondo-200 border-t py-24 md:py-32">
@@ -78,7 +82,7 @@ const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
     <p class="text-tinta-500 mt-10 text-sm">
       {hayPrecios && `${t(moneda.nota, idioma)} `}{T.serviciosPie}{' '}
       <a
-        href="#sucursales"
+        href={enlaceSucursales}
         class="text-salvia-700 hover:text-salvia-800 font-semibold underline underline-offset-4"
       >
         {T.serviciosPieEnlace}</a

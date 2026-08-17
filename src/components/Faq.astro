@@ -1,0 +1,46 @@
+---
+import { preguntasFrecuentes } from '../data/faq';
+import { idiomaDe } from '../i18n/idiomas';
+import { textos } from '../i18n/textos';
+import TituloSeccion from './TituloSeccion.astro';
+
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
+const preguntas = preguntasFrecuentes(idioma);
+---
+
+<section id="preguntas" class="border-fondo-200 border-t py-24 md:py-32">
+  <div class="mx-auto max-w-6xl px-5">
+    <TituloSeccion etiqueta={T.faqEtiqueta} titulo={T.faqTitulo} />
+
+    {
+      /* <details> nativo: se abre y se cierra sin JavaScript, es navegable con
+        teclado y los buscadores leen el contenido aunque este plegado. */
+    }
+    <dl class="divide-fondo-200 border-fondo-200 mt-14 max-w-3xl divide-y border-t">
+      {
+        preguntas.map((entrada) => (
+          <div class="py-2">
+            <details class="group">
+              <summary class="text-tinta-900 flex cursor-pointer items-center justify-between gap-6 py-4 text-lg font-semibold marker:content-['']">
+                <dt>{entrada.pregunta}</dt>
+                <svg
+                  class="text-salvia-600 size-5 shrink-0 transition group-open:rotate-45"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </summary>
+              <dd class="text-tinta-600 pb-5 leading-relaxed">{entrada.respuesta}</dd>
+            </details>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

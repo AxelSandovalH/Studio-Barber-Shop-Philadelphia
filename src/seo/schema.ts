@@ -1,5 +1,6 @@
 import { negocio, sucursales, servicios, moneda, type Sucursal } from '../data/site';
 import { t, type Idioma } from '../i18n/idiomas';
+import { esquemaFaq } from '../data/faq';
 
 /** Nombres de dia como los espera schema.org, indexados igual que Date.getDay(). */
 const DIAS_SCHEMA = [
@@ -77,11 +78,21 @@ export function esquemaSucursal(sucursal: Sucursal, idioma: Idioma, url: URL) {
   };
 }
 
-/** Todas las sucursales, para la portada. */
+/**
+ * Todas las sucursales mas las preguntas frecuentes, para la portada.
+ *
+ * El FAQPage es lo que puede hacer que Google despliegue las preguntas debajo
+ * del resultado. Las respuestas salen de los mismos datos que se ven en la
+ * pagina, que es justo lo que Google exige: nada de responder aqui algo que no
+ * este escrito arriba.
+ */
 export function esquemaPortada(idioma: Idioma, url: URL) {
   return {
     '@context': 'https://schema.org',
-    '@graph': sucursales.map((sucursal) => esquemaSucursal(sucursal, idioma, url)),
+    '@graph': [
+      ...sucursales.map((sucursal) => esquemaSucursal(sucursal, idioma, url)),
+      esquemaFaq(idioma),
+    ],
   };
 }
 

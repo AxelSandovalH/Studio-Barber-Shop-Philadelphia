@@ -15,13 +15,15 @@ interface Props {
    */
   rutas: Record<Idioma, string>;
   /** Datos estructurados de la pagina. Cada pagina declara los suyos. */
-  datosEstructurados: unknown;
+  datosEstructurados?: unknown;
+  /** Para paginas que no deben acabar en el indice, como el 404. */
+  noIndexar?: boolean;
 }
 
 const idioma = idiomaDe(Astro.currentLocale);
 const T = textos(idioma);
 
-const { titulo, descripcion, rutas, datosEstructurados } = Astro.props;
+const { titulo, descripcion, rutas, datosEstructurados, noIndexar } = Astro.props;
 
 // En la portada el sufijo es el nombre completo, que es donde toca reforzar la
 // marca. En las paginas internas se usa el nombre corto: con el largo, el
@@ -56,6 +58,7 @@ const imagenCompartir = new URL('/og.jpg', Astro.site).href;
     <meta name="generator" content={Astro.generator} />
 
     <title>{tituloPagina}</title>
+    {noIndexar && <meta name="robots" content="noindex, follow" />}
     <meta name="description" content={descripcionPagina} />
     <meta name="theme-color" content="#f5f2ea" />
 
@@ -103,11 +106,15 @@ const imagenCompartir = new URL('/og.jpg', Astro.site).href;
     <Font cssVariable="--fuente-display" preload />
     <Font cssVariable="--fuente-texto" preload />
 
-    <script
-      type="application/ld+json"
-      is:inline
-      set:html={JSON.stringify(datosEstructurados)}
-    />
+    {
+      datosEstructurados && (
+        <script
+          type="application/ld+json"
+          is:inline
+          set:html={JSON.stringify(datosEstructurados)}
+        />
+      )
+    }
   </head>
   <body>
     <a

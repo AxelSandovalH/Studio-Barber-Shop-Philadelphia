@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import TarjetaSucursal from './TarjetaSucursal.astro';
+import Servicios from './Servicios.astro';
 import { negocio, sucursales, type Sucursal } from '../data/site';
 import {
   IDIOMAS,
@@ -91,6 +92,16 @@ const otras = sucursales.filter((otra) => otra.id !== sucursal.id);
         <TarjetaSucursal sucursal={sucursal} conEnlace={false} encabezado="h2" />
       </div>
 
+      {
+        /* La lista de servicios va tambien aqui: sin ella la pagina se queda en
+          menos de 200 palabras, que es poco para competir por su colonia, y
+          ademas quien entra buscando esta sucursal quiere saber que se hace. */
+      }
+    </div>
+
+    <Servicios />
+
+    <div class="mx-auto max-w-6xl px-5 pb-16 md:pb-24">
       {
         otras.length > 0 && (
           <section class="mt-16">

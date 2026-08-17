@@ -84,6 +84,13 @@ const es = {
   comoLlegar: 'Como llegar',
   otraSucursal: 'La otra sucursal',
 
+  errorTitulo: 'Esta pagina no existe',
+  errorTexto:
+    'Puede que el enlace este mal escrito o que hayamos movido la pagina. Desde el inicio llegas a todo.',
+
+  faqEtiqueta: 'Preguntas frecuentes',
+  faqTitulo: 'Lo que suelen preguntarnos',
+
   pieSecciones: 'Secciones',
   pieSucursales: 'Sucursales',
   pieDerechos: 'Todos los derechos reservados.',
@@ -180,6 +187,13 @@ const en: typeof es = {
   volverAlInicio: 'Back home',
   comoLlegar: 'Getting there',
   otraSucursal: 'Our other shop',
+
+  errorTitulo: 'This page does not exist',
+  errorTexto:
+    'The link may be mistyped, or we may have moved the page. Everything is reachable from the home page.',
+
+  faqEtiqueta: 'FAQ',
+  faqTitulo: 'What people usually ask',
 
   pieSecciones: 'Sections',
   pieSucursales: 'Locations',

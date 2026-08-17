@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { negocio, sucursales, enlaceTelefono } from '../data/site';
+import { IDIOMAS, rutaInicio, rutaSucursal, type Idioma } from '../i18n/idiomas';
+import { textos } from '../i18n/textos';
+
+/**
+ * Un sitio estatico solo puede tener un 404, y quien llega aqui puede venir de
+ * cualquiera de los dos idiomas, asi que se muestran los dos. Va con noindex
+ * para que no acabe compitiendo en las busquedas por el nombre del negocio.
+ */
+const rutas = Object.fromEntries(
+  IDIOMAS.map((otro) => [otro, rutaInicio(otro)]),
+) as Record<Idioma, string>;
+---
+
+<Layout titulo="404" rutas={rutas} noIndexar>
+  <Header rutas={rutas} />
+
+  <main id="contenido" class="pt-20">
+    <div class="mx-auto max-w-3xl px-5 py-24 text-center md:py-32">
+      <p class="font-display text-salvia-500 text-7xl leading-none">404</p>
+
+      {
+        IDIOMAS.map((idioma) => {
+          const T = textos(idioma);
+          return (
+            <div class="mt-12 first:mt-8">
+              <h1 lang={idioma} class="text-4xl leading-none sm:text-5xl">
+                {T.errorTitulo}
+              </h1>
+              <p lang={idioma} class="text-tinta-600 mx-auto mt-4 max-w-xl">
+                {T.errorTexto}
+              </p>
+              <a
+                href={rutaInicio(idioma)}
+                lang={idioma}
+                class="bg-salvia-600 text-fondo-50 hover:bg-salvia-700 mt-6 inline-flex rounded-full px-7 py-3 font-semibold transition"
+              >
+                {T.volverAlInicio}
+              </a>
+            </div>
+          );
+        })
+      }
+
+      <div class="border-fondo-200 mt-16 border-t pt-10">
+        <ul class="flex flex-wrap justify-center gap-3">
+          {
+            sucursales.map((sucursal) => (
+              <li>
+                <a
+                  href={rutaSucursal('es', sucursal.id)}
+                  class="border-fondo-300 hover:border-salvia-600 inline-flex flex-col rounded-2xl border px-6 py-4 text-left transition"
+                >
+                  <span class="font-display text-tinta-900 text-2xl leading-none">
+                    {sucursal.nombre}
+                  </span>
+                  <span class="text-tinta-500 mt-1 text-sm">
+                    {sucursal.direccion.colonia}
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <p class="text-tinta-500 mt-8 text-sm">
+          {negocio.nombre} ·{' '}
+          {
+            sucursales.map((sucursal, i) => (
+              <>
+                {i > 0 && ' · '}
+                <a
+                  href={enlaceTelefono(sucursal)}
+                  class="text-salvia-700 hover:text-salvia-800 underline underline-offset-4 transition"
+                >
+                  {sucursal.telefono}
+                </a>
+              </>
+            ))
+          }
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
