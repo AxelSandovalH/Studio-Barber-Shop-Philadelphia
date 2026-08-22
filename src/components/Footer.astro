@@ -16,14 +16,16 @@ const anio = new Date().getFullYear();
   <div class="mx-auto max-w-6xl px-5 py-16">
     <div class="grid gap-12 md:grid-cols-3">
       <div>
-        <p class="font-display text-tinta-900 text-4xl leading-none">Philadelphia</p>
+        <p class="font-display text-tinta-900 text-4xl leading-none">
+          {negocio.rotulo.principal}
+        </p>
         <p
           class="text-tinta-500 mt-1.5 text-xs font-semibold tracking-[0.22em] uppercase"
         >
-          Studio Barber Shop
+          {negocio.rotulo.secundaria}
         </p>
         <p class="text-tinta-500 mt-6 max-w-xs text-sm leading-relaxed">
-          {`${t(negocio.eslogan, idioma)}. ${T.pieDesde} ${negocio.desde}.`}
+          {`${t(negocio.eslogan, idioma)}.`}
         </p>
 
         <ul class="mt-6 flex flex-wrap gap-3">

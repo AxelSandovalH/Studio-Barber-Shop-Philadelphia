@@ -82,19 +82,28 @@ export function preguntasFrecuentes(idioma: Idioma): Pregunta[] {
     respuesta: `${servicios.map((s) => t(s.nombre, idioma)).join(', ')}.`,
   });
 
-  // Precios: solo se contesta con cifras si las hay de verdad
+  // Precios: se enumeran en vez de dar un "desde". El servicio mas barato es la
+  // limpieza de cejas, asi que un "desde $50" estaria contestando algo distinto
+  // de lo que se pregunta, que es cuanto cuesta un corte.
   const conPrecio = servicios.filter((s) => s.precio !== undefined);
+  const listaPrecios = conPrecio
+    .map(
+      (s) =>
+        `${t(s.nombre, idioma)} ${s.desde ? (idioma === 'en' ? 'from ' : 'desde ') : ''}$${s.precio}`,
+    )
+    .join(', ');
+
   lista.push({
     pregunta:
       idioma === 'en' ? 'How much does a haircut cost?' : '¿Cuanto cuesta un corte?',
     respuesta:
       conPrecio.length > 0
         ? idioma === 'en'
-          ? `Prices start at $${Math.min(...conPrecio.map((s) => s.precio!))} MXN. Ask us for the full list.`
-          : `Los precios arrancan en $${Math.min(...conPrecio.map((s) => s.precio!))} MXN. Preguntanos por la lista completa.`
+          ? `${listaPrecios}. All prices in Mexican pesos, the same at both shops.`
+          : `${listaPrecios}. Todos los precios en pesos mexicanos, iguales en las dos sucursales.`
         : idioma === 'en'
-          ? `Prices depend on the service. Message us on WhatsApp and we will tell you before you come in.`
-          : `Depende del servicio. Escribenos por WhatsApp y te decimos antes de que vengas.`,
+          ? 'Prices depend on the service. Message us on WhatsApp and we will tell you before you come in.'
+          : 'Depende del servicio. Escribenos por WhatsApp y te decimos antes de que vengas.',
   });
 
   // Cual de las dos sucursales

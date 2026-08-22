@@ -26,14 +26,13 @@ const es = {
   // El h1 dice que sois y donde. Es la senal mas fuerte de la pagina para una
   // busqueda local, y el eslogan solo no la da.
   heroH1: 'Barberia en Cabo San Lucas',
-  heroAntetitulo: 'Desde {ano} · {n} sucursales',
+  heroAntetitulo: '{n} sucursales en Cabo San Lucas',
 
   cambiarIdioma: 'English',
   idiomaActual: 'Espanol',
 
   heroSucursales: 'Sucursales',
   heroAbrimos: 'Abrimos',
-  heroDesde: 'Desde',
   heroDias: 'dias',
 
   serviciosEtiqueta: 'Carta de servicios',
@@ -42,6 +41,7 @@ const es = {
     'Corte, barba y color. Elige la sucursal que te quede mas cerca y agenda tu cita.',
   masPedido: 'Mas pedido',
   consultar: 'Consultar',
+  precioDesde: 'desde',
   unosMinutos: 'Unos {n} min',
   serviciosPie: 'Atendemos con y sin cita. Para asegurar tu hora,',
   serviciosPieEnlace: 'escribenos a la sucursal que prefieras',
@@ -94,7 +94,6 @@ const es = {
   pieSecciones: 'Secciones',
   pieSucursales: 'Sucursales',
   pieDerechos: 'Todos los derechos reservados.',
-  pieDesde: 'En Cabo San Lucas desde',
 
   // Aviso de apertura. {hora} y {dia} se sustituyen en el navegador.
   abiertoAhora: 'Abierto ahora · cierra a las {hora}',
@@ -132,14 +131,13 @@ const en: typeof es = {
   verServicios: 'See services',
 
   heroH1: 'Barber Shop in Cabo San Lucas',
-  heroAntetitulo: 'Since {ano} · {n} locations',
+  heroAntetitulo: '{n} locations in Cabo San Lucas',
 
   cambiarIdioma: 'Espanol',
   idiomaActual: 'English',
 
   heroSucursales: 'Locations',
   heroAbrimos: 'Open',
-  heroDesde: 'Since',
   heroDias: 'days',
 
   serviciosEtiqueta: 'What we do',
@@ -148,6 +146,7 @@ const en: typeof es = {
     'Cuts, beard work and colour. Pick whichever shop is closer and book your slot.',
   masPedido: 'Most booked',
   consultar: 'Ask us',
+  precioDesde: 'from',
   unosMinutos: 'About {n} min',
   serviciosPie: 'Walk-ins welcome. To make sure you get a slot,',
   serviciosPieEnlace: 'message the shop that suits you best',
@@ -198,7 +197,6 @@ const en: typeof es = {
   pieSecciones: 'Sections',
   pieSucursales: 'Locations',
   pieDerechos: 'All rights reserved.',
-  pieDesde: 'In Cabo San Lucas since',
 
   abiertoAhora: 'Open now · closes at {hora}',
   cerradoAbreHoy: 'Closed · opens today at {hora}',

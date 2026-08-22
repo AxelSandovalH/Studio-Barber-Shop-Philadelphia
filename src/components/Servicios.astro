@@ -50,7 +50,9 @@ const enlaceSucursales = `${rutaInicio(idioma)}#sucursales`;
                     : 'text-tinta-500 text-xs font-semibold tracking-[0.12em] uppercase',
                 ]}
               >
-                {servicio.precio !== undefined ? `$${servicio.precio}` : T.consultar}
+                {servicio.precio !== undefined
+                  ? `${servicio.desde ? T.precioDesde + ' ' : ''}$${servicio.precio}`
+                  : T.consultar}
               </p>
             </div>
 

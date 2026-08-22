@@ -37,7 +37,7 @@ const diasAbiertos = principal.horarios
         class="border-salvia-600/30 bg-salvia-600/8 text-salvia-700 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase"
       >
         <span class="bg-salvia-700 size-1.5 rounded-full"></span>
-        {rellenar(T.heroAntetitulo, { ano: negocio.desde, n: sucursales.length })}
+        {rellenar(T.heroAntetitulo, { n: sucursales.length })}
       </p>
 
       <h1 class="mt-7 text-6xl leading-[0.92] sm:text-7xl md:text-8xl">
@@ -69,7 +69,7 @@ const diasAbiertos = principal.horarios
 
       <!-- Valores cortos a proposito: las tres columnas tienen que caber en
            un movil estrecho sin partir palabras. -->
-      <dl class="mt-14 grid max-w-lg grid-cols-3 gap-6">
+      <dl class="mt-14 grid max-w-sm grid-cols-2 gap-6">
         <div>
           <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">
             {T.heroSucursales}
@@ -84,14 +84,6 @@ const diasAbiertos = principal.horarios
           </dt>
           <dd class="font-display text-tinta-900 mt-1.5 text-2xl sm:text-3xl">
             {`${diasAbiertos} ${T.heroDias}`}
-          </dd>
-        </div>
-        <div>
-          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">
-            {T.heroDesde}
-          </dt>
-          <dd class="font-display text-tinta-900 mt-1.5 text-2xl sm:text-3xl">
-            {negocio.desde}
           </dd>
         </div>
       </dl>

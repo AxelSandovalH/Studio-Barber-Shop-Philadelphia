@@ -30,10 +30,14 @@ import estilizadoPoster from '../assets/galeria/estilizado-poster.jpg';
 export interface Negocio {
   nombre: string;
   nombreCorto: string;
+  /**
+   * Como se lee la marca en la cabecera y en el pie, en dos lineas. Coincide
+   * con el nombre de la ficha de Google, que es lo que conviene: si la web y
+   * Google se llaman distinto, Google se fia menos de las dos.
+   */
+  rotulo: { principal: string; secundaria: string };
   eslogan: Bilingue;
   descripcion: Bilingue;
-  /** Ano de apertura, para la seccion de cifras. */
-  desde: number;
   /** Opcional: si no hay correo, la fila no se muestra. */
   email?: string;
   redes: Red[];
@@ -94,6 +98,8 @@ export interface Servicio {
   descripcion: Bilingue;
   /** En pesos. Si no se sabe todavia, se omite y la tarjeta dice "Consultar". */
   precio?: number;
+  /** El precio es un minimo, no una tarifa cerrada: se muestra "desde $X". */
+  desde?: boolean;
   /** Duracion aproximada en minutos. Se omite si no se sabe. */
   duracion?: number;
   destacado?: boolean;
@@ -152,6 +158,7 @@ export const moneda = {
 export const negocio: Negocio = {
   nombre: 'Philadelphia Studio Barber Shop',
   nombreCorto: 'Philadelphia Studio',
+  rotulo: { principal: 'Studio Barbershop', secundaria: 'Philadelphia' },
   eslogan: {
     es: 'Corte clasico, cuidado moderno',
     en: 'Classic cuts, modern care',
@@ -159,13 +166,11 @@ export const negocio: Negocio = {
   descripcion: {
     es:
       'Barberia en Cabo San Lucas con dos sucursales. Corte a tijera y a ' +
-      'maquina, arreglo de barba, coloracion y decoloracion. Desde 2019.',
+      'maquina, ritual de barba, coloracion, rizos y servicio facial.',
     en:
       'Barber shop in Cabo San Lucas with two locations. Scissor and clipper ' +
-      'cuts, beard trims, colour and bleaching. Open since 2019.',
+      'cuts, beard rituals, colour, curls and facial treatments.',
   },
-  desde: 2019,
-
   // TODO(datos-reales): si hay correo de contacto, ponerlo aqui. Si no, se
   // queda fuera y la web solo ofrece telefono, WhatsApp y redes.
   email: undefined,
@@ -254,12 +259,11 @@ export const sucursales: Sucursal[] = [
         en: 'At the corner of Leona Vicario',
       },
     },
-    // TODO(datos-reales): esta sucursal NO aparece en Google con esta
-    // direccion, asi que el mapa solo muestra la zona. Hay que darla de alta en
-    // Google Business y pegar aqui el enlace de su ficha. Sin ficha propia es
-    // invisible en las busquedas de "barberia cerca de mi".
-    mapaUrl: undefined,
-    mapaEmbedUrl: undefined,
+    // Se apunta por CID, el identificador de la ficha de Google, en vez de por
+    // busqueda de direccion: asi el mapa cae en el sitio exacto aunque el texto
+    // de la calle no coincida palabra por palabra con el de Google.
+    mapaUrl: 'https://maps.google.com/?cid=13981233976724700449',
+    mapaEmbedUrl: 'https://maps.google.com/maps?cid=13981233976724700449&output=embed',
     // TODO(datos-reales): confirmar el horario de esta sucursal. De momento se
     // asume el mismo que el de Brisas.
     horarios: HORARIO_HABITUAL,
@@ -267,57 +271,82 @@ export const sucursales: Sucursal[] = [
 ];
 
 /**
- * Servicios.
+ * Servicios y precios, en pesos, iguales en las dos sucursales.
  *
- * TODO(datos-reales): faltan TODOS los precios y las duraciones. No se han
- * puesto cifras inventadas a proposito: mientras el campo `precio` este vacio,
- * la tarjeta muestra "Consultar" en vez de un importe que no es real.
- * Los nombres salen de lo que el negocio publica en Instagram.
+ * Los precios los paso el negocio. Los dos que llevan `desde` son eso, un
+ * minimo: la tarjeta lo dice y los datos estructurados lo declaran como precio
+ * minimo y no como tarifa cerrada, que es la diferencia entre informar y
+ * prometer algo que luego no se cumple.
+ *
+ * TODO(datos-reales): faltan las duraciones, y saber cuales son los mas
+ * pedidos para destacarlos.
  */
 export const servicios: Servicio[] = [
   {
-    nombre: { es: 'Corte clasico', en: 'Classic cut' },
+    nombre: { es: 'Corte basico', en: 'Basic cut' },
     descripcion: {
-      es: 'Corte a maquina y tijera, perfilado de contornos y peinado final.',
-      en: 'Clipper and scissor cut, clean edges and a finished style.',
+      es: 'Corte a maquina con los contornos perfilados.',
+      en: 'Clipper cut with the edges cleaned up.',
     },
-    destacado: true,
+    precio: 300,
   },
   {
-    nombre: { es: 'Corte a tijera', en: 'Scissor cut' },
+    nombre: { es: 'Fade', en: 'Fade' },
     descripcion: {
-      es: 'Trabajo enteramente a tijera, en version librito o clasica.',
-      en: 'All-scissor work, in the librito or the classic shape.',
+      es: 'Degradado trabajado de la nuca hacia arriba.',
+      en: 'Gradient worked up from the neckline.',
     },
-    destacado: true,
+    precio: 350,
   },
   {
-    nombre: { es: 'Corte y barba', en: 'Cut and beard' },
+    nombre: { es: 'Corte de tijera', en: 'Scissor cut' },
     descripcion: {
-      es: 'El corte completo mas el arreglo de barba con navaja.',
-      en: 'The full cut plus a straight-razor beard trim.',
+      es: 'Trabajo enteramente a tijera, sin maquina.',
+      en: 'All-scissor work, no clippers.',
     },
+    precio: 350,
   },
   {
-    nombre: { es: 'Wolf cut', en: 'Wolf cut' },
+    nombre: { es: 'Ritual de barba', en: 'Beard ritual' },
     descripcion: {
-      es: 'Corte texturizado en capas para cabello largo.',
-      en: 'Layered, textured cut for longer hair.',
+      es: 'Perfilado y cuidado de la barba.',
+      en: 'Beard shaping and grooming.',
     },
+    precio: 250,
+  },
+  {
+    nombre: { es: 'Rizos y ondulacion', en: 'Curls and waves' },
+    descripcion: {
+      es: 'Ondulado permanente. El precio depende del largo y del cabello.',
+      en: 'Permanent waving. The price depends on length and hair type.',
+    },
+    precio: 1000,
+    desde: true,
   },
   {
     nombre: { es: 'Coloracion', en: 'Colour' },
     descripcion: {
-      es: 'Color a medida, desde un tono natural hasta fantasia.',
-      en: 'Custom colour, from natural tones to fantasy shades.',
+      es: 'Color a medida. El precio depende del largo y del tono buscado.',
+      en: 'Custom colour. The price depends on length and the shade you want.',
     },
+    precio: 1000,
+    desde: true,
   },
   {
-    nombre: { es: 'Decoloracion', en: 'Bleaching' },
+    nombre: { es: 'Facial', en: 'Facial' },
     descripcion: {
-      es: 'Aclarado del cabello, como paso previo al color o como acabado.',
-      en: 'Lightening, either before colour or as the finish itself.',
+      es: 'Mascarilla hidratante y exfoliacion.',
+      en: 'Hydrating mask and exfoliation.',
     },
+    precio: 400,
+  },
+  {
+    nombre: { es: 'Limpieza de cejas', en: 'Eyebrow tidy' },
+    descripcion: {
+      es: 'Perfilado de cejas.',
+      en: 'Eyebrow shaping.',
+    },
+    precio: 50,
   },
 ];
 

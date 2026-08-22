@@ -68,11 +68,20 @@ export function esquemaSucursal(sucursal: Sucursal, idioma: Idioma, url: URL) {
           name: t(servicio.nombre, idioma),
           description: t(servicio.descripcion, idioma),
         },
-        // Solo se declara el precio cuando existe de verdad: un precio
-        // inventado en los datos estructurados es peor que no ponerlo.
-        ...(servicio.precio !== undefined
-          ? { price: servicio.precio, priceCurrency: moneda.codigo }
-          : {}),
+        // Un servicio "desde $X" se declara como precio minimo, no como
+        // tarifa cerrada: si Google publica 1000 como precio final y luego se
+        // cobra mas, el problema es del negocio, no de Google.
+        ...(servicio.precio === undefined
+          ? {}
+          : servicio.desde
+            ? {
+                priceSpecification: {
+                  '@type': 'PriceSpecification',
+                  minPrice: servicio.precio,
+                  priceCurrency: moneda.codigo,
+                },
+              }
+            : { price: servicio.precio, priceCurrency: moneda.codigo }),
       })),
     },
   };
