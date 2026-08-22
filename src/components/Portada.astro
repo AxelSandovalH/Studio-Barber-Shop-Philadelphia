@@ -5,6 +5,7 @@ import Hero from './Hero.astro';
 import Servicios from './Servicios.astro';
 import Galeria from './Galeria.astro';
 import Resenas from './Resenas.astro';
+import ServiciosPrivados from './ServiciosPrivados.astro';
 import Faq from './Faq.astro';
 import Equipo from './Equipo.astro';
 import Sucursales from './Sucursales.astro';
@@ -40,6 +41,8 @@ const datosEstructurados = esquemaPortada(
     {/* La seccion de equipo solo aparece cuando hay barberos cargados. */}
     {barberos.length > 0 && <Equipo />}
     <Sucursales />
+    {/* Solo aparece cuando hay servicios privados y un correo al que pedirlos. */}
+    <ServiciosPrivados />
     {
       /* Las preguntas van al final: quien llega hasta aqui ya vio el trabajo y
         lo que queda son dudas practicas. */

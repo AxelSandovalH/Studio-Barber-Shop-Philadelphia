@@ -105,6 +105,17 @@ export interface Servicio {
   destacado?: boolean;
 }
 
+/**
+ * Servicio que no se agenda por WhatsApp sino escribiendo un correo: cosas a
+ * puerta cerrada, a domicilio, para grupos o eventos.
+ */
+export interface ServicioPrivado {
+  nombre: Bilingue;
+  descripcion: Bilingue;
+  /** Opcional. Si no hay tarifa cerrada, se omite y se invita a preguntar. */
+  precioDesde?: number;
+}
+
 export interface Barbero {
   nombre: string;
   rol: Bilingue;
@@ -349,6 +360,25 @@ export const servicios: Servicio[] = [
     precio: 50,
   },
 ];
+
+/**
+ * TODO(datos-reales): faltan los servicios privados y el correo al que se
+ * piden. Mientras esta lista este vacia o `negocio.email` sin rellenar, la
+ * seccion no aparece: no tiene sentido invitar a escribir a una direccion que
+ * no existe.
+ *
+ * Ejemplo de como se rellena:
+ *
+ *   {
+ *     nombre: { es: 'Atencion a puerta cerrada', en: 'Private appointment' },
+ *     descripcion: {
+ *       es: 'El local para ti solo, fuera del horario habitual.',
+ *       en: 'The shop to yourself, outside regular hours.',
+ *     },
+ *     precioDesde: 1500,
+ *   },
+ */
+export const serviciosPrivados: ServicioPrivado[] = [];
 
 // TODO(datos-reales): equipo real y fotos en /public/equipo/. Si preferis no
 // mostrar el equipo, dejad esta lista vacia y la seccion desaparece sola.

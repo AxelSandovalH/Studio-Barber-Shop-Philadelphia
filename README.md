@@ -82,8 +82,11 @@ del inicio, el horario que Google lee de los datos estructurados y el aviso de
 Dos secciones se adaptan solas a los datos:
 
 - Si `barberos` esta vacio, la seccion de equipo no se muestra.
+- Si `serviciosPrivados` esta vacio o falta `negocio.email`, la seccion de
+  servicios privados tampoco.
 - Si un servicio no tiene `precio`, su tarjeta dice "Consultar" en vez de un
-  importe.
+  importe. Si lleva `desde: true`, se muestra "desde $X" y los datos
+  estructurados lo declaran como precio minimo.
 
 ## Estado de los datos
 
@@ -113,7 +116,10 @@ grep -rn "TODO(datos-reales)" src astro.config.mjs public/robots.txt
    que lleven el distintivo.
 3. **Horario de la sucursal La Joya.** Ahora mismo asume el mismo que Brisas.
 4. **Que el telefono de La Joya reciba WhatsApp.** El de Brisas esta confirmado.
-5. **Correo de contacto**, si lo hay. Si se deja vacio, no se muestra.
+5. **Servicios privados y el correo al que se piden.** La seccion esta hecha y
+   se oculta sola: aparece en cuanto `serviciosPrivados` tenga algo y
+   `negocio.email` este relleno. Sin las dos cosas no se muestra, porque
+   invitar a escribir a una direccion que no existe seria peor que no tenerla.
 6. **Equipo**, si se quiere mostrar. La lista esta vacia a proposito.
 7. **"Atendemos con y sin cita"**, que aparece bajo la carta de servicios. Lo
    escribi yo sin confirmarlo: si no aceptais gente sin cita, hay que quitarlo.

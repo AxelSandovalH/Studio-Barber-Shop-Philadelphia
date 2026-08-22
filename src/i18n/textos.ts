@@ -88,6 +88,14 @@ const es = {
   errorTexto:
     'Puede que el enlace este mal escrito o que hayamos movido la pagina. Desde el inicio llegas a todo.',
 
+  privadosEtiqueta: 'A puerta cerrada',
+  privadosTitulo: 'Servicios privados',
+  privadosDescripcion:
+    'Estos no se agendan por WhatsApp. Escribenos y lo organizamos contigo.',
+  privadosBoton: 'Escribir a {correo}',
+  privadosAsunto: 'Consulta sobre servicios privados',
+  privadosDesde: 'desde',
+
   faqEtiqueta: 'Preguntas frecuentes',
   faqTitulo: 'Lo que suelen preguntarnos',
 
@@ -190,6 +198,14 @@ const en: typeof es = {
   errorTitulo: 'This page does not exist',
   errorTexto:
     'The link may be mistyped, or we may have moved the page. Everything is reachable from the home page.',
+
+  privadosEtiqueta: 'By arrangement',
+  privadosTitulo: 'Private services',
+  privadosDescripcion:
+    'These are not booked over WhatsApp. Email us and we will arrange it with you.',
+  privadosBoton: 'Email {correo}',
+  privadosAsunto: 'Enquiry about private services',
+  privadosDesde: 'from',
 
   faqEtiqueta: 'FAQ',
   faqTitulo: 'What people usually ask',
