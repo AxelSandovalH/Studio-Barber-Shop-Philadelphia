@@ -1,6 +1,6 @@
 ---
-import { galeria, negocio } from '../data/site';
-import { idiomaDe } from '../i18n/idiomas';
+import { galeria, negocio, serviciosDeGaleria } from '../data/site';
+import { idiomaDe, t } from '../i18n/idiomas';
 import { textos } from '../i18n/textos';
 import TituloSeccion from './TituloSeccion.astro';
 import Carrusel from './Carrusel.astro';
@@ -9,6 +9,14 @@ const idioma = idiomaDe(Astro.currentLocale);
 const T = textos(idioma);
 
 const instagram = negocio.redes.find((red) => red.nombre === 'Instagram');
+
+// Los filtros salen de la carta de servicios, no de una lista escrita aparte:
+// el nombre y su traduccion ya existen ahi. Solo aparecen los servicios que
+// tienen material etiquetado, asi que una categoria vacia no llega a verse.
+const filtros = serviciosDeGaleria().map((servicio) => ({
+  clave: servicio.clave,
+  etiqueta: t(servicio.nombre, idioma),
+}));
 ---
 
 <section
@@ -49,7 +57,7 @@ const instagram = negocio.redes.find((red) => red.nombre === 'Instagram');
     </div>
 
     <div class="mt-14">
-      <Carrusel medios={galeria} etiqueta={T.galeriaRegion} />
+      <Carrusel medios={galeria} etiqueta={T.galeriaRegion} filtros={filtros} />
     </div>
   </div>
 </section>

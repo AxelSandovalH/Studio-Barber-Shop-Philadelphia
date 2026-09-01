@@ -168,6 +168,37 @@ import trabajo7 from '../assets/galeria/trabajo-7.jpg';
 Formato **vertical 4:5**, que es la proporcion de las tarjetas. Sube el original
 grande sin miedo: Astro lo reescala.
 
+### Secciones de la galeria
+
+Cada pieza puede llevar `servicio`, que es lo que la agrupa bajo un filtro:
+
+```ts
+{
+  tipo: 'foto',
+  src: trabajo7,
+  servicio: 'fade',
+  alt: { es: '...', en: '...' },
+},
+```
+
+Las claves validas son las de la carta: `corte-basico`, `fade`, `tijera`,
+`barba`, `rizos`, `color`, `facial`, `cejas`. TypeScript rechaza cualquier otra.
+
+**Los filtros no se escriben en ninguna parte**: salen de `serviciosDeGaleria()`,
+que devuelve los servicios que tienen al menos una pieza etiquetada. Etiquetar
+la primera foto de coloracion hace aparecer su filtro solo, con el nombre ya
+traducido a los dos idiomas; quitarla lo hace desaparecer. Una categoria vacia
+nunca llega a verse.
+
+El campo es **opcional a proposito**. Un trabajo que no cae claramente en un
+servicio se deja sin etiquetar y sale solo en "Todo", que es mejor que colgarlo
+de una categoria que no le toca.
+
+Los filtros nacen ocultos y los muestra el script: sin JavaScript se ve la
+galeria entera, que es el estado util, en vez de unos botones que no hacen nada.
+Con menos de dos categorias con material no se dibuja la barra, porque un solo
+filtro no filtra.
+
 ### Anadir videos
 
 Deja el original en `media-original/videos/` y pasalo por el script, que

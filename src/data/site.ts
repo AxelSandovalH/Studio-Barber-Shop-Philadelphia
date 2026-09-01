@@ -93,7 +93,17 @@ export interface Red {
   usuario: string;
 }
 
+/**
+ * Identificador estable de un servicio. Es lo que enlaza una foto de la galeria
+ * con su servicio, para que los filtros de la galeria salgan de la carta y no
+ * de una lista de etiquetas escrita aparte: asi el nombre y su traduccion
+ * existen una sola vez.
+ */
+export type ClaveServicio =
+  'corte-basico' | 'fade' | 'tijera' | 'barba' | 'rizos' | 'color' | 'facial' | 'cejas';
+
 export interface Servicio {
+  clave: ClaveServicio;
   nombre: Bilingue;
   descripcion: Bilingue;
   /** En pesos. Si no se sabe todavia, se omite y la tarjeta dice "Consultar". */
@@ -145,17 +155,27 @@ export interface FranjaHoraria {
  * comprimirlos a mano antes (las ordenes de ffmpeg estan en el README) y darles
  * siempre un poster, que es lo que se ve mientras no se reproducen.
  */
+type BaseMedio = {
+  alt: Bilingue;
+  /**
+   * Servicio al que pertenece la pieza. Es lo que agrupa la galeria en
+   * secciones. Se omite cuando el trabajo no cae claramente en ninguno de los
+   * servicios de la carta: entonces la pieza solo sale en "Todo", que es mejor
+   * que colgarla de una categoria que no le toca.
+   */
+  servicio?: ClaveServicio;
+};
+
 export type MedioGaleria =
-  | { tipo: 'foto'; src: ImageMetadata; alt: Bilingue }
-  | {
+  | (BaseMedio & { tipo: 'foto'; src: ImageMetadata })
+  | (BaseMedio & {
       tipo: 'video';
       /** Ruta dentro de /public. */
       mp4: string;
       /** Opcional pero recomendado: pesa bastante menos que el mp4. */
       webm?: string;
       poster: ImageMetadata;
-      alt: Bilingue;
-    };
+    });
 
 /** Moneda de los precios. En Cabo circula el dolar, asi que se dice explicito. */
 export const moneda = {
@@ -294,6 +314,7 @@ export const sucursales: Sucursal[] = [
  */
 export const servicios: Servicio[] = [
   {
+    clave: 'corte-basico',
     nombre: { es: 'Corte basico', en: 'Basic cut' },
     descripcion: {
       es: 'Corte a maquina con los contornos perfilados.',
@@ -302,6 +323,7 @@ export const servicios: Servicio[] = [
     precio: 300,
   },
   {
+    clave: 'fade',
     nombre: { es: 'Fade', en: 'Fade' },
     descripcion: {
       es: 'Degradado trabajado de la nuca hacia arriba.',
@@ -310,6 +332,7 @@ export const servicios: Servicio[] = [
     precio: 350,
   },
   {
+    clave: 'tijera',
     nombre: { es: 'Corte de tijera', en: 'Scissor cut' },
     descripcion: {
       es: 'Trabajo enteramente a tijera, sin maquina.',
@@ -318,6 +341,7 @@ export const servicios: Servicio[] = [
     precio: 350,
   },
   {
+    clave: 'barba',
     nombre: { es: 'Ritual de barba', en: 'Beard ritual' },
     descripcion: {
       es: 'Perfilado y cuidado de la barba.',
@@ -326,6 +350,7 @@ export const servicios: Servicio[] = [
     precio: 250,
   },
   {
+    clave: 'rizos',
     nombre: { es: 'Rizos y ondulacion', en: 'Curls and waves' },
     descripcion: {
       es: 'Ondulado permanente. El precio depende del largo y del cabello.',
@@ -335,6 +360,7 @@ export const servicios: Servicio[] = [
     desde: true,
   },
   {
+    clave: 'color',
     nombre: { es: 'Coloracion', en: 'Colour' },
     descripcion: {
       es: 'Color a medida. El precio depende del largo y del tono buscado.',
@@ -344,6 +370,7 @@ export const servicios: Servicio[] = [
     desde: true,
   },
   {
+    clave: 'facial',
     nombre: { es: 'Facial', en: 'Facial' },
     descripcion: {
       es: 'Mascarilla hidratante y exfoliacion.',
@@ -352,6 +379,7 @@ export const servicios: Servicio[] = [
     precio: 400,
   },
   {
+    clave: 'cejas',
     nombre: { es: 'Limpieza de cejas', en: 'Eyebrow tidy' },
     descripcion: {
       es: 'Perfilado de cejas.',
@@ -414,6 +442,7 @@ export const galeria: MedioGaleria[] = [
   {
     tipo: 'foto',
     src: tazonDegradado,
+    servicio: 'fade',
     alt: {
       es: 'Corte tazon con flequillo recto y degradado en los laterales',
       en: 'Bowl cut with a blunt fringe and faded sides',
@@ -422,6 +451,7 @@ export const galeria: MedioGaleria[] = [
   {
     tipo: 'video',
     mp4: '/galeria/degradado.mp4',
+    servicio: 'fade',
     poster: degradadoPoster,
     alt: {
       es: 'Degradado con desvanecido en la nuca, visto por detras',
@@ -431,6 +461,7 @@ export const galeria: MedioGaleria[] = [
   {
     tipo: 'video',
     mp4: '/galeria/barba.mp4',
+    servicio: 'barba',
     poster: barbaPoster,
     alt: {
       es: 'Perfilado de barba con navaja y toalla caliente',
@@ -457,6 +488,7 @@ export const galeria: MedioGaleria[] = [
   {
     tipo: 'video',
     mp4: '/galeria/raya-lateral.mp4',
+    servicio: 'fade',
     poster: rayaLateralPoster,
     alt: {
       es: 'Raya marcada al lado con degradado, vista por detras',
@@ -485,6 +517,20 @@ export const galeria: MedioGaleria[] = [
     },
   },
 ];
+
+/**
+ * Servicios de los que hay material en la galeria, en el orden de la carta.
+ *
+ * Se deriva y no se escribe a mano: una categoria sin ninguna foto no tiene
+ * por que aparecer como filtro vacio, y cuando se etiqueta la primera foto de
+ * un servicio su filtro sale solo, con su nombre ya traducido.
+ */
+export function serviciosDeGaleria(): Servicio[] {
+  const conMaterial = new Set<ClaveServicio>(
+    galeria.flatMap((medio) => (medio.servicio ? [medio.servicio] : [])),
+  );
+  return servicios.filter((servicio) => conMaterial.has(servicio.clave));
+}
 
 /** Direccion en una sola linea, para meta etiquetas y enlaces de mapa. */
 export function direccionEnLinea(sucursal: Sucursal): string {

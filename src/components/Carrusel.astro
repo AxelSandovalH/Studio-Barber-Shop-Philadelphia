@@ -8,9 +8,14 @@ interface Props {
   medios: MedioGaleria[];
   /** Nombre de la region para lectores de pantalla. */
   etiqueta: string;
+  /**
+   * Filtros por servicio. Se omiten si no hay al menos dos categorias con
+   * material: un solo filtro no filtra nada.
+   */
+  filtros?: { clave: string; etiqueta: string }[];
 }
 
-const { medios, etiqueta } = Astro.props;
+const { medios, etiqueta, filtros = [] } = Astro.props;
 
 const idioma = idiomaDe(Astro.currentLocale);
 const T = textos(idioma);
@@ -41,6 +46,42 @@ const preparados = await Promise.all(
 ---
 
 <div class="relative" data-carrusel>
+  <!-- Los filtros nacen ocultos y los muestra el script. Sin JavaScript no
+       filtrarian nada, y un boton que no hace nada es peor que no tenerlo: asi
+       quien llegue sin JavaScript ve la galeria entera, que es el estado util. -->
+  {
+    filtros.length > 1 && (
+      <div
+        data-filtros
+        hidden
+        role="group"
+        aria-label={T.galeriaFiltrar}
+        class="mb-8 flex flex-wrap gap-2"
+      >
+        <button
+          type="button"
+          data-filtro
+          data-clave=""
+          aria-pressed="true"
+          class="border-fondo-400 text-tinta-700 hover:border-salvia-600 hover:text-salvia-700 aria-pressed:border-salvia-600 aria-pressed:bg-salvia-600 aria-pressed:text-fondo-50 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.08em] uppercase transition"
+        >
+          {T.galeriaTodo}
+        </button>
+        {filtros.map((filtro) => (
+          <button
+            type="button"
+            data-filtro
+            data-clave={filtro.clave}
+            aria-pressed="false"
+            class="border-fondo-400 text-tinta-700 hover:border-salvia-600 hover:text-salvia-700 aria-pressed:border-salvia-600 aria-pressed:bg-salvia-600 aria-pressed:text-fondo-50 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.08em] uppercase transition"
+          >
+            {filtro.etiqueta}
+          </button>
+        ))}
+      </div>
+    )
+  }
+
   <!-- La pista es la que hace el scroll. Es enfocable para que se pueda
        recorrer con el teclado sin depender de las flechas.
 
@@ -56,7 +97,12 @@ const preparados = await Promise.all(
   >
     {
       preparados.map(({ medio, poster }, indice) => (
-        <li data-slide class="w-[78%] shrink-0 snap-start sm:w-[46%] lg:w-[31%]">
+        <li
+          data-slide
+          data-servicio={medio.servicio ?? ''}
+          data-tipo={medio.tipo}
+          class="w-[78%] shrink-0 snap-start sm:w-[46%] lg:w-[31%]"
+        >
           {/* Esquinas normales y no en arco: el material son retratos
               verticales, y un arco arriba recorta la cabeza. El guino al local
               se queda en el color de las bandas de seccion. */}
@@ -147,8 +193,12 @@ const preparados = await Promise.all(
     </svg>
   </button>
 
+  <!-- Las plantillas viajan en el HTML porque al filtrar hay que rehacer las
+       etiquetas de los puntos, y el script no tiene acceso al diccionario. -->
   <ol
     data-puntos
+    data-plantilla-foto={T.irALaFoto}
+    data-plantilla-video={T.irAlVideo}
     class="mt-6 flex flex-wrap justify-center gap-2.5"
     aria-label={T.irAElemento}
   >
@@ -176,7 +226,11 @@ const preparados = await Promise.all(
 
   function iniciar(carrusel: HTMLElement) {
     const pista = carrusel.querySelector<HTMLElement>('[data-pista]');
-    const slides = [...carrusel.querySelectorAll<HTMLElement>('[data-slide]')];
+    const todos = [...carrusel.querySelectorAll<HTMLElement>('[data-slide]')];
+    // Las que el filtro actual deja a la vista. Se reasigna al filtrar, y todo
+    // lo demas —puntos, flechas, teclado, anclaje— lee de aqui, asi que no hay
+    // un segundo sitio donde se pueda quedar desincronizado.
+    let slides = todos;
     const puntos = [...carrusel.querySelectorAll<HTMLButtonElement>('[data-punto]')];
     const anterior = carrusel.querySelector<HTMLButtonElement>('[data-anterior]');
     const siguiente = carrusel.querySelector<HTMLButtonElement>('[data-siguiente]');
@@ -284,10 +338,70 @@ const preparados = await Promise.all(
 
     reproducirSoloVisible(pista);
 
-    anclarConGsap(carrusel, pista, slides, ultimoAlcanzable).then((navegar) => {
-      if (navegar) irA = navegar;
+    // Se rellena si el anclaje llega a activarse. Filtrar cambia el ancho de la
+    // pista, y con el el recorrido que ScrollTrigger tiene calculado.
+    let refrescarAnclaje = () => {};
+
+    anclarConGsap(carrusel, pista, () => slides, ultimoAlcanzable).then((anclado) => {
+      if (!anclado) return;
+      irA = anclado.navegar;
+      refrescarAnclaje = anclado.refrescar;
       pintarEstado();
     });
+
+    // --- Filtros por servicio ---------------------------------------------
+
+    const barra = carrusel.querySelector<HTMLElement>('[data-filtros]');
+    const botones = [...carrusel.querySelectorAll<HTMLButtonElement>('[data-filtro]')];
+    const lista = carrusel.querySelector<HTMLElement>('[data-puntos]');
+
+    /**
+     * Al filtrar, el punto numero 3 deja de ser la tercera pieza de la galeria
+     * y pasa a ser la tercera de lo que se ve. Si no se rehace la etiqueta,
+     * quien va con lector de pantalla oye un total que ya no existe.
+     */
+    const etiquetarPuntos = () => {
+      const plantillas = {
+        foto: lista?.dataset.plantillaFoto ?? '',
+        video: lista?.dataset.plantillaVideo ?? '',
+      };
+
+      puntos.forEach((punto, i) => {
+        const slide = slides[i];
+        if (!slide) return;
+        const plantilla =
+          slide.dataset.tipo === 'video' ? plantillas.video : plantillas.foto;
+        punto.setAttribute(
+          'aria-label',
+          plantilla
+            .replace('{n}', String(i + 1))
+            .replace('{total}', String(slides.length)),
+        );
+      });
+    };
+
+    const filtrar = (clave: string) => {
+      todos.forEach((slide) => {
+        slide.hidden = clave !== '' && (slide.dataset.servicio ?? '') !== clave;
+      });
+      slides = todos.filter((slide) => !slide.hidden);
+
+      botones.forEach((boton) =>
+        boton.setAttribute('aria-pressed', String((boton.dataset.clave ?? '') === clave)),
+      );
+
+      etiquetarPuntos();
+      pista.scrollLeft = 0;
+      pintarEstado();
+      refrescarAnclaje();
+    };
+
+    if (barra) {
+      barra.hidden = false;
+      botones.forEach((boton) =>
+        boton.addEventListener('click', () => filtrar(boton.dataset.clave ?? '')),
+      );
+    }
   }
 
   /**
@@ -337,13 +451,16 @@ const preparados = await Promise.all(
    * "prefers-reduced-motion" tampoco: secuestrar el scroll es justo lo que esa
    * preferencia pide evitar.
    *
-   * Devuelve la funcion con la que hay que navegar mientras esta anclado, o
-   * null si no se activo.
+   * Devuelve con que navegar mientras esta anclado y con que recalcularlo
+   * cuando cambia el contenido de la pista, o null si no se activo.
+   *
+   * Las diapositivas llegan como funcion y no como lista: el filtro las cambia
+   * despues de esta llamada, y una lista capturada aqui se quedaria vieja.
    */
   async function anclarConGsap(
     carrusel: HTMLElement,
     pista: HTMLElement,
-    slides: HTMLElement[],
+    verSlides: () => HTMLElement[],
     ultimoAlcanzable: () => number,
   ) {
     const enEscritorio = window.matchMedia('(min-width: 1024px) and (pointer: fine)');
@@ -418,16 +535,39 @@ const preparados = await Promise.all(
     // Con el carrusel anclado, las flechas y los puntos tienen que mover la
     // pagina, no la pista: la posicion horizontal es un reflejo del scroll
     // vertical, asi que es ahi donde hay que actuar.
-    return (indice: number) => {
+    const navegar = (indice: number) => {
+      const slides = verSlides();
       const destino = Math.max(0, Math.min(indice, ultimoAlcanzable()));
-      const avance = slides[destino]!.offsetLeft - slides[0]!.offsetLeft;
-      const progreso = Math.min(1, Math.max(0, avance / recorrido()));
+      const primera = slides[0];
+      const hasta = slides[destino];
+      if (!primera || !hasta) return;
+
+      const progreso = Math.min(
+        1,
+        Math.max(0, (hasta.offsetLeft - primera.offsetLeft) / recorrido()),
+      );
 
       window.scrollTo({
         top: anclaje.start + progreso * (anclaje.end - anclaje.start),
         behavior: 'smooth',
       });
     };
+
+    /**
+     * Con un filtro puesto puede que ya no sobre pista que recorrer. Anclar
+     * entonces dejaria la seccion pegada sin nada que avanzar, asi que el
+     * anclaje se apaga y se vuelve a encender segun de cuanto material haya.
+     */
+    const refrescar = () => {
+      if (recorrido() <= 0) {
+        anclaje.disable(true);
+        return;
+      }
+      anclaje.enable();
+      ScrollTrigger.refresh();
+    };
+
+    return { navegar, refrescar };
   }
 
   document.querySelectorAll<HTMLElement>('[data-carrusel]').forEach(iniciar);

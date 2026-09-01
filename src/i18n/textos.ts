@@ -50,6 +50,8 @@ const es = {
   galeriaTitulo: 'El resultado habla',
   galeriaDescripcion: 'Una muestra de los cortes que salen del local cada semana.',
   verMasInstagram: 'Ver mas en Instagram',
+  galeriaFiltrar: 'Filtrar por servicio',
+  galeriaTodo: 'Todo',
   galeriaRegion: 'Galeria de trabajos',
 
   anterior: 'Anterior',
@@ -163,6 +165,8 @@ const en: typeof es = {
   galeriaTitulo: 'See for yourself',
   galeriaDescripcion: 'A sample of the cuts leaving the shop every week.',
   verMasInstagram: 'More on Instagram',
+  galeriaFiltrar: 'Filter by service',
+  galeriaTodo: 'All',
   galeriaRegion: 'Gallery of our work',
 
   anterior: 'Previous',
