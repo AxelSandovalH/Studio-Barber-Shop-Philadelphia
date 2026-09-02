@@ -135,10 +135,16 @@ grep -rn "TODO(datos-reales)" src astro.config.mjs public/robots.txt
    cuanto haya permiso de los padres se copian a `src/assets/galeria/` y se
    anaden a `galeria`. La edad la juzgo por la foto, asi que repasadlas: puede
    que alguna sea un adulto joven y este esperando de mas.
-10. **Resenas.** La lista `resenas` de `site.ts` esta vacia y por eso el bloque
-    de opiniones no se muestra. Para llenarla se copian de la ficha de Google
-    **literales**: sin corregir faltas, sin recortar y sin traducir. Cada una
-    lleva su `idioma`, que se usa en el atributo `lang` del `<blockquote>`.
+10. **Resenas.** Hay cinco copiadas de la ficha de Google de Brisas el 1 de
+    septiembre de 2026. Van **literales**: sin corregir faltas, sin recortar y
+    sin traducir. Cada una lleva su `idioma`, que se usa en el atributo `lang`
+    del `<blockquote>`. Llevan tildes aunque el resto del codigo fuente no las
+    use: esa convencion es para lo que escribimos nosotros, y quitarselas a una
+    cita seria editarla.
+
+    **No se muestra la fecha.** Google solo publica la antiguedad relativa
+    ("hace 9 meses"), asi que el campo `fecha` es un calculo aproximado que
+    sirve para saber cuando repasarlas, no para ensenarlo.
 
     **No se inventa ninguna.** Una resena inventada en la web de un negocio
     real es publicidad enganosa, y ademas se nota: las de verdad tienen faltas,

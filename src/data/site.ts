@@ -111,8 +111,12 @@ export interface Resena {
   idioma: Idioma;
   /** De 1 a 5, la que puso quien la escribio. */
   puntuacion: number;
-  /** Mes en que se publico, AAAA-MM. */
-  fecha: string;
+  /**
+   * Aproximado, AAAA-MM. Google solo publica la antiguedad relativa ("hace 9
+   * meses"), asi que esto es un calculo desde la fecha en que se copio y puede
+   * bailar un mes. No se muestra: sirve para saber cuando toca repasarlas.
+   */
+  fecha?: string;
   /** Id de la sucursal, si se sabe a cual se refiere. */
   sucursal?: string;
 }
@@ -321,7 +325,7 @@ export const sucursales: Sucursal[] = [
     // TODO(datos-reales): copiado de la ficha de Google. Conviene repasarlo de
     // vez en cuando: si la web dice 71 resenas y Google ya va por 120, la web
     // esta vendiendo menos de lo que teneis.
-    valoracion: { puntuacion: 5, total: 71, consultado: '2026-08-14' },
+    valoracion: { puntuacion: 5, total: 77, consultado: '2026-09-01' },
     // Horario publicado en Fresha.
     horarios: HORARIO_HABITUAL,
   },
@@ -469,7 +473,64 @@ export const serviciosPrivados: ServicioPrivado[] = [];
 // Ninguna se inventa. Una resena inventada en la web de un negocio real es
 // publicidad enganosa, y ademas se nota: las de verdad tienen faltas, emojis y
 // frases a medias, y las inventadas no.
-export const resenas: Resena[] = [];
+/**
+ * Resenas reales copiadas de la ficha de Google de la sucursal Brisas el 1 de
+ * septiembre de 2026. Van **literales**: no se corrigen las faltas ("sobretodo"
+ * por "sobre todo"), no se recortan y no se traducen.
+ *
+ * Llevan tildes aunque el resto del codigo fuente no las use. Esa convencion es
+ * para lo que escribimos nosotros; esto son palabras de otra persona y
+ * quitarles las tildes seria editarlas.
+ *
+ * Solo entran las que se leen completas. Una resena cortada a la mitad no se
+ * completa a ojo.
+ */
+export const resenas: Resena[] = [
+  {
+    autor: 'Nelva Camacho',
+    texto:
+      'Recomendado 100% para estilo Pixi!!! quedé muy satisfecha ya que soy mujer y no es tan fácil encontrar quien sepa hacerlo bien al menos yo no había encontrado en San Lucas , y super amable el joven Charly con instalaciones bastante agradables, me encantó!!',
+    idioma: 'es',
+    puntuacion: 5,
+    fecha: '2025-12',
+    sucursal: 'brisas',
+  },
+  {
+    autor: 'Patricia Hernandez',
+    texto: 'Me encantó, amé mi cabello!!',
+    idioma: 'es',
+    puntuacion: 5,
+    fecha: '2026-01',
+    sucursal: 'brisas',
+  },
+  {
+    autor: 'Axel Arana',
+    texto:
+      'Excelente ubicación y trato por parte de Charlie! Al igual que el lugar está muy cómodo y agradable',
+    idioma: 'es',
+    puntuacion: 5,
+    fecha: '2025-09',
+    sucursal: 'brisas',
+  },
+  {
+    autor: 'raul castro',
+    texto:
+      'Buenas herramientas  de trabajo, limpias, modernas, higiene, y sobretodo saben usarlas. Chequen nada más la calidad del corte de cabello y perfilado de barba.',
+    idioma: 'es',
+    puntuacion: 5,
+    fecha: '2023-09',
+    sucursal: 'brisas',
+  },
+  {
+    autor: 'irving benitez nieves',
+    texto:
+      'Excelente servicio y un gran trabajo, recomendado, el lugar apenas está empezando pero vale mucho la pena.',
+    idioma: 'es',
+    puntuacion: 5,
+    fecha: '2023-09',
+    sucursal: 'brisas',
+  },
+];
 
 // TODO(datos-reales): equipo real y fotos en /public/equipo/. Si preferis no
 // mostrar el equipo, dejad esta lista vacia y la seccion desaparece sola.

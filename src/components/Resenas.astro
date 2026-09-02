@@ -92,12 +92,11 @@ const masResenada = [...conValoracion].sort(
                     {resena.texto}
                   </blockquote>
 
+                  {/* Sin fecha: de Google solo se saca la antiguedad relativa
+                      ("hace 9 meses"), y poner un mes concreto seria afirmar
+                      una precision que no tenemos. */}
                   <p class="border-fondo-200 text-tinta-600 mt-6 border-t pt-4 font-mono text-[0.7rem] tracking-[0.12em] uppercase">
                     {resena.autor}
-                    <span class="text-tinta-500">
-                      {' · '}
-                      {resena.fecha}
-                    </span>
                   </p>
                 </li>
               ))}
