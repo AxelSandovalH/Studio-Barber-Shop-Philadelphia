@@ -1,7 +1,13 @@
 ---
+import { getImage } from 'astro:assets';
 import { negocio, sucursales } from '../data/site';
 import { idiomaDe, t } from '../i18n/idiomas';
 import { rellenar, textos } from '../i18n/textos';
+import marPoster from '../assets/portada/mar-rocas-poster.jpg';
+
+// El poster se optimiza como cualquier foto. Es lo que se ve mientras el video
+// no arranca, y en movil y con movimiento reducido es lo unico que se ve.
+const poster = await getImage({ src: marPoster, width: 1600, format: 'webp' });
 
 const idioma = idiomaDe(Astro.currentLocale);
 const T = textos(idioma);
@@ -14,15 +20,28 @@ const diasAbiertos = principal.horarios
 ---
 
 <section id="inicio" class="relative overflow-hidden pt-20">
-  <!-- Fondo: destello calido arriba a la izquierda y rejilla tenue de barberia. -->
+  <!-- Fondo: el mar de Cabo, grabado en el Medano. Es contexto, no la
+       propuesta: encima va un velo crema para que el texto se lea sobre la
+       misma paleta clara de siempre y el mar solo asome por la derecha. -->
   <div class="absolute inset-0 -z-10" aria-hidden="true">
-    <div
-      class="bg-salvia-600/15 absolute -top-40 -left-40 size-[38rem] rounded-full blur-3xl"
+    <video
+      data-video-portada
+      class="size-full object-cover"
+      poster={poster.src}
+      muted
+      loop
+      playsinline
+      preload="none"
     >
-    </div>
+      <source src="/portada/mar-rocas.mp4" type="video/mp4" />
+    </video>
+
+    <!-- En escritorio el velo se abre hacia la derecha, que es donde no hay
+         texto, y el mar se ve. En movil el texto ocupa todo el ancho, asi que
+         un degradado lateral no protege nada: ahi se cierra casi del todo y el
+         mar queda como textura de fondo. -->
     <div
-      class="absolute inset-0 opacity-[0.06]"
-      style="background-image: linear-gradient(var(--color-tinta-900) 1px, transparent 1px), linear-gradient(90deg, var(--color-tinta-900) 1px, transparent 1px); background-size: 72px 72px;"
+      class="from-fondo-50 via-fondo-50/95 to-fondo-50/78 md:via-fondo-50/92 md:to-fondo-50/20 absolute inset-0 bg-gradient-to-r"
     >
     </div>
     <div
@@ -90,3 +109,40 @@ const diasAbiertos = principal.horarios
     </div>
   </div>
 </section>
+
+<script>
+  // El video de la portada es decorativo y solo se descarga cuando aporta algo.
+  // Se queda en el poster —ya pintado y sin coste extra— en tres casos:
+  //
+  //   - En movil, donde el velo esta casi cerrado para que el texto se lea a
+  //     todo el ancho: se verian dos apuntes de ola a cambio de megas.
+  //   - Con "prefers-reduced-motion", porque animar el fondo es justo lo que
+  //     esa preferencia pide evitar.
+  //   - Con el ahorro de datos activado.
+  const video = document.querySelector<HTMLVideoElement>('[data-video-portada]');
+
+  if (video) {
+    const escritorio = window.matchMedia('(min-width: 768px)');
+    const reducir = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const conexion = (navigator as Navigator & { connection?: { saveData?: boolean } })
+      .connection;
+
+    const revisar = () => {
+      if (!escritorio.matches || reducir.matches || conexion?.saveData) {
+        video.pause();
+        return;
+      }
+
+      video.preload = 'auto';
+      // Si el archivo no esta, play() rechaza: se queda el poster y ya.
+      video.play().catch(() => {});
+    };
+
+    // Se reevalua al cambiar el ancho o la preferencia: quien carga la pagina
+    // en una ventana estrecha y luego la maximiza tambien merece el video, y
+    // quien activa el movimiento reducido merece que se pare al momento.
+    escritorio.addEventListener('change', revisar);
+    reducir.addEventListener('change', revisar);
+    revisar();
+  }
+</script>

@@ -256,6 +256,37 @@ nada a mano.
 - **Se respeta `prefers-reduced-motion`**: si esta activo, no hay animaciones,
   ningun video arranca solo y aparecen los controles nativos.
 
+### Video de la portada
+
+El fondo de la portada es un plano del mar grabado en el Medano. No es una
+decision de catalogo: es lo unico horizontal que hay, y el resto del material
+son verticales de Instagram que ahi no entran.
+
+Va con el perfil `portada` del script, que cambia dos cosas respecto a la
+galeria: escala por ancho (1600 px) en vez de por alto, porque se ve a pantalla
+completa, y sube la calidad, porque el mar —mucho movimiento y detalle fino— es
+el caso peor para un codec y con los ajustes de la galeria sale a bloques.
+
+```bash
+./scripts/comprimir-video.sh media-original/videos/HeroMarRocas.MOV mar-rocas portada
+```
+
+Deja `public/portada/mar-rocas.mp4` y `src/assets/portada/mar-rocas-poster.jpg`.
+
+**El video solo se descarga cuando aporta algo.** Se queda en el poster, que ya
+esta pintado y no cuesta nada mas, en tres casos: en movil, donde el velo esta
+casi cerrado para que el texto se lea a todo el ancho y solo se verian dos
+apuntes de ola; con `prefers-reduced-motion`; y con el ahorro de datos activado.
+Se reevalua al cambiar el ancho de ventana o la preferencia.
+
+El velo crema encima no es un adorno: sin el, el texto oscuro cae sobre las
+rocas y deja de leerse. En escritorio se abre hacia la derecha, que es donde no
+hay texto.
+
+**Sigue siendo un puente.** El mar da contexto de Cabo, pero no dice que esto
+sea una barberia. Cuando llegue un plano horizontal del local, ese es el que
+va aqui.
+
 ### Fotos del equipo
 
 Solo si se decide mostrar el equipo: `public/equipo/barbero-1.svg` …
