@@ -91,6 +91,32 @@ export interface Sucursal {
   valoracion?: Valoracion;
 }
 
+/**
+ * Una opinion de un cliente, copiada literal de donde la escribio.
+ *
+ * `texto` no es `Bilingue` a proposito: una resena la escribio una persona en
+ * su idioma, y traducirla seria ponerle en la boca palabras que no dijo. Se
+ * muestra tal cual en las dos versiones del sitio, con su `lang` para que un
+ * lector de pantalla la pronuncie bien.
+ *
+ * No se inventa ninguna. Si no hay resenas reales copiadas, la lista se queda
+ * vacia y la seccion no se muestra.
+ */
+export interface Resena {
+  /** Como firma en la ficha. Si solo hay nombre de pila, va el nombre de pila. */
+  autor: string;
+  /** Literal, sin corregir ni recortar. */
+  texto: string;
+  /** Idioma en que esta escrita. */
+  idioma: Idioma;
+  /** De 1 a 5, la que puso quien la escribio. */
+  puntuacion: number;
+  /** Mes en que se publico, AAAA-MM. */
+  fecha: string;
+  /** Id de la sucursal, si se sabe a cual se refiere. */
+  sucursal?: string;
+}
+
 export interface Valoracion {
   /** De 0 a 5. */
   puntuacion: number;
@@ -435,6 +461,15 @@ export const servicios: Servicio[] = [
  *   },
  */
 export const serviciosPrivados: ServicioPrivado[] = [];
+
+// TODO(datos-reales): resenas reales copiadas de la ficha de Google. Van
+// literales: sin corregir la ortografia, sin recortar y sin traducir. Mientras
+// esta lista este vacia, la seccion de opiniones no se muestra.
+//
+// Ninguna se inventa. Una resena inventada en la web de un negocio real es
+// publicidad enganosa, y ademas se nota: las de verdad tienen faltas, emojis y
+// frases a medias, y las inventadas no.
+export const resenas: Resena[] = [];
 
 // TODO(datos-reales): equipo real y fotos en /public/equipo/. Si preferis no
 // mostrar el equipo, dejad esta lista vacia y la seccion desaparece sola.

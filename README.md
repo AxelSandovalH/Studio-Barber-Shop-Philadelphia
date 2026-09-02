@@ -135,7 +135,22 @@ grep -rn "TODO(datos-reales)" src astro.config.mjs public/robots.txt
    cuanto haya permiso de los padres se copian a `src/assets/galeria/` y se
    anaden a `galeria`. La edad la juzgo por la foto, asi que repasadlas: puede
    que alguna sea un adulto joven y este esperando de mas.
-10. **Valoracion de Google.** Las 5.0 estrellas con 71 resenas estan copiadas a
+10. **Resenas.** La lista `resenas` de `site.ts` esta vacia y por eso el bloque
+    de opiniones no se muestra. Para llenarla se copian de la ficha de Google
+    **literales**: sin corregir faltas, sin recortar y sin traducir. Cada una
+    lleva su `idioma`, que se usa en el atributo `lang` del `<blockquote>`.
+
+    **No se inventa ninguna.** Una resena inventada en la web de un negocio
+    real es publicidad enganosa, y ademas se nota: las de verdad tienen faltas,
+    emojis y frases a medias.
+
+    **No llevan datos estructurados a proposito.** Google prohibe marcar con
+    `Review` las opiniones tomadas de otra plataforma o las que el propio
+    negocio se pone: emitirlo puede costar la penalizacion de todos los
+    resultados enriquecidos del sitio, incluidos el horario y las preguntas
+    frecuentes, que si son legitimos. Se muestran como texto y nada mas.
+
+11. **Valoracion de Google.** Las 5.0 estrellas con 71 resenas estan copiadas a
     mano de la ficha de Brisas. Conviene repasarlas de vez en cuando: si Google
     ya va por mas, la web esta vendiendo menos de lo que teneis. La Joya no tiene
     ficha, y por eso solo aparece una.

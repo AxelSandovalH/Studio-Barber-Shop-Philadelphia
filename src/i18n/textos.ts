@@ -63,6 +63,10 @@ const es = {
 
   resenasEnGoogle: 'resenas en Google',
   leerResenas: 'Leerlas',
+  opinionesEtiqueta: 'Lo que dicen',
+  opinionesTitulo: 'En sus palabras',
+  opinionesEnGoogle: 'Opinion publicada en Google',
+  verTodasEnGoogle: 'Ver todas en Google',
 
   equipoEtiqueta: 'El equipo',
   equipoTitulo: 'Quien te atiende',
@@ -178,6 +182,10 @@ const en: typeof es = {
 
   resenasEnGoogle: 'reviews on Google',
   leerResenas: 'Read them',
+  opinionesEtiqueta: 'What they say',
+  opinionesTitulo: 'In their words',
+  opinionesEnGoogle: 'Review posted on Google',
+  verTodasEnGoogle: 'See them all on Google',
 
   equipoEtiqueta: 'The team',
   equipoTitulo: 'Who cuts your hair',

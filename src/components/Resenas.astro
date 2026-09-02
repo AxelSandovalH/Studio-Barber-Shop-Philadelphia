@@ -1,5 +1,5 @@
 ---
-import { sucursales, enlaceMapa } from '../data/site';
+import { sucursales, resenas, enlaceMapa } from '../data/site';
 import { idiomaDe } from '../i18n/idiomas';
 import { textos } from '../i18n/textos';
 
@@ -9,6 +9,11 @@ const T = textos(idioma);
 // Solo se muestran las sucursales que tienen ficha con resenas. Si ninguna la
 // tiene, la seccion entera desaparece sola.
 const conValoracion = sucursales.filter((sucursal) => sucursal.valoracion);
+
+// La ficha con mas resenas es a la que se manda a quien quiere leerlas todas.
+const masResenada = [...conValoracion].sort(
+  (a, b) => b.valoracion!.total - a.valoracion!.total,
+)[0];
 ---
 
 {
@@ -54,6 +59,64 @@ const conValoracion = sucursales.filter((sucursal) => sucursal.valoracion);
             </a>
           ))}
         </div>
+
+        {/* Las opiniones van literales: se copian de la ficha sin corregir ni
+            traducir, y por eso cada una lleva su propio lang. Si no hay
+            ninguna copiada, este bloque no existe y queda solo el resumen. */}
+        {resenas.length > 0 && (
+          <div class="mt-20">
+            <ul class="grid gap-x-10 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+              {resenas.map((resena) => (
+                <li class="flex flex-col">
+                  <span
+                    class="text-salvia-500 flex items-center gap-0.5"
+                    aria-hidden="true"
+                  >
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <svg
+                        class:list={[
+                          'size-3.5',
+                          i < resena.puntuacion ? 'fill-current' : 'fill-fondo-300',
+                        ]}
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01z" />
+                      </svg>
+                    ))}
+                  </span>
+
+                  <blockquote
+                    lang={resena.idioma}
+                    class="font-display text-tinta-900 mt-5 flex-1 text-2xl"
+                  >
+                    {resena.texto}
+                  </blockquote>
+
+                  <p class="border-fondo-200 text-tinta-600 mt-6 border-t pt-4 font-mono text-[0.7rem] tracking-[0.12em] uppercase">
+                    {resena.autor}
+                    <span class="text-tinta-500">
+                      {' · '}
+                      {resena.fecha}
+                    </span>
+                  </p>
+                </li>
+              ))}
+            </ul>
+
+            {masResenada && (
+              <p class="mt-14 text-center">
+                <a
+                  href={enlaceMapa(masResenada)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-salvia-700 hover:text-salvia-800 font-semibold underline underline-offset-4 transition"
+                >
+                  {T.verTodasEnGoogle}
+                </a>
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </section>
   )
