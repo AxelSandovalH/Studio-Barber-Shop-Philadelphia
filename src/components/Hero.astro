@@ -41,7 +41,7 @@ const diasAbiertos = principal.horarios
          un degradado lateral no protege nada: ahi se cierra casi del todo y el
          mar queda como textura de fondo. -->
     <div
-      class="from-fondo-50 via-fondo-50/95 to-fondo-50/78 md:via-fondo-50/92 md:to-fondo-50/20 absolute inset-0 bg-gradient-to-r"
+      class="from-fondo-50/97 via-fondo-50/88 to-fondo-50/72 md:from-fondo-50/94 md:via-fondo-50/72 md:to-fondo-50/12 absolute inset-0 bg-gradient-to-r"
     >
     </div>
     <div
@@ -63,7 +63,12 @@ const diasAbiertos = principal.horarios
         {t(negocio.eslogan, idioma)}
       </p>
 
-      <p class="text-tinta-600 mt-7 max-w-xl text-lg leading-relaxed">
+      {
+        /* Un paso mas oscuro que en el resto del sitio: aqui el texto no cae
+          sobre crema plana sino sobre el mar, y con el velo abierto tinta-600
+          se quedaba por debajo del contraste minimo. */
+      }
+      <p class="text-tinta-700 mt-7 max-w-xl text-lg leading-relaxed">
         {t(negocio.descripcion, idioma)}
       </p>
 
