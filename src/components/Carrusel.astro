@@ -480,6 +480,19 @@ const preparados = await Promise.all(
     const recorrido = () => pista.scrollWidth - pista.clientWidth;
     if (recorrido() <= 0) return null;
 
+    /**
+     * Cuanto scroll vertical cuesta atravesar la galeria.
+     *
+     * Lo natural seria uno a uno con el recorrido horizontal, y asi estaba
+     * cuando habia diez piezas. Con treinta y cinco son casi doce mil pixeles:
+     * trece pantallas de scroll para pasar de largo una seccion. Pasado el tope
+     * el avance horizontal va mas rapido que el dedo, que se nota, pero se nota
+     * bastante menos que quedarse atrapado en el camino a las sucursales.
+     */
+    const TOPE_PANTALLAS = 3;
+    const recorridoVertical = () =>
+      Math.min(recorrido(), window.innerHeight * TOPE_PANTALLAS);
+
     // Anclar una seccion mas alta que la ventana deja parte fuera de vista todo
     // el rato. Primero se le quita aire vertical, que es de donde se puede
     // recortar sin tocar el contenido, y si aun asi no cabe se renuncia al
@@ -517,9 +530,7 @@ const preparados = await Promise.all(
     const anclaje = ScrollTrigger.create({
       trigger: seccion,
       start: 'top top',
-      // Se recorre en vertical exactamente lo que mide en horizontal, para que
-      // el gesto se sienta uno a uno.
-      end: () => '+=' + recorrido(),
+      end: () => '+=' + recorridoVertical(),
       pin: true,
       // Un pelin de scrub suaviza el paso sin llegar a sentirse a la deriva.
       scrub: 0.5,

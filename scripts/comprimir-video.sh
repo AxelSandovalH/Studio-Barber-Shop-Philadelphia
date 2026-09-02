@@ -57,8 +57,13 @@ ffmpeg -loglevel error -y -i "$entrada" \
   -movflags +faststart -an \
   "$raiz/public/galeria/$nombre.mp4"
 
+# El poster se saca de la mitad del clip y no del primer fotograma. El primero
+# suele ser la mano acercando el telefono o un plano de detalle sin contexto, y
+# es justo la imagen que se ve mientras el video no se reproduce.
 echo "→ Poster…"
-ffmpeg -loglevel error -y -i "$entrada" \
+duracion=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$entrada")
+mitad=$(awk -v d="$duracion" 'BEGIN { printf "%.2f", d / 2 }')
+ffmpeg -loglevel error -y -ss "$mitad" -i "$entrada" \
   -vf "$escala" -frames:v 1 -q:v 3 \
   "$raiz/src/assets/galeria/$nombre-poster.jpg"
 

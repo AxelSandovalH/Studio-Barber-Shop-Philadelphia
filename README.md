@@ -127,10 +127,18 @@ grep -rn "TODO(datos-reales)" src astro.config.mjs public/robots.txt
    asigna. Cuando este contratado y apuntando, se define `SITE_URL` en las
    variables de entorno del proyecto en Vercel y se ajustan solos la URL
    canonica, el sitemap y el `robots.txt`.
-9. **Valoracion de Google.** Las 5.0 estrellas con 71 resenas estan copiadas a
-   mano de la ficha de Brisas. Conviene repasarlas de vez en cuando: si Google
-   ya va por mas, la web esta vendiendo menos de lo que teneis. La Joya no tiene
-   ficha, y por eso solo aparece una.
+9. **Permiso para publicar a clientes menores de edad.** En
+   `media-original/fotos/` hay ocho fotos buenas que no estan en la web porque
+   sale gente que parece menor de edad: `Fade12`, `FadeNino`,
+   `NinoCortePicudoFade`, `PhiladelphiaBarbershopStudioFoto2`, `Tijera5`,
+   `Tijera6`, `FadeColoracionMechas` y `PhiladelphiaBarbershopStudioFoto3`. En
+   cuanto haya permiso de los padres se copian a `src/assets/galeria/` y se
+   anaden a `galeria`. La edad la juzgo por la foto, asi que repasadlas: puede
+   que alguna sea un adulto joven y este esperando de mas.
+10. **Valoracion de Google.** Las 5.0 estrellas con 71 resenas estan copiadas a
+    mano de la ficha de Brisas. Conviene repasarlas de vez en cuando: si Google
+    ya va por mas, la web esta vendiendo menos de lo que teneis. La Joya no tiene
+    ficha, y por eso solo aparece una.
 
 ## Galeria: fotos y videos
 

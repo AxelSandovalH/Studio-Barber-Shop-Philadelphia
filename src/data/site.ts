@@ -27,6 +27,34 @@ import rayaLateralPoster from '../assets/galeria/raya-lateral-poster.jpg';
 import clasicoPoster from '../assets/galeria/clasico-poster.jpg';
 import estilizadoPoster from '../assets/galeria/estilizado-poster.jpg';
 
+// Fotos y posters de la tanda de septiembre de 2026.
+import fadeMullet from '../assets/galeria/fade-mullet.jpg';
+import fadeRayaBarba from '../assets/galeria/fade-raya-barba.jpg';
+import colorPlatino from '../assets/galeria/color-platino.jpg';
+import barbaToalla from '../assets/galeria/barba-toalla.jpg';
+import barbaToallaLavabo from '../assets/galeria/barba-toalla-lavabo.jpg';
+import barbaPerfilada from '../assets/galeria/barba-perfilada.jpg';
+import tijeraTazon from '../assets/galeria/tijera-tazon.jpg';
+import corteCortoPixie from '../assets/galeria/corte-corto-pixie.jpg';
+
+import fade1Poster from '../assets/galeria/fade-1-poster.jpg';
+import fade2Poster from '../assets/galeria/fade-2-poster.jpg';
+import fade3Poster from '../assets/galeria/fade-3-poster.jpg';
+import fade4Poster from '../assets/galeria/fade-4-poster.jpg';
+import fade5Poster from '../assets/galeria/fade-5-poster.jpg';
+import tijera1Poster from '../assets/galeria/tijera-1-poster.jpg';
+import tijera2Poster from '../assets/galeria/tijera-2-poster.jpg';
+import tijera3Poster from '../assets/galeria/tijera-3-poster.jpg';
+import tijera4Poster from '../assets/galeria/tijera-4-poster.jpg';
+import tijera5Poster from '../assets/galeria/tijera-5-poster.jpg';
+import barba1Poster from '../assets/galeria/barba-1-poster.jpg';
+import barba2Poster from '../assets/galeria/barba-2-poster.jpg';
+import barba3Poster from '../assets/galeria/barba-3-poster.jpg';
+import barba4Poster from '../assets/galeria/barba-4-poster.jpg';
+import color1Poster from '../assets/galeria/color-1-poster.jpg';
+import color2Poster from '../assets/galeria/color-2-poster.jpg';
+import color3Poster from '../assets/galeria/color-3-poster.jpg';
+
 export interface Negocio {
   nombre: string;
   nombreCorto: string;
@@ -424,6 +452,44 @@ export const barberos: Barbero[] = [];
 export const galeria: MedioGaleria[] = [
   {
     tipo: 'foto',
+    src: fadeMullet,
+    servicio: 'fade',
+    alt: {
+      es: 'Mullet rizado con laterales rapados y barba perfilada',
+      en: 'Curly mullet with shaved sides and a shaped beard',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/tijera-1.mp4',
+    poster: tijera1Poster,
+    servicio: 'tijera',
+    alt: {
+      es: 'Corte a tijera peinado hacia atras, con volumen arriba',
+      en: 'Scissor cut styled back, with volume on top',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: barbaToalla,
+    servicio: 'barba',
+    alt: {
+      es: 'Toalla caliente puesta durante el ritual de barba',
+      en: 'Hot towel applied during the beard ritual',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/color-1.mp4',
+    poster: color1Poster,
+    servicio: 'color',
+    alt: {
+      es: 'Tupe decolorado a platino sobre laterales desvanecidos',
+      en: 'Platinum-bleached quiff over faded sides',
+    },
+  },
+  {
+    tipo: 'foto',
     src: pixieTerminado,
     alt: {
       es: 'Corte pixie texturizado, terminado y peinado en el local',
@@ -432,11 +498,49 @@ export const galeria: MedioGaleria[] = [
   },
   {
     tipo: 'video',
-    mp4: '/galeria/pixie.mp4',
-    poster: pixiePoster,
+    mp4: '/galeria/fade-1.mp4',
+    poster: fade1Poster,
+    servicio: 'fade',
     alt: {
-      es: 'Resultado de un corte pixie texturizado, de perfil',
-      en: 'A finished textured pixie cut, seen from the side',
+      es: 'Degradado en cabello rubio con la nuca perfilada',
+      en: 'Fade on blond hair with the neckline cleaned up',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: tijeraTazon,
+    servicio: 'tijera',
+    alt: {
+      es: 'Corte de tijera con flequillo recto y caida sobre la oreja',
+      en: 'Scissor cut with a blunt fringe falling over the ear',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/barba-2.mp4',
+    poster: barba2Poster,
+    servicio: 'barba',
+    alt: {
+      es: 'Ritual de barba con toalla caliente sobre el rostro',
+      en: 'Beard ritual with a hot towel over the face',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: colorPlatino,
+    servicio: 'color',
+    alt: {
+      es: 'Decoloracion a platino con degradado a piel en los laterales',
+      en: 'Platinum bleach with a skin fade on the sides',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/texturizado.mp4',
+    poster: texturizadoPoster,
+    alt: {
+      es: 'Corte texturizado de largo medio con raya al lado',
+      en: 'Mid-length textured cut with a side part',
     },
   },
   {
@@ -450,22 +554,116 @@ export const galeria: MedioGaleria[] = [
   },
   {
     tipo: 'video',
-    mp4: '/galeria/degradado.mp4',
-    servicio: 'fade',
-    poster: degradadoPoster,
+    mp4: '/galeria/tijera-2.mp4',
+    poster: tijera2Poster,
+    servicio: 'tijera',
     alt: {
-      es: 'Degradado con desvanecido en la nuca, visto por detras',
-      en: 'Fade tapered into the neckline, seen from behind',
+      es: 'Corte a tijera en capas, visto desde la nuca',
+      en: 'Layered scissor cut, seen from the neckline',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: barbaToallaLavabo,
+    servicio: 'barba',
+    alt: {
+      es: 'Toalla caliente sobre el rostro en el lavabo, antes del perfilado',
+      en: 'Hot towel over the face at the basin, before shaping',
     },
   },
   {
     tipo: 'video',
-    mp4: '/galeria/barba.mp4',
-    servicio: 'barba',
-    poster: barbaPoster,
+    mp4: '/galeria/color-2.mp4',
+    poster: color2Poster,
+    servicio: 'color',
     alt: {
-      es: 'Perfilado de barba con navaja y toalla caliente',
-      en: 'Beard shaped with a straight razor and a hot towel',
+      es: 'Coloracion platino con degradado, terminada y peinada',
+      en: 'Platinum colour with a fade, finished and styled',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: corteCortoPixie,
+    alt: {
+      es: 'Corte corto tipo pixie, terminado y peinado',
+      en: 'Short pixie cut, finished and styled',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/fade-2.mp4',
+    poster: fade2Poster,
+    servicio: 'fade',
+    alt: {
+      es: 'Degradado a piel con la barba perfilada',
+      en: 'Skin fade with the beard shaped up',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/tijera-3.mp4',
+    poster: tijera3Poster,
+    servicio: 'tijera',
+    alt: {
+      es: 'Corte a tijera con volumen arriba y patilla marcada',
+      en: 'Scissor cut with volume on top and a defined sideburn',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: barbaPerfilada,
+    servicio: 'barba',
+    alt: {
+      es: 'Barba perfilada tras el ritual, con la toalla aun puesta',
+      en: 'Beard shaped after the ritual, towel still on',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/color-3.mp4',
+    poster: color3Poster,
+    servicio: 'color',
+    alt: {
+      es: 'Mechas rubias sobre cabello rizado, vistas desde atras',
+      en: 'Blonde highlights on curly hair, seen from behind',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/pixie.mp4',
+    poster: pixiePoster,
+    alt: {
+      es: 'Resultado de un corte pixie texturizado, de perfil',
+      en: 'A finished textured pixie cut, seen from the side',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: fadeRayaBarba,
+    servicio: 'fade',
+    alt: {
+      es: 'Degradado con raya marcada a navaja y barba perfilada',
+      en: 'Fade with a razor-cut hard part and a shaped beard',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/tijera-4.mp4',
+    poster: tijera4Poster,
+    servicio: 'tijera',
+    alt: {
+      es: 'Corte a tijera con raya al lado, terminado',
+      en: 'Scissor cut with a side part, finished',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/barba-1.mp4',
+    poster: barba1Poster,
+    servicio: 'barba',
+    alt: {
+      es: 'Corte de barba en el sillon, con el local al fondo',
+      en: 'Beard trim in the chair, with the shop behind',
     },
   },
   {
@@ -478,21 +676,32 @@ export const galeria: MedioGaleria[] = [
   },
   {
     tipo: 'video',
-    mp4: '/galeria/texturizado.mp4',
-    poster: texturizadoPoster,
+    mp4: '/galeria/degradado.mp4',
+    poster: degradadoPoster,
+    servicio: 'fade',
     alt: {
-      es: 'Corte texturizado de largo medio con raya al lado',
-      en: 'Mid-length textured cut with a side part',
+      es: 'Degradado con desvanecido en la nuca, visto por detras',
+      en: 'Fade tapered into the neckline, seen from behind',
     },
   },
   {
     tipo: 'video',
-    mp4: '/galeria/raya-lateral.mp4',
-    servicio: 'fade',
-    poster: rayaLateralPoster,
+    mp4: '/galeria/tijera-5.mp4',
+    poster: tijera5Poster,
+    servicio: 'tijera',
     alt: {
-      es: 'Raya marcada al lado con degradado, vista por detras',
-      en: 'Hard side part with a fade, seen from behind',
+      es: 'Corte a tijera oscuro con caida lateral',
+      en: 'Dark scissor cut with a side sweep',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/barba-3.mp4',
+    poster: barba3Poster,
+    servicio: 'barba',
+    alt: {
+      es: 'Toalla caliente durante el ritual de barba, reclinado',
+      en: 'Hot towel during the beard ritual, fully reclined',
     },
   },
   {
@@ -505,15 +714,72 @@ export const galeria: MedioGaleria[] = [
     },
   },
   {
-    // TODO(datos-reales): este clip lleva un texto sobreimpreso ("Salmos
-    // 150:1-6") que viene de la publicacion original de redes. Decidid si lo
-    // quereis en la web; si no, hay que volver a exportarlo sin el.
+    tipo: 'video',
+    mp4: '/galeria/fade-3.mp4',
+    poster: fade3Poster,
+    servicio: 'fade',
+    alt: {
+      es: 'Degradado bajo con el cabello peinado a un lado',
+      en: 'Low fade with the hair swept to one side',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/barba.mp4',
+    poster: barbaPoster,
+    servicio: 'barba',
+    alt: {
+      es: 'Perfilado de barba con navaja y toalla caliente',
+      en: 'Beard shaped with a straight razor and a hot towel',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/raya-lateral.mp4',
+    poster: rayaLateralPoster,
+    servicio: 'fade',
+    alt: {
+      es: 'Raya marcada al lado con degradado, vista por detras',
+      en: 'Hard side part with a fade, seen from behind',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/barba-4.mp4',
+    poster: barba4Poster,
+    servicio: 'barba',
+    alt: {
+      es: 'Degradado con barba pelirroja perfilada, visto desde atras',
+      en: 'Fade with a shaped ginger beard, seen from behind',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/fade-4.mp4',
+    poster: fade4Poster,
+    servicio: 'fade',
+    alt: {
+      es: 'Degradado corto con barba recortada',
+      en: 'Short fade with a trimmed beard',
+    },
+  },
+  {
     tipo: 'video',
     mp4: '/galeria/estilizado.mp4',
     poster: estilizadoPoster,
     alt: {
       es: 'Peinado hacia atras terminado, visto desde arriba',
       en: 'Finished slicked-back style, seen from above',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/fade-5.mp4',
+    poster: fade5Poster,
+    servicio: 'fade',
+    alt: {
+      es: 'Degradado con textura arriba, visto de perfil',
+      en: 'Fade with texture on top, seen from the side',
     },
   },
 ];
