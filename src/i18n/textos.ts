@@ -43,6 +43,15 @@ const es = {
   consultar: 'Consultar',
   precioDesde: 'desde',
   unosMinutos: 'Unos {n} min',
+  servicioAntetitulo: 'Servicio',
+  verServicio: 'Ver este servicio',
+  volverALaCarta: 'Volver a la carta',
+  otrosServicios: 'Otros servicios',
+  servicioSinPrecio: 'Escribenos y te lo decimos',
+  servicioTrabajos: 'Trabajos de este servicio',
+  servicioSinTrabajos:
+    'Todavia no hay fotos de este servicio en la web. En la galeria estan los demas.',
+  servicioDondePedirlo: 'Donde pedirlo',
   serviciosPie: 'Atendemos con y sin cita. Para asegurar tu hora,',
   serviciosPieEnlace: 'escribenos a la sucursal que prefieras',
 
@@ -162,6 +171,15 @@ const en: typeof es = {
   consultar: 'Ask us',
   precioDesde: 'from',
   unosMinutos: 'About {n} min',
+  servicioAntetitulo: 'Service',
+  verServicio: 'See this service',
+  volverALaCarta: 'Back to the menu',
+  otrosServicios: 'Other services',
+  servicioSinPrecio: 'Message us and we will tell you',
+  servicioTrabajos: 'Our work on this service',
+  servicioSinTrabajos:
+    'No photos of this service on the site yet. The rest are in the gallery.',
+  servicioDondePedirlo: 'Where to book it',
   serviciosPie: 'Walk-ins welcome. To make sure you get a slot,',
   serviciosPieEnlace: 'message the shop that suits you best',
 

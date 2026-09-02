@@ -15,10 +15,25 @@ mexicanos.
   asi que olvidarse de una clave rompe `npm run check` en vez de dejar un hueco
   en produccion. Los componentes sacan el idioma de `Astro.currentLocale` con
   `idiomaDe()`, no por props.
-- **Cada idioma tiene sus propias rutas** (`/sucursales/...` y `/en/locations/...`)
-  y todas las paginas pasan `rutas` al layout, que es de donde salen el hreflang
-  y el conmutador de idioma. Si anades una pagina, tiene que existir en los dos
-  idiomas o el hreflang apuntara a un 404.
+- **Cada idioma tiene sus propias rutas** (`/sucursales/...` y `/en/locations/...`,
+  `/servicios/...` y `/en/services/...`) y todas las paginas pasan `rutas` al
+  layout, que es de donde salen el hreflang y el conmutador de idioma. Si anades
+  una pagina, tiene que existir en los dos idiomas o el hreflang apuntara a un 404. Lo que se traduce es el segmento de la ruta, no el identificador: la
+  clave del servicio y el id de la sucursal son los mismos en los dos idiomas.
+- **Cada servicio tiene su propia pagina**, generada de `servicios`. No hay
+  contenido escrito a mano en ellas: el nombre, la descripcion y el precio salen
+  de la carta, y el material de la galeria ya etiquetada por servicio.
+  - **El retrato del hero va al lado del texto, no de fondo a sangre.** Se probo
+    a sangre y se descarto: el material son retratos verticales 3:4 y recortarlos
+    a una banda apaisada deja una tira del centro que no se entiende. Es la misma
+    leccion que el arco de la galeria.
+  - **Un servicio sin material etiquetado se queda sin retrato** y el texto ocupa
+    el ancho. Ponerle la foto de otro servicio seria vender una cosa con la foto
+    de otra.
+  - Emiten `Service` con `Offer` y su miga de pan. El `provider` va en linea y no
+    como referencia a un `@id`: los nodos `HairSalon` son uno por sucursal y
+    viven en otras paginas, asi que apuntarles desde aqui seria una referencia
+    rota.
 - **Todo el contenido del negocio vive en `src/data/site.ts`.** No escribas
   textos de negocio, precios, horarios ni datos de contacto dentro de los
   componentes: importalos de ahi. Si un dato se puede derivar (numero de

@@ -894,6 +894,21 @@ export function serviciosDeGaleria(): Servicio[] {
   return servicios.filter((servicio) => conMaterial.has(servicio.clave));
 }
 
+/** Un servicio por su clave. */
+export function servicioPorClave(clave: ClaveServicio): Servicio | undefined {
+  return servicios.find((servicio) => servicio.clave === clave);
+}
+
+/**
+ * Las piezas de galeria etiquetadas con un servicio.
+ *
+ * Es lo que permite que cada pagina de servicio ensene su propio trabajo sin
+ * duplicar nada: la etiqueta ya existe para los filtros de la galeria.
+ */
+export function mediosDeServicio(clave: ClaveServicio): MedioGaleria[] {
+  return galeria.filter((medio) => medio.servicio === clave);
+}
+
 /** Direccion en una sola linea, para meta etiquetas y enlaces de mapa. */
 export function direccionEnLinea(sucursal: Sucursal): string {
   const { calle, colonia, ciudad, region, codigoPostal } = sucursal.direccion;

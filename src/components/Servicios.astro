@@ -1,6 +1,6 @@
 ---
 import { servicios, moneda } from '../data/site';
-import { idiomaDe, rutaInicio, t } from '../i18n/idiomas';
+import { idiomaDe, rutaInicio, rutaServicio, t } from '../i18n/idiomas';
 import { rellenar, textos } from '../i18n/textos';
 import TituloSeccion from './TituloSeccion.astro';
 
@@ -32,10 +32,17 @@ const enlaceSucursales = `${rutaInicio(idioma)}#sucursales`;
       {
         servicios.map((servicio) => (
           <li class="border-fondo-200 border-b">
-            <div class="flex items-baseline gap-6 py-7">
+            {/* La fila entera es el enlace: en una carta, el area de toque
+                natural es el renglon, no el nombre suelto. */}
+            <a
+              href={rutaServicio(idioma, servicio.clave)}
+              class="group flex items-baseline gap-6 py-7"
+            >
               <div class="min-w-0 flex-1">
                 <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                  <h3 class="text-3xl sm:text-4xl">{t(servicio.nombre, idioma)}</h3>
+                  <h3 class="group-hover:text-salvia-700 text-3xl transition sm:text-4xl">
+                    {t(servicio.nombre, idioma)}
+                  </h3>
                   {servicio.destacado && (
                     <span class="text-laton-700 border-laton-400 rounded-full border px-2.5 py-0.5 font-mono text-[0.62rem] tracking-[0.14em] uppercase">
                       {T.masPedido}
@@ -73,7 +80,7 @@ const enlaceSucursales = `${rutaInicio(idioma)}#sucursales`;
                   </p>
                 )}
               </div>
-            </div>
+            </a>
           </li>
         ))
       }

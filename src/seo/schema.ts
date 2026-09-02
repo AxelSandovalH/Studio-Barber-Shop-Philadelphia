@@ -1,4 +1,11 @@
-import { negocio, sucursales, servicios, moneda, type Sucursal } from '../data/site';
+import {
+  negocio,
+  sucursales,
+  servicios,
+  moneda,
+  type Sucursal,
+  type Servicio,
+} from '../data/site';
 import { t, type Idioma } from '../i18n/idiomas';
 import { esquemaFaq } from '../data/faq';
 
@@ -106,6 +113,86 @@ export function esquemaPortada(idioma: Idioma, url: URL) {
 }
 
 /** Una sola sucursal mas la miga de pan, para su pagina propia. */
+/**
+ * Pagina de un servicio. Se declara como `Service` con el negocio como
+ * proveedor, y el precio solo si existe de verdad: un precio inventado en los
+ * datos estructurados es peor que no ponerlo, porque Google lo ensena.
+ */
+export function esquemaPaginaServicio(
+  servicio: Servicio,
+  idioma: Idioma,
+  url: URL,
+  rutaInicio: string,
+  etiquetaServicios: string,
+) {
+  const oferta =
+    servicio.precio === undefined
+      ? undefined
+      : {
+          '@type': 'Offer',
+          priceCurrency: moneda.codigo,
+          ...(servicio.desde
+            ? {
+                priceSpecification: {
+                  '@type': 'PriceSpecification',
+                  priceCurrency: moneda.codigo,
+                  minPrice: servicio.precio,
+                },
+              }
+            : { price: servicio.precio }),
+        };
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Service',
+        '@id': url.href,
+        name: t(servicio.nombre, idioma),
+        description: t(servicio.descripcion, idioma),
+        serviceType: t(servicio.nombre, idioma),
+        // Proveedor en linea y no como referencia a otro nodo: los nodos
+        // HairSalon son uno por sucursal y viven en la portada y en la pagina
+        // de cada sucursal. Apuntar a un '@id' que no existe en este grafo
+        // seria una referencia rota.
+        provider: {
+          '@type': 'HairSalon',
+          name: negocio.nombre,
+          url: new URL(rutaInicio, url).href,
+        },
+        // Las dos sucursales estan en la misma ciudad, asi que se declara una.
+        areaServed: [
+          ...new Set(sucursales.map((sucursal) => sucursal.direccion.ciudad)),
+        ].map((ciudad) => ({ '@type': 'City', name: ciudad })),
+        ...(oferta ? { offers: oferta } : {}),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: negocio.nombre,
+            item: new URL(rutaInicio, url).href,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: etiquetaServicios,
+            item: new URL(`${rutaInicio}#servicios`, url).href,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: t(servicio.nombre, idioma),
+            item: url.href,
+          },
+        ],
+      },
+    ],
+  };
+}
+
 export function esquemaPaginaSucursal(
   sucursal: Sucursal,
   idioma: Idioma,

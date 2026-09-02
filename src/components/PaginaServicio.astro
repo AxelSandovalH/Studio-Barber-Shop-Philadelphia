@@ -1,0 +1,242 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import Carrusel from './Carrusel.astro';
+import Sucursales from './Sucursales.astro';
+import {
+  negocio,
+  servicios,
+  moneda,
+  mediosDeServicio,
+  type Servicio,
+} from '../data/site';
+import {
+  IDIOMAS,
+  idiomaDe,
+  rutaInicio,
+  rutaServicio,
+  t,
+  type Idioma,
+} from '../i18n/idiomas';
+import { rellenar, textos } from '../i18n/textos';
+import { esquemaPaginaServicio } from '../seo/schema';
+
+interface Props {
+  servicio: Servicio;
+}
+
+const { servicio } = Astro.props;
+
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
+
+const rutas = Object.fromEntries(
+  IDIOMAS.map((otro) => [otro, rutaServicio(otro, servicio.clave)]),
+) as Record<Idioma, string>;
+
+const nombre = t(servicio.nombre, idioma);
+const descripcion = t(servicio.descripcion, idioma);
+
+// El material de este servicio ya esta etiquetado en la galeria, asi que la
+// pagina no repite ningun dato: lo saca de ahi.
+const medios = mediosDeServicio(servicio.clave);
+
+// La primera pieza del servicio hace de retrato del hero. Si es un video se usa
+// su poster, que es una foto normal y Astro la optimiza igual.
+//
+// Va al lado del texto y no de fondo a sangre: el material son retratos
+// verticales 3:4, y recortarlos a una banda apaisada deja una tira del centro
+// que no se entiende. Es lo mismo que paso con el arco de la galeria, y la
+// leccion es la misma: el recorte se prueba sobre las fotos reales.
+const primera = medios[0];
+const retrato =
+  primera === undefined
+    ? undefined
+    : primera.tipo === 'foto'
+      ? primera.src
+      : primera.poster;
+const textoRetrato = primera ? t(primera.alt, idioma) : '';
+
+const precio =
+  servicio.precio === undefined
+    ? T.consultar
+    : `${servicio.desde ? T.precioDesde + ' ' : ''}$${servicio.precio}`;
+
+const descripcionMeta =
+  servicio.precio === undefined
+    ? `${nombre}: ${descripcion} ${negocio.nombreCorto}, Cabo San Lucas.`
+    : `${nombre} ${precio} ${moneda.codigo}. ${descripcion} ${negocio.nombreCorto}, Cabo San Lucas.`;
+
+const datosEstructurados = esquemaPaginaServicio(
+  servicio,
+  idioma,
+  new URL(Astro.url.pathname, Astro.site),
+  rutaInicio(idioma),
+  T.serviciosEtiqueta,
+);
+
+const otros = servicios.filter((otro) => otro.clave !== servicio.clave);
+---
+
+<Layout
+  titulo={nombre}
+  descripcion={descripcionMeta}
+  rutas={rutas}
+  datosEstructurados={datosEstructurados}
+>
+  <Header rutas={rutas} />
+
+  <main id="contenido">
+    <section class="border-fondo-200 border-b pt-20">
+      <div class="mx-auto max-w-6xl px-5 py-16 md:py-24">
+        <nav aria-label={T.serviciosEtiqueta} class="text-tinta-500 text-sm">
+          <a href={rutaInicio(idioma)} class="hover:text-salvia-700 transition">
+            {negocio.nombreCorto}
+          </a>
+          <span aria-hidden="true"> / </span>
+          <a
+            href={`${rutaInicio(idioma)}#servicios`}
+            class="hover:text-salvia-700 transition"
+          >
+            {T.serviciosEtiqueta}
+          </a>
+        </nav>
+
+        <div class="mt-12 grid items-start gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
+          <div>
+            <p class="antetitulo">{T.servicioAntetitulo}</p>
+
+            <h1 class="mt-6 text-6xl sm:text-7xl">{nombre}</h1>
+
+            <p class="text-tinta-600 mt-7 text-lg leading-relaxed">{descripcion}</p>
+
+            {
+              /* El precio no es un adorno: es lo que viene a mirar quien entra
+                en la pagina de un servicio. */
+            }
+            <dl
+              class="border-fondo-300 mt-10 flex flex-wrap gap-x-14 gap-y-6 border-t pt-8"
+            >
+              <div>
+                <dt
+                  class="text-laton-700 font-mono text-[0.7rem] tracking-[0.16em] uppercase"
+                >
+                  {moneda.codigo}
+                </dt>
+                <dd
+                  class:list={[
+                    'mt-2 leading-none',
+                    servicio.precio === undefined
+                      ? 'text-tinta-600 max-w-xs text-lg'
+                      : 'font-display text-salvia-500 text-5xl tabular-nums',
+                  ]}
+                >
+                  {servicio.precio === undefined ? T.servicioSinPrecio : precio}
+                </dd>
+              </div>
+
+              {
+                servicio.duracion !== undefined && (
+                  <div>
+                    <dt class="text-laton-700 font-mono text-[0.7rem] tracking-[0.16em] uppercase">
+                      {T.heroAbrimos}
+                    </dt>
+                    <dd class="text-tinta-900 mt-2 font-mono text-2xl tabular-nums">
+                      {rellenar(T.unosMinutos, { n: servicio.duracion })}
+                    </dd>
+                  </div>
+                )
+              }
+            </dl>
+
+            <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <a
+                href="#sucursales"
+                class="bg-salvia-600 text-fondo-50 hover:bg-salvia-700 inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-4 font-semibold transition"
+              >
+                {T.agendarCita}
+              </a>
+              <a
+                href={`${rutaInicio(idioma)}#servicios`}
+                class="border-fondo-400 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 inline-flex items-center justify-center rounded-full border px-8 py-4 font-semibold transition"
+              >
+                {T.volverALaCarta}
+              </a>
+            </div>
+          </div>
+
+          {
+            /* Sin retrato la columna no existe y el texto ocupa el ancho: mejor
+              un hueco que la foto de otro servicio. */
+          }
+          {
+            retrato && (
+              <figure class="border-fondo-300 bg-fondo-150 overflow-hidden rounded-2xl border">
+                <Image
+                  src={retrato}
+                  alt={textoRetrato}
+                  widths={[400, 800, 1200]}
+                  sizes="(max-width: 1023px) 92vw, 40vw"
+                  loading="eager"
+                  decoding="async"
+                  class="aspect-[4/5] size-full object-cover"
+                />
+              </figure>
+            )
+          }
+        </div>
+      </div>
+    </section>
+
+    {
+      /* Solo si hay material propio. Ensenar aqui el trabajo de otro servicio
+        seria vender una cosa con la foto de otra. */
+    }
+    {
+      medios.length > 0 && (
+        <section class="border-fondo-200 bg-pared-100 overflow-hidden border-t py-20 md:py-24">
+          <div class="mx-auto max-w-6xl px-5">
+            <p class="antetitulo">{T.galeriaEtiqueta}</p>
+            <h2 class="mt-6 text-4xl sm:text-5xl">{T.servicioTrabajos}</h2>
+            <div class="mt-12">
+              <Carrusel medios={medios} etiqueta={T.servicioTrabajos} />
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <Sucursales />
+
+    <section class="border-fondo-200 border-t py-20">
+      <div class="mx-auto max-w-6xl px-5">
+        <p class="antetitulo">{T.otrosServicios}</p>
+        <ul class="border-fondo-200 mt-8 grid border-t sm:grid-cols-2 lg:grid-cols-3">
+          {
+            otros.map((otro) => (
+              <li class="border-fondo-200 border-b">
+                <a
+                  href={rutaServicio(idioma, otro.clave)}
+                  class="group flex items-baseline justify-between gap-4 py-5"
+                >
+                  <span class="group-hover:text-salvia-700 font-display text-tinta-900 text-2xl transition">
+                    {t(otro.nombre, idioma)}
+                  </span>
+                  <span class="text-tinta-500 shrink-0 font-mono text-sm tabular-nums">
+                    {otro.precio === undefined
+                      ? T.consultar
+                      : `${otro.desde ? T.precioDesde + ' ' : ''}$${otro.precio}`}
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
