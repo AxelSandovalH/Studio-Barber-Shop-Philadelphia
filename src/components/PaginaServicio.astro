@@ -213,10 +213,10 @@ const otros = servicios.filter((otro) => otro.clave !== servicio.clave);
     <section class="border-fondo-200 border-t py-20">
       <div class="mx-auto max-w-6xl px-5">
         <p class="antetitulo">{T.otrosServicios}</p>
-        <ul class="border-fondo-200 mt-8 grid border-t sm:grid-cols-2 lg:grid-cols-3">
+        <ul class="mt-8 grid gap-x-12 sm:grid-cols-2 lg:grid-cols-3">
           {
             otros.map((otro) => (
-              <li class="border-fondo-200 border-b">
+              <li class="border-fondo-200 border-t">
                 <a
                   href={rutaServicio(idioma, otro.clave)}
                   class="group flex items-baseline justify-between gap-4 py-5"

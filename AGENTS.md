@@ -95,10 +95,13 @@ mexicanos.
   las referencias del cliente, que resuelven lo mismo con un laton casi igual.
   Si se usa en superficies grandes compite con el verde de marca y el sitio deja
   de tener un solo color propio.
-- **La carta de servicios es una lista, no una rejilla de tarjetas.** En una
-  barberia los precios se leen uno debajo de otro, con su filete de puntos hasta
-  el importe. Se probo con ocho tarjetas con borde y pesaba mucho mas sin decir
-  nada mas.
+- **La carta de la portada ensena cada servicio con su foto.** Se probo antes
+  como lista de renglones con filete de puntos hasta el precio, que se lee muy
+  bien, pero obligaba a entrar en cada pagina para ver de que va el servicio. La
+  foto sale de `retratoDeServicio()`, o sea de la galeria ya etiquetada: no hay
+  una segunda lista de imagenes que mantener. Un servicio sin material
+  etiquetado deja un hueco del color de las paredes del local; no se le pone la
+  foto de otro.
 - **Fotos en `src/assets/`, videos en `public/`.** Las fotos solo se optimizan
   (WebP + srcset) si Astro las importa desde `src/assets`; una foto en `public/`
   se sirve tal cual. Astro no procesa video, por eso ese va en `public/` ya

@@ -1,5 +1,6 @@
 ---
-import { servicios, moneda } from '../data/site';
+import { Image } from 'astro:assets';
+import { servicios, moneda, retratoDeServicio } from '../data/site';
 import { idiomaDe, rutaInicio, rutaServicio, t } from '../i18n/idiomas';
 import { rellenar, textos } from '../i18n/textos';
 import TituloSeccion from './TituloSeccion.astro';
@@ -13,6 +14,17 @@ const hayPrecios = servicios.some((servicio) => servicio.precio !== undefined);
 // Absoluto y no "#sucursales": este bloque tambien se usa en las paginas de
 // sucursal, donde ese ancla no existe y el enlace no llevaria a ninguna parte.
 const enlaceSucursales = `${rutaInicio(idioma)}#sucursales`;
+
+// La foto de cada servicio sale de la galeria, que ya esta etiquetada. Se
+// resuelve aqui arriba para que el marcado no haga trabajo.
+const carta = servicios.map((servicio) => ({
+  servicio,
+  retrato: retratoDeServicio(servicio.clave),
+}));
+
+// Los tres primeros son los que se ven al llegar: esos cargan de entrada y el
+// resto espera. Fiarse solo de loading="lazy" deja huecos al abrir la pagina.
+const CARGA_INMEDIATA = 3;
 ---
 
 <section id="servicios" class="border-fondo-200 border-t py-24 md:py-32">
@@ -24,69 +36,73 @@ const enlaceSucursales = `${rutaInicio(idioma)}#sucursales`;
     />
 
     {
-      /* Carta y no rejilla de tarjetas: en una barberia los servicios se leen
-        como una lista de precios, uno debajo de otro, y el filete entre lineas
-        hace ese trabajo mejor que ocho cajas con borde. */
+      /* Cada servicio con su foto y su precio en la portada. Se probo antes
+        como carta de renglones, que se lee muy bien pero obliga a entrar en
+        cada pagina para ver de que va el servicio: aqui el trabajo se ve sin
+        hacer clic, y la pagina propia queda para quien quiere mas. */
     }
-    <ul class="border-fondo-200 mx-auto mt-16 max-w-4xl border-t">
+    <ul class="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
       {
-        servicios.map((servicio) => (
-          <li class="border-fondo-200 border-b">
-            {/* La fila entera es el enlace: en una carta, el area de toque
-                natural es el renglon, no el nombre suelto. */}
-            <a
-              href={rutaServicio(idioma, servicio.clave)}
-              class="group flex items-baseline gap-6 py-7"
-            >
-              <div class="min-w-0 flex-1">
-                <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                  <h3 class="group-hover:text-salvia-700 text-3xl transition sm:text-4xl">
-                    {t(servicio.nombre, idioma)}
-                  </h3>
-                  {servicio.destacado && (
-                    <span class="text-laton-700 border-laton-400 rounded-full border px-2.5 py-0.5 font-mono text-[0.62rem] tracking-[0.14em] uppercase">
-                      {T.masPedido}
-                    </span>
-                  )}
+        carta.map(({ servicio, retrato }, indice) => (
+          <li>
+            <a href={rutaServicio(idioma, servicio.clave)} class="group block">
+              {retrato ? (
+                <div class="border-fondo-300 bg-fondo-150 overflow-hidden rounded-2xl border">
+                  <Image
+                    src={retrato}
+                    alt=""
+                    widths={[400, 800]}
+                    sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 31vw"
+                    loading={indice < CARGA_INMEDIATA ? 'eager' : 'lazy'}
+                    decoding="async"
+                    class="aspect-[4/3] size-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                  />
                 </div>
-                <p class="text-tinta-600 mt-2.5 max-w-lg text-sm leading-relaxed">
-                  {t(servicio.descripcion, idioma)}
-                </p>
-              </div>
+              ) : (
+                /* Sin foto propia no se pone la de otro servicio. Queda un
+                   hueco del color de las paredes del local, que al menos es
+                   suyo, y se nota que falta material. */
+                <div class="border-fondo-300 bg-pared-200 aspect-[4/3] rounded-2xl border" />
+              )}
 
-              {/* El filete de puntos une nombre y precio como en una carta
-                  impresa. Es decorativo, asi que se oculta a los lectores. */}
-              <span
-                class="border-fondo-300 hidden flex-1 border-b border-dotted sm:block"
-                aria-hidden="true"
-              />
-
-              <div class="shrink-0 text-right">
+              <div class="border-fondo-200 mt-5 flex items-baseline gap-4 border-b pb-4">
+                <h3 class="group-hover:text-salvia-700 flex-1 text-3xl transition">
+                  {t(servicio.nombre, idioma)}
+                </h3>
                 <p
                   class:list={[
-                    'leading-none',
+                    'shrink-0 leading-none',
                     servicio.precio !== undefined
-                      ? 'font-display text-salvia-500 text-3xl tabular-nums sm:text-4xl'
-                      : 'text-tinta-500 font-mono text-xs tracking-[0.14em] uppercase',
+                      ? 'font-display text-salvia-500 text-3xl tabular-nums'
+                      : 'text-tinta-500 font-mono text-[0.7rem] tracking-[0.12em] uppercase',
                   ]}
                 >
                   {servicio.precio !== undefined
                     ? `${servicio.desde ? T.precioDesde + ' ' : ''}$${servicio.precio}`
                     : T.consultar}
                 </p>
-                {servicio.duracion !== undefined && (
-                  <p class="text-tinta-500 mt-2 font-mono text-[0.7rem] tracking-[0.12em] uppercase">
-                    {rellenar(T.unosMinutos, { n: servicio.duracion })}
-                  </p>
-                )}
               </div>
+
+              <p class="text-tinta-600 mt-4 text-sm leading-relaxed">
+                {t(servicio.descripcion, idioma)}
+              </p>
+
+              <p class="text-laton-700 mt-4 flex items-center gap-2 font-mono text-[0.7rem] tracking-[0.14em] uppercase">
+                {servicio.destacado ? T.masPedido : T.verServicio}
+                {servicio.duracion !== undefined && (
+                  <span class="text-tinta-500">
+                    {' · '}
+                    {rellenar(T.unosMinutos, { n: servicio.duracion })}
+                  </span>
+                )}
+              </p>
             </a>
           </li>
         ))
       }
     </ul>
 
-    <p class="text-tinta-500 mx-auto mt-10 max-w-4xl text-sm">
+    <p class="text-tinta-500 mt-14 text-sm">
       {hayPrecios && `${t(moneda.nota, idioma)} `}{T.serviciosPie}{' '}
       <a
         href={enlaceSucursales}

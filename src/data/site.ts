@@ -909,6 +909,18 @@ export function mediosDeServicio(clave: ClaveServicio): MedioGaleria[] {
   return galeria.filter((medio) => medio.servicio === clave);
 }
 
+/**
+ * Imagen que representa a un servicio: la primera pieza suya de la galeria. Si
+ * es un video se usa su poster, que es una foto normal y Astro la optimiza
+ * igual. Sin material etiquetado no devuelve nada, y quien la use tiene que
+ * apanarselas sin imagen: la foto de otro servicio no vale.
+ */
+export function retratoDeServicio(clave: ClaveServicio): ImageMetadata | undefined {
+  const primera = mediosDeServicio(clave)[0];
+  if (!primera) return undefined;
+  return primera.tipo === 'foto' ? primera.src : primera.poster;
+}
+
 /** Direccion en una sola linea, para meta etiquetas y enlaces de mapa. */
 export function direccionEnLinea(sucursal: Sucursal): string {
   const { calle, colonia, ciudad, region, codigoPostal } = sucursal.direccion;
