@@ -18,9 +18,16 @@ interface Props {
   conEnlace?: boolean;
   /** En su propia pagina el h1 va arriba, asi que aqui baja a h2. */
   encabezado?: 'h2' | 'h3';
+  /**
+   * Version estrecha, para cuando la tarjeta comparte fila con otra. Apila el
+   * mapa sobre los datos en vez de ponerlo al lado, y aprieta los espacios:
+   * a media pagina no cabe la disposicion ancha, y el objetivo es que las dos
+   * sucursales entren juntas en pantalla.
+   */
+  compacta?: boolean;
 }
 
-const { sucursal, conEnlace = true, encabezado = 'h3' } = Astro.props;
+const { sucursal, conEnlace = true, encabezado = 'h3', compacta = false } = Astro.props;
 
 const idioma = idiomaDe(Astro.currentLocale);
 const T = textos(idioma);
@@ -47,10 +54,10 @@ const textosJson = JSON.stringify({
   id={sucursal.id}
   class="border-fondo-300 bg-fondo-100/70 overflow-hidden rounded-2xl border"
 >
-  <div class="grid lg:grid-cols-2">
-    <div class="p-8">
+  <div class:list={['grid', !compacta && 'lg:grid-cols-2']}>
+    <div class:list={[compacta ? 'p-6' : 'p-8']}>
       <div class="flex flex-wrap items-center justify-between gap-4">
-        <Encabezado class="text-4xl leading-none">
+        <Encabezado class:list={['leading-none', compacta ? 'text-3xl' : 'text-4xl']}>
           {`${T.sucursal} `}<span class="text-salvia-500">{sucursal.nombre}</span>
         </Encabezado>
         <p
@@ -64,7 +71,12 @@ const textosJson = JSON.stringify({
         </p>
       </div>
 
-      <address class="text-tinta-700 mt-6 leading-relaxed not-italic">
+      <address
+        class:list={[
+          'text-tinta-700 leading-relaxed not-italic',
+          compacta ? 'mt-4' : 'mt-6',
+        ]}
+      >
         {sucursal.direccion.calle}
         <br />
         {
@@ -109,10 +121,20 @@ const textosJson = JSON.stringify({
         }
       </div>
 
-      <dl class="divide-fondo-200 border-fondo-200 mt-8 divide-y border-t">
+      <dl
+        class:list={[
+          'divide-fondo-200 border-fondo-200 divide-y border-t',
+          compacta ? 'mt-5' : 'mt-8',
+        ]}
+      >
         {
           sucursal.horarios.map((franja) => (
-            <div class="flex items-baseline justify-between gap-4 py-4">
+            <div
+              class:list={[
+                'flex items-baseline justify-between gap-4',
+                compacta ? 'py-2' : 'py-4',
+              ]}
+            >
               <dt class="text-tinta-700">{t(franja.dias, idioma)}</dt>
               <dd
                 class:list={[
@@ -127,7 +149,7 @@ const textosJson = JSON.stringify({
         }
       </dl>
 
-      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <div class:list={['flex flex-col gap-3 sm:flex-row', compacta ? 'mt-5' : 'mt-8']}>
         <a
           href={enlaceWhatsapp(sucursal, mensajeCita(sucursal, idioma))}
           target="_blank"
@@ -150,8 +172,17 @@ const textosJson = JSON.stringify({
       </div>
     </div>
 
+    {
+      /* Compacta: el mapa va arriba, corto, y los botones quedan al final de
+        la tarjeta, que es donde tienen que estar. */
+    }
     <div
-      class="border-fondo-200 aspect-[4/3] w-full border-t lg:aspect-auto lg:border-t-0 lg:border-l"
+      class:list={[
+        'border-fondo-200 w-full',
+        compacta
+          ? 'order-first h-36 border-b'
+          : 'aspect-[4/3] border-t lg:aspect-auto lg:border-t-0 lg:border-l',
+      ]}
     >
       <iframe
         src={enlaceMapaEmbed(sucursal)}

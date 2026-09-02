@@ -9,7 +9,10 @@ const idioma = idiomaDe(Astro.currentLocale);
 const T = textos(idioma);
 ---
 
-<section id="sucursales" class="border-fondo-200 bg-pared-100 border-t py-24 md:py-32">
+<section
+  id="sucursales"
+  class="border-fondo-200 bg-pared-100 border-t py-24 md:py-32 lg:py-16"
+>
   <div class="mx-auto max-w-6xl px-5">
     <TituloSeccion
       etiqueta={T.sucursalesEtiqueta}
@@ -17,8 +20,12 @@ const T = textos(idioma);
       descripcion={T.sucursalesDescripcion}
     />
 
-    <div class="mt-14 space-y-6">
-      {sucursales.map((sucursal) => <TarjetaSucursal sucursal={sucursal} />)}
+    {
+      /* Las dos sucursales una al lado de otra: son una eleccion, no una lista,
+        y comparadas de un vistazo se elige antes. */
+    }
+    <div class="mt-14 grid gap-6 lg:mt-8 lg:grid-cols-2">
+      {sucursales.map((sucursal) => <TarjetaSucursal sucursal={sucursal} compacta />)}
     </div>
   </div>
 </section>
