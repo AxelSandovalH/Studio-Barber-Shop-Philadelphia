@@ -103,8 +103,17 @@ const imagenCompartir = new URL('/og.jpg', Astro.site).href;
       content={direccionEnLinea(principal)}
     />
 
+    {
+      /* Cada familia necesita su <Font> o no se emite su @font-face y cae al
+         sustituto del sistema sin avisar. Se precargan las cuatro que aparecen
+         antes del primer scroll: titulares, cuerpo, etiquetas y el rotulo de
+         la cabecera. La slab no, que solo la usa el texto pequeno del logo. */
+    }
     <Font cssVariable="--fuente-display" preload />
     <Font cssVariable="--fuente-texto" preload />
+    <Font cssVariable="--fuente-mono" preload />
+    <Font cssVariable="--fuente-marca" preload />
+    <Font cssVariable="--fuente-slab" />
 
     {
       datosEstructurados && (

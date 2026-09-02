@@ -42,9 +42,22 @@
   --color-poste-rojo: #c8352f;
   --color-poste-azul: #2f5fc8;
 
-  --font-display: var(--fuente-display), ui-sans-serif, system-ui, sans-serif;
+  /* Laton apagado. No es un color de marca: es el filete y la etiqueta
+     pequena, y nunca un relleno grande. Sobre crema da la nota calida que el
+     verde solo no puede dar, que es donde vive la sensacion de lujo. Sale de
+     las dos referencias que resuelven lo mismo (#796841 y #8a813e) llevado a
+     un tono que convive con el verde de la marca. */
+  --color-laton-400: #a8916a;
+  --color-laton-600: #7c6a43;
+  --color-laton-700: #5f5133;
+
+  /* Titulares: serif de alto contraste. */
+  --font-display: var(--fuente-display), Georgia, 'Times New Roman', serif;
   --font-texto: var(--fuente-texto), ui-sans-serif, system-ui, sans-serif;
-  /* Solo la usa el logo. */
+  /* Etiquetas y datos sueltos. */
+  --font-mono: var(--fuente-mono), ui-monospace, 'SF Mono', monospace;
+  /* Las dos siguientes solo las usa el logo. */
+  --font-marca: var(--fuente-marca), Impact, sans-serif;
   --font-slab: var(--fuente-slab), Georgia, serif;
 }
 
@@ -62,13 +75,18 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* El serif pide lo contrario que la condensada que habia antes: caja baja,
+     tracking cerrado y una altura de linea corta. Con espaciado positivo, que
+     es lo que necesitaba la de palo seco en mayusculas, este se deshilacha. */
   h1,
   h2,
   h3 {
     font-family: var(--font-display);
     color: var(--color-tinta-900);
     font-weight: 400;
-    letter-spacing: 0.02em;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    text-wrap: balance;
   }
 
   :focus-visible {
@@ -78,6 +96,28 @@
 }
 
 @layer components {
+  /* Antetitulo de seccion: monoespaciado, pequeno y con un filete de laton
+     delante. Es la pieza que se repite en cada seccion y la que da el registro
+     de ficha tecnica. */
+  .antetitulo {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-laton-700);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .antetitulo::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: var(--color-laton-400);
+  }
+
   /* Franja tricolor del poste de barbero. Se usa como separador de secciones.
      El blanco va explicito y no con un token: en el poste real es blanco, no
      el color de fondo de la pagina. */

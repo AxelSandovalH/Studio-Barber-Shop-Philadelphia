@@ -11,10 +11,8 @@ const { etiqueta, titulo, descripcion, centrado = false } = Astro.props;
 ---
 
 <div class={centrado ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'}>
-  <p class="text-salvia-600 text-xs font-semibold tracking-[0.22em] uppercase">
-    {etiqueta}
-  </p>
-  <h2 class="mt-4 text-5xl leading-[0.95] sm:text-6xl">{titulo}</h2>
+  <p class:list={['antetitulo', centrado && 'justify-center']}>{etiqueta}</p>
+  <h2 class="mt-6 text-5xl sm:text-6xl md:text-[4.25rem]">{titulo}</h2>
   {
     descripcion && (
       <p class="text-tinta-600 mt-5 text-lg leading-relaxed">{descripcion}</p>

@@ -55,8 +55,35 @@ mexicanos.
   **incrustado** (`import Logo from '...svg'` y `<Logo />`), no como `<img>`:
   usa `<text>` con las fuentes del sitio y un `<img>` es un documento aislado
   que no las ve. Los iconos de `public/` se generan del JPEG, que es exacto.
-- **Fuentes**: se auto-hospedan con la API `fonts` de Astro. Se usan via las
-  utilidades `font-display` y `font-texto`, no con `<link>` a Google.
+- **Fuentes**: se auto-hospedan con la API `fonts` de Astro, nunca con `<link>`
+  a Google. **Cada familia necesita su `<Font cssVariable="...">` en el layout**
+  o no se emite su `@font-face` y cae al sustituto del sistema sin avisar: asi
+  estuvo la slab del logo hasta que se noto. Hay cuatro papeles y no se mezclan:
+  - `font-display` (Instrument Serif) para titulares. Caja baja, tracking
+    negativo y altura de linea corta. Es una serif de alto contraste: pedirle
+    mayusculas con espaciado positivo, que es lo que necesitaba la condensada
+    anterior, la deshilacha.
+  - `font-texto` (Inter) para el cuerpo.
+  - `font-mono` (IBM Plex Mono) para etiquetas, horarios, telefonos y cifras
+    sueltas. Es lo que da el registro de ficha tecnica, y evita el recurso
+    gastado de poner la sans del cuerpo en mayusculas con mucho espaciado. Los
+    numeros que se alinean llevan ademas `tabular-nums`.
+  - `font-marca` (Bebas Neue) **solo para el rotulo**, en la cabecera, el pie y
+    el SVG del logo. Es la reconstruccion del rotulo real del cliente: si un dia
+    cambian los titulares, esta no les acompana, o el rotulo deja de ser el
+    suyo.
+- **El antetitulo de seccion es la clase `.antetitulo`**, no una pila de
+  utilidades. Lleva el mono en mayusculas y un filete de laton delante, y es la
+  pieza que se repite en todas las secciones.
+- **El laton (`laton-400/600/700`) es filete y etiqueta pequena, nunca relleno
+  grande.** Sobre crema aporta la nota calida que el verde solo no da. Sale de
+  las referencias del cliente, que resuelven lo mismo con un laton casi igual.
+  Si se usa en superficies grandes compite con el verde de marca y el sitio deja
+  de tener un solo color propio.
+- **La carta de servicios es una lista, no una rejilla de tarjetas.** En una
+  barberia los precios se leen uno debajo de otro, con su filete de puntos hasta
+  el importe. Se probo con ocho tarjetas con borde y pesaba mucho mas sin decir
+  nada mas.
 - **Fotos en `src/assets/`, videos en `public/`.** Las fotos solo se optimizan
   (WebP + srcset) si Astro las importa desde `src/assets`; una foto en `public/`
   se sirve tal cual. Astro no procesa video, por eso ese va en `public/` ya

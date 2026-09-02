@@ -33,11 +33,11 @@ const otroTextos = textos(otroIdioma);
     >
       <Logo class="size-11 shrink-0 rounded-full" />
       <span class="leading-none">
-        <span class="font-display text-tinta-900 block text-2xl tracking-wide">
+        <span class="font-marca text-tinta-900 block text-2xl tracking-wide">
           {negocio.rotulo.principal}
         </span>
         <span
-          class="text-tinta-500 block text-[0.6rem] font-semibold tracking-[0.22em] uppercase"
+          class="text-laton-700 block font-mono text-[0.6rem] tracking-[0.22em] uppercase"
         >
           {negocio.rotulo.secundaria}
         </span>
@@ -120,7 +120,7 @@ const otroTextos = textos(otroIdioma);
           <li>
             <a
               href={enlace.href}
-              class="border-fondo-200 font-display text-tinta-900 hover:text-salvia-700 block border-b py-4 text-xl tracking-wide transition"
+              class="border-fondo-200 text-tinta-900 hover:text-salvia-700 block border-b py-4 text-lg font-medium transition"
             >
               {enlace.etiqueta}
             </a>
@@ -130,7 +130,7 @@ const otroTextos = textos(otroIdioma);
       <li>
         <a
           href={rutas[otroIdioma]}
-          class="border-fondo-200 font-display text-tinta-500 hover:text-salvia-700 block border-b py-4 text-xl tracking-wide transition"
+          class="border-fondo-200 text-tinta-500 hover:text-salvia-700 block border-b py-4 text-lg font-medium transition"
         >
           {otroTextos.idiomaActual}
         </a>

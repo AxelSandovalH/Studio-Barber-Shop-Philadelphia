@@ -44,10 +44,36 @@ export default defineConfig({
   // dominio: sin peticiones a Google en tiempo de ejecucion.
   fonts: [
     {
+      // Solo la usa el logo. Es la reconstruccion del rotulo real del cliente,
+      // asi que su tipografia no acompana a la de los titulares: si cambia una,
+      // no puede cambiar la otra o el rotulo deja de ser el suyo.
       provider: fontProviders.google(),
       name: 'Bebas Neue',
+      cssVariable: '--fuente-marca',
+      weights: [400],
+      styles: ['normal'],
+      subsets: ['latin'],
+    },
+    {
+      // Titulares. Serif de alto contraste, en caja baja y a tamano grande:
+      // es lo que separa una barberia cuidada de una franquicia, y es la via
+      // que siguen Hudson/Hawk y Rendezvous.
+      provider: fontProviders.google(),
+      name: 'Instrument Serif',
       cssVariable: '--fuente-display',
       weights: [400],
+      styles: ['normal', 'italic'],
+      subsets: ['latin'],
+    },
+    {
+      // Etiquetas, horarios y datos sueltos. Un monoespaciado en los rotulos
+      // pequenos da precision de ficha tecnica, y evita el recurso gastado de
+      // poner la sans del cuerpo en mayusculas con mucho espaciado.
+      provider: fontProviders.google(),
+      name: 'IBM Plex Mono',
+      cssVariable: '--fuente-mono',
+      weights: [400, 500],
+      styles: ['normal'],
       subsets: ['latin'],
     },
     {
@@ -55,6 +81,7 @@ export default defineConfig({
       name: 'Inter',
       cssVariable: '--fuente-texto',
       weights: [400, 500, 600, 700],
+      styles: ['normal'],
       subsets: ['latin'],
     },
     {
@@ -64,6 +91,7 @@ export default defineConfig({
       name: 'Roboto Slab',
       cssVariable: '--fuente-slab',
       weights: [700],
+      styles: ['normal'],
       subsets: ['latin'],
     },
   ],

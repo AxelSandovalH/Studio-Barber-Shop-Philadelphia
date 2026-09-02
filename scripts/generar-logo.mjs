@@ -85,7 +85,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role=
     <text
       x="250"
       y="326"
-      font-family="var(--font-display), Impact, sans-serif"
+      font-family="var(--font-marca), Impact, sans-serif"
       font-size="45.5"
       letter-spacing="16.8"
       text-anchor="middle"

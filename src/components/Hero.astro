@@ -52,18 +52,14 @@ const diasAbiertos = principal.horarios
 
   <div class="mx-auto max-w-6xl px-5 py-20 md:py-32">
     <div class="max-w-3xl">
-      <p
-        class="border-salvia-600/30 bg-salvia-600/8 text-salvia-700 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase"
-      >
-        <span class="bg-salvia-700 size-1.5 rounded-full"></span>
-        {rellenar(T.heroAntetitulo, { n: sucursales.length })}
-      </p>
+      <p class="antetitulo">{rellenar(T.heroAntetitulo, { n: sucursales.length })}</p>
 
-      <h1 class="mt-7 text-6xl leading-[0.92] sm:text-7xl md:text-8xl">
+      <h1 class="mt-8 text-6xl sm:text-7xl md:text-[5.5rem]">
         {T.heroH1}
       </h1>
 
-      <p class="font-display text-salvia-500 mt-6 text-3xl leading-none sm:text-4xl">
+      {/* El eslogan en cursiva: es la voz de la marca, no un segundo titular. */}
+      <p class="font-display text-salvia-500 mt-6 text-3xl italic sm:text-4xl">
         {t(negocio.eslogan, idioma)}
       </p>
 
@@ -90,18 +86,18 @@ const diasAbiertos = principal.horarios
            un movil estrecho sin partir palabras. -->
       <dl class="mt-14 grid max-w-sm grid-cols-2 gap-6">
         <div>
-          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">
+          <dt class="text-laton-700 font-mono text-[0.7rem] tracking-[0.16em] uppercase">
             {T.heroSucursales}
           </dt>
-          <dd class="font-display text-tinta-900 mt-1.5 text-2xl sm:text-3xl">
+          <dd class="text-tinta-900 mt-2 font-mono text-2xl tabular-nums">
             {sucursales.length}
           </dd>
         </div>
         <div>
-          <dt class="text-tinta-500 text-xs tracking-[0.14em] uppercase">
+          <dt class="text-laton-700 font-mono text-[0.7rem] tracking-[0.16em] uppercase">
             {T.heroAbrimos}
           </dt>
-          <dd class="font-display text-tinta-900 mt-1.5 text-2xl sm:text-3xl">
+          <dd class="text-tinta-900 mt-2 font-mono text-2xl tabular-nums">
             {`${diasAbiertos} ${T.heroDias}`}
           </dd>
         </div>
