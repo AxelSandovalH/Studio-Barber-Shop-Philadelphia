@@ -84,6 +84,13 @@ ffmpeg -loglevel error -y -i "$entrada" \
 # El poster se saca de la mitad del clip y no del primer fotograma. El primero
 # suele ser la mano acercando el telefono o un plano de detalle sin contexto, y
 # es justo la imagen que se ve mientras el video no se reproduce.
+#
+# La mitad es un punto de partida, no una ley: si ahi el cliente sale hablando o
+# con mala cara, se saca a mano el fotograma que toque y se sobrescribe. Es la
+# foto que representa al servicio en la portada, asi que merece que se elija.
+#
+#   ffmpeg -ss 6.6 -i entrada.mov -vf "scale=-2:'min(960,ih)'" \
+#     -frames:v 1 -q:v 3 src/assets/galeria/nombre-poster.jpg
 echo "→ Poster…"
 duracion=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$entrada")
 mitad=$(awk -v d="$duracion" 'BEGIN { printf "%.2f", d / 2 }')
