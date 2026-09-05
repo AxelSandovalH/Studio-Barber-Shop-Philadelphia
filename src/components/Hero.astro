@@ -19,11 +19,16 @@ const diasAbiertos = principal.horarios
   .reduce((total, franja) => total + franja.indices.length, 0);
 ---
 
-<section id="inicio" class="relative overflow-hidden pt-20">
-  <!-- Fondo: el mar de Cabo, grabado en el Medano. Es contexto, no la
-       propuesta: encima va un velo crema para que el texto se lea sobre la
-       misma paleta clara de siempre y el mar solo asome por la derecha. -->
-  <div class="absolute inset-0 -z-10" aria-hidden="true">
+{
+  /* Portada a sangre: la imagen ocupa la pantalla y el texto va centrado
+    encima. 92vh y no 100vh a proposito: que asome el borde de la seccion
+    siguiente es lo que dice que la pagina continua. */
+}
+<section
+  id="inicio"
+  class="relative flex min-h-[92vh] items-center justify-center overflow-hidden"
+>
+  <div class="absolute inset-0" aria-hidden="true">
     <video
       data-video-portada
       class="size-full object-cover"
@@ -36,90 +41,86 @@ const diasAbiertos = principal.horarios
       <source src="/portada/mar-rocas.mp4" type="video/mp4" />
     </video>
 
-    <!-- En escritorio el velo se abre hacia la derecha, que es donde no hay
-         texto, y el mar se ve. En movil el texto ocupa todo el ancho, asi que
-         un degradado lateral no protege nada: ahi se cierra casi del todo y el
-         mar queda como textura de fondo. -->
+    {
+      /* El velo es el verde de marca llevado al fondo de la escala, no un
+        negro: el cliente descarto el negro y asi la foto sigue dentro de la
+        paleta. El degradado vertical carga arriba, donde va la cabecera, y
+        abajo, donde el texto blanco se cruza con la arena clara. */
+    }
+    <div class="bg-salvia-950/62 absolute inset-0"></div>
     <div
-      class="from-fondo-50/97 via-fondo-50/88 to-fondo-50/72 md:from-fondo-50/94 md:via-fondo-50/72 md:to-fondo-50/12 absolute inset-0 bg-gradient-to-r"
-    >
-    </div>
-    <div
-      class="from-fondo-50 absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t to-transparent"
+      class="from-salvia-950/75 to-salvia-950/85 absolute inset-0 bg-gradient-to-b via-transparent"
     >
     </div>
   </div>
 
-  <div class="mx-auto max-w-6xl px-5 py-20 md:py-32">
-    <div class="max-w-3xl">
-      <p class="antetitulo">{rellenar(T.heroAntetitulo, { n: sucursales.length })}</p>
+  <div class="relative mx-auto max-w-3xl px-5 py-32 text-center">
+    <p class="antetitulo antetitulo-claro justify-center">
+      {rellenar(T.heroAntetitulo, { n: sucursales.length })}
+    </p>
 
-      <h1 class="mt-8 text-6xl sm:text-7xl md:text-[5.5rem]">
-        {T.heroH1}
-      </h1>
+    <h1 class="text-fondo-50 mt-8 text-5xl sm:text-6xl md:text-7xl">
+      {T.heroH1}
+    </h1>
 
-      {/* El eslogan en cursiva: es la voz de la marca, no un segundo titular. */}
-      <p class="font-display text-salvia-500 mt-6 text-3xl italic sm:text-4xl">
-        {t(negocio.eslogan, idioma)}
-      </p>
+    <p class="font-display text-pared-200 mt-6 text-2xl italic sm:text-3xl">
+      {t(negocio.eslogan, idioma)}
+    </p>
 
-      {
-        /* Un paso mas oscuro que en el resto del sitio: aqui el texto no cae
-          sobre crema plana sino sobre el mar, y con el velo abierto tinta-600
-          se quedaba por debajo del contraste minimo. */
-      }
-      <p class="text-tinta-700 mt-7 max-w-xl text-lg leading-relaxed">
-        {t(negocio.descripcion, idioma)}
-      </p>
+    <p class="text-fondo-100 mx-auto mt-8 max-w-xl leading-relaxed">
+      {t(negocio.descripcion, idioma)}
+    </p>
 
-      <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <a
-          href="#sucursales"
-          class="bg-salvia-600 text-fondo-50 hover:bg-salvia-700 inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-4 font-semibold transition"
-        >
-          {T.agendarCita}
-        </a>
-        <a
-          href="#servicios"
-          class="border-fondo-400 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 inline-flex items-center justify-center gap-2.5 rounded-full border px-8 py-4 font-semibold transition"
-        >
-          {T.verServicios}
-        </a>
-      </div>
+    {
+      /* Un boton principal, como en las barberias que se ven bien: la accion
+        que importa es agendar, y darle un segundo boton del mismo peso la
+        diluye. El de servicios va debajo, como enlace. */
+    }
+    <div class="mt-11 flex flex-col items-center gap-6">
+      <a
+        href="#sucursales"
+        class="bg-fondo-50 text-salvia-700 hover:bg-fondo-150 inline-flex items-center justify-center rounded-full px-10 py-4 font-semibold transition"
+      >
+        {T.agendarCita}
+      </a>
 
-      <!-- Valores cortos a proposito: las tres columnas tienen que caber en
-           un movil estrecho sin partir palabras. -->
-      <dl class="mt-14 grid max-w-sm grid-cols-2 gap-6">
-        <div>
-          <dt class="text-laton-700 font-mono text-[0.7rem] tracking-[0.16em] uppercase">
-            {T.heroSucursales}
-          </dt>
-          <dd class="text-tinta-900 mt-2 font-mono text-2xl tabular-nums">
-            {sucursales.length}
-          </dd>
-        </div>
-        <div>
-          <dt class="text-laton-700 font-mono text-[0.7rem] tracking-[0.16em] uppercase">
-            {T.heroAbrimos}
-          </dt>
-          <dd class="text-tinta-900 mt-2 font-mono text-2xl tabular-nums">
-            {`${diasAbiertos} ${T.heroDias}`}
-          </dd>
-        </div>
-      </dl>
+      <a
+        href="#servicios"
+        class="text-fondo-100 hover:text-fondo-50 font-mono text-[0.7rem] tracking-[0.16em] uppercase underline underline-offset-8 transition"
+      >
+        {T.verServicios}
+      </a>
     </div>
+
+    <dl
+      class="border-fondo-50/20 mx-auto mt-16 flex max-w-sm justify-center gap-14 border-t pt-8"
+    >
+      <div>
+        <dt class="text-laton-300 font-mono text-[0.65rem] tracking-[0.16em] uppercase">
+          {T.heroSucursales}
+        </dt>
+        <dd class="text-fondo-50 mt-2 font-mono text-2xl tabular-nums">
+          {sucursales.length}
+        </dd>
+      </div>
+      <div>
+        <dt class="text-laton-300 font-mono text-[0.65rem] tracking-[0.16em] uppercase">
+          {T.heroAbrimos}
+        </dt>
+        <dd class="text-fondo-50 mt-2 font-mono text-2xl tabular-nums">
+          {`${diasAbiertos} ${T.heroDias}`}
+        </dd>
+      </div>
+    </dl>
   </div>
 </section>
 
 <script>
   // El video de la portada es decorativo y solo se descarga cuando aporta algo.
-  // Se queda en el poster —ya pintado y sin coste extra— en tres casos:
-  //
-  //   - En movil, donde el velo esta casi cerrado para que el texto se lea a
-  //     todo el ancho: se verian dos apuntes de ola a cambio de megas.
-  //   - Con "prefers-reduced-motion", porque animar el fondo es justo lo que
-  //     esa preferencia pide evitar.
-  //   - Con el ahorro de datos activado.
+  // Se queda en el poster —ya pintado y sin coste extra— en tres casos: en
+  // movil, donde ocupa poco y se ve el recorte central; con
+  // "prefers-reduced-motion", porque animar el fondo es justo lo que esa
+  // preferencia pide evitar; y con el ahorro de datos activado.
   const video = document.querySelector<HTMLVideoElement>('[data-video-portada]');
 
   if (video) {

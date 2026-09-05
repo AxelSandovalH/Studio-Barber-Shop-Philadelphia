@@ -18,43 +18,62 @@ const masResenada = [...conValoracion].sort(
 
 {
   conValoracion.length > 0 && (
-    <section id="resenas" class="border-fondo-200 border-t py-20">
+    <section id="resenas" class="border-fondo-200 border-t py-24 md:py-28">
       <div class="mx-auto max-w-6xl px-5">
-        <div class="flex flex-col items-center gap-10 sm:flex-row sm:justify-center sm:gap-16">
+        {/* Cabecera con la marca de Google: la valoracion es suya, no nuestra,
+            y decirlo con su logo es lo que la hace creible. */}
+        <div class="flex flex-col items-center text-center">
           {conValoracion.map((sucursal) => (
             <a
               href={enlaceMapa(sucursal)}
               target="_blank"
               rel="noopener noreferrer"
-              class="group flex flex-col items-center text-center transition"
+              class="group inline-flex flex-col items-center"
             >
-              <span class="text-salvia-500 flex items-center gap-1" aria-hidden="true">
-                {Array.from({ length: 5 }, (_, i) => (
-                  <svg
-                    class:list={[
-                      'size-6',
-                      i < Math.round(sucursal.valoracion!.puntuacion)
-                        ? 'fill-current'
-                        : 'fill-fondo-300',
-                    ]}
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01z" />
-                  </svg>
-                ))}
+              <span class="flex items-center gap-3">
+                <svg class="size-7 shrink-0" viewBox="0 0 48 48" aria-hidden="true">
+                  <path
+                    fill="#EA4335"
+                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                  />
+                  <path
+                    fill="#4285F4"
+                    d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                  />
+                </svg>
+
+                <span class="text-tinta-900 font-mono text-4xl leading-none tabular-nums">
+                  {sucursal.valoracion!.puntuacion.toFixed(1)}
+                </span>
+
+                <span class="text-laton-400 flex items-center gap-0.5" aria-hidden="true">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <svg
+                      class:list={[
+                        'size-5',
+                        i < Math.round(sucursal.valoracion!.puntuacion)
+                          ? 'fill-current'
+                          : 'fill-fondo-300',
+                      ]}
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01z" />
+                    </svg>
+                  ))}
+                </span>
               </span>
 
-              <p class="text-tinta-900 mt-4 font-mono text-5xl leading-none tabular-nums">
-                {sucursal.valoracion!.puntuacion.toFixed(1)}
-              </p>
-
-              <p class="text-tinta-600 mt-3 text-sm">
+              <span class="text-tinta-600 group-hover:text-salvia-700 mt-4 font-mono text-[0.7rem] tracking-[0.14em] uppercase transition">
                 {sucursal.valoracion!.total} {T.resenasEnGoogle}
                 {conValoracion.length > 1 && ` · ${sucursal.nombre}`}
-              </p>
-
-              <span class="text-salvia-700 group-hover:text-salvia-800 mt-2 text-sm font-semibold underline underline-offset-4 transition">
-                {T.leerResenas}
               </span>
             </a>
           ))}
@@ -62,61 +81,183 @@ const masResenada = [...conValoracion].sort(
 
         {/* Las opiniones van literales: se copian de la ficha sin corregir ni
             traducir, y por eso cada una lleva su propio lang. Si no hay
-            ninguna copiada, este bloque no existe y queda solo el resumen. */}
+            ninguna copiada, este bloque no existe y queda solo la valoracion. */}
         {resenas.length > 0 && (
-          <div class="mt-20">
-            <ul class="grid gap-x-10 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+          <div class="relative mt-20" data-resenas>
+            {/* Pista de scroll nativo con anclaje. Sin JavaScript se arrastra
+                igual: las flechas y los puntos son la mejora, no la base. */}
+            <ul
+              data-pista-resenas
+              tabindex="0"
+              class="flex snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            >
               {resenas.map((resena) => (
-                <li class="flex flex-col">
-                  <span
-                    class="text-salvia-500 flex items-center gap-0.5"
-                    aria-hidden="true"
-                  >
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <svg
-                        class:list={[
-                          'size-3.5',
-                          i < resena.puntuacion ? 'fill-current' : 'fill-fondo-300',
-                        ]}
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01z" />
-                      </svg>
-                    ))}
-                  </span>
+                <li class="w-full shrink-0 snap-center px-4 sm:px-12">
+                  <figure class="mx-auto max-w-2xl text-center">
+                    {/* Filete ornamental, arriba y abajo de la cita. Es el
+                        recurso de las barberias clasicas y aqui hace de
+                        comillas. */}
+                    <span
+                      class="text-laton-400 flex items-center justify-center gap-2"
+                      aria-hidden="true"
+                    >
+                      <span class="bg-laton-400 h-px w-10" />
+                      <span class="bg-laton-400 size-1 rounded-full" />
+                      <span class="bg-laton-400 h-px w-10" />
+                    </span>
 
-                  <blockquote
-                    lang={resena.idioma}
-                    class="font-display text-tinta-900 mt-5 flex-1 text-2xl"
-                  >
-                    {resena.texto}
-                  </blockquote>
+                    <blockquote
+                      lang={resena.idioma}
+                      class="font-display text-tinta-900 mt-8 text-3xl leading-snug italic sm:text-4xl"
+                    >
+                      {`“${resena.texto}”`}
+                    </blockquote>
 
-                  {/* Sin fecha: de Google solo se saca la antiguedad relativa
-                      ("hace 9 meses"), y poner un mes concreto seria afirmar
-                      una precision que no tenemos. */}
-                  <p class="border-fondo-200 text-tinta-600 mt-6 border-t pt-4 font-mono text-[0.7rem] tracking-[0.12em] uppercase">
-                    {resena.autor}
-                  </p>
+                    <span
+                      class="text-laton-400 mt-8 flex items-center justify-center gap-2"
+                      aria-hidden="true"
+                    >
+                      <span class="bg-laton-400 h-px w-10" />
+                      <span class="bg-laton-400 size-1 rounded-full" />
+                      <span class="bg-laton-400 h-px w-10" />
+                    </span>
+
+                    <figcaption class="text-tinta-600 mt-6 font-mono text-[0.7rem] tracking-[0.14em] uppercase">
+                      {resena.autor}
+                    </figcaption>
+                  </figure>
                 </li>
               ))}
             </ul>
 
-            {masResenada && (
-              <p class="mt-14 text-center">
-                <a
-                  href={enlaceMapa(masResenada)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-salvia-700 hover:text-salvia-800 font-semibold underline underline-offset-4 transition"
-                >
-                  {T.verTodasEnGoogle}
-                </a>
-              </p>
-            )}
+            <button
+              type="button"
+              data-resena-anterior
+              aria-label={T.anterior}
+              class="border-fondo-400 bg-fondo-50/90 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 absolute top-1/2 -left-2 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm transition disabled:pointer-events-none disabled:opacity-0 lg:flex"
+            >
+              <svg
+                class="size-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M15 6l-6 6 6 6" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              data-resena-siguiente
+              aria-label={T.siguiente}
+              class="border-fondo-400 bg-fondo-50/90 text-tinta-900 hover:border-salvia-600 hover:text-salvia-700 absolute top-1/2 -right-2 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm transition disabled:pointer-events-none disabled:opacity-0 lg:flex"
+            >
+              <svg
+                class="size-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 6l6 6-6 6" />
+              </svg>
+            </button>
+
+            <ol
+              data-resena-puntos
+              class="mt-12 flex justify-center gap-2.5"
+              aria-label={T.irAElemento}
+            >
+              {resenas.map((resena, indice) => (
+                <li>
+                  <button
+                    type="button"
+                    data-resena-punto
+                    aria-label={resena.autor}
+                    data-indice={indice}
+                    class="bg-fondo-400 hover:bg-tinta-500 aria-[current=true]:bg-salvia-600 block h-2 w-2 rounded-full transition-all aria-[current=true]:w-6"
+                  />
+                </li>
+              ))}
+            </ol>
           </div>
+        )}
+
+        {masResenada && (
+          <p class="mt-14 text-center">
+            <a
+              href={enlaceMapa(masResenada)}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-salvia-700 hover:text-salvia-800 font-semibold underline underline-offset-4 transition"
+            >
+              {T.verTodasEnGoogle}
+            </a>
+          </p>
         )}
       </div>
     </section>
   )
 }
+
+<script>
+  /**
+   * Flechas y puntos de las opiniones. Es mejora progresiva: la pista es scroll
+   * nativo con anclaje, asi que sin JavaScript se arrastra igual y no queda
+   * ningun control muerto en pantalla.
+   */
+  const bloque = document.querySelector<HTMLElement>('[data-resenas]');
+  const pista = bloque?.querySelector<HTMLElement>('[data-pista-resenas]');
+
+  if (bloque && pista) {
+    const slides = [...pista.children] as HTMLElement[];
+    const puntos = [...bloque.querySelectorAll<HTMLButtonElement>('[data-resena-punto]')];
+    const anterior = bloque.querySelector<HTMLButtonElement>('[data-resena-anterior]');
+    const siguiente = bloque.querySelector<HTMLButtonElement>('[data-resena-siguiente]');
+
+    // Una cita por pantalla, asi que el indice es una division exacta.
+    const actual = () => Math.round(pista.scrollLeft / pista.clientWidth);
+
+    const pintar = () => {
+      const indice = actual();
+      puntos.forEach((punto, i) =>
+        punto.setAttribute('aria-current', String(i === indice)),
+      );
+      if (anterior) anterior.disabled = indice <= 0;
+      if (siguiente) siguiente.disabled = indice >= slides.length - 1;
+    };
+
+    const irA = (indice: number) => {
+      const destino = slides[Math.max(0, Math.min(indice, slides.length - 1))];
+      destino?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    };
+
+    anterior?.addEventListener('click', () => irA(actual() - 1));
+    siguiente?.addEventListener('click', () => irA(actual() + 1));
+    puntos.forEach((punto, i) => punto.addEventListener('click', () => irA(i)));
+
+    let pendiente = false;
+    pista.addEventListener(
+      'scroll',
+      () => {
+        if (pendiente) return;
+        pendiente = true;
+        requestAnimationFrame(() => {
+          pintar();
+          pendiente = false;
+        });
+      },
+      { passive: true },
+    );
+
+    window.addEventListener('resize', pintar, { passive: true });
+    pintar();
+  }
+</script>

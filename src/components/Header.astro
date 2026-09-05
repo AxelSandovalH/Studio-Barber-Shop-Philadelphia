@@ -9,9 +9,15 @@ import Logo from '../assets/marca/logo.svg';
 interface Props {
   /** Esta misma pagina en cada idioma, para el conmutador. */
   rutas: Record<Idioma, string>;
+  /**
+   * La pagina abre con una portada a sangre. Entonces la cabecera empieza
+   * transparente y sobre la foto, y se vuelve solida en cuanto se baja. Las
+   * paginas de sucursal y de servicio abren en crema, asi que no lo usan.
+   */
+  sobreHero?: boolean;
 }
 
-const { rutas } = Astro.props;
+const { rutas, sobreHero = false } = Astro.props;
 
 const idioma = idiomaDe(Astro.currentLocale);
 const T = textos(idioma);
@@ -22,8 +28,20 @@ const otroIdioma: Idioma = idioma === 'es' ? 'en' : 'es';
 const otroTextos = textos(otroIdioma);
 ---
 
+{
+  /* data-sobre-hero lo lee el script: mientras la portada esta a la vista la
+     cabecera va sin fondo, y al bajar aparece. Sin JavaScript se queda solida
+     desde el principio, que es el estado legible. */
+}
 <header
-  class="border-fondo-300/70 bg-fondo-50/85 fixed inset-x-0 top-0 z-40 border-b backdrop-blur-md"
+  data-cabecera
+  data-sobre-hero={sobreHero ? '' : undefined}
+  class:list={[
+    'fixed inset-x-0 top-0 z-40 border-b transition-colors duration-300',
+    sobreHero
+      ? '[&:not([data-arriba])]:border-fondo-300/70 [&:not([data-arriba])]:bg-fondo-50/85 border-transparent bg-transparent [&:not([data-arriba])]:backdrop-blur-md'
+      : 'border-fondo-300/70 bg-fondo-50/85 backdrop-blur-md',
+  ]}
 >
   <div class="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-5">
     <a
@@ -66,6 +84,7 @@ const otroTextos = textos(otroIdioma);
 
       <a
         href="#sucursales"
+        data-cita
         class="bg-salvia-600 text-fondo-50 hover:bg-salvia-700 rounded-full px-5 py-2.5 text-sm font-semibold transition"
       >
         {T.agendarCita}
@@ -182,5 +201,43 @@ const otroTextos = textos(otroIdioma);
         boton.focus();
       }
     });
+  }
+</script>
+
+<script>
+  /**
+   * La cabecera va sin fondo mientras la portada a sangre esta detras, y se
+   * vuelve solida en cuanto se pasa. Se calcula con el borde inferior de la
+   * portada y no con un umbral fijo de scroll: asi funciona igual con la
+   * portada de 92vh en cualquier pantalla.
+   *
+   * Sin JavaScript la cabecera se queda solida desde el principio, que es el
+   * estado legible: nunca queda texto claro sobre fondo claro.
+   */
+  const cabecera = document.querySelector<HTMLElement>(
+    '[data-cabecera][data-sobre-hero]',
+  );
+  const portada = document.querySelector<HTMLElement>('#inicio');
+
+  if (cabecera && portada) {
+    let pendiente = false;
+
+    const revisar = () => {
+      const limite = portada.getBoundingClientRect().bottom - cabecera.offsetHeight;
+      cabecera.toggleAttribute('data-arriba', limite > 0);
+    };
+
+    const alDesplazar = () => {
+      if (pendiente) return;
+      pendiente = true;
+      requestAnimationFrame(() => {
+        revisar();
+        pendiente = false;
+      });
+    };
+
+    window.addEventListener('scroll', alDesplazar, { passive: true });
+    window.addEventListener('resize', alDesplazar, { passive: true });
+    revisar();
   }
 </script>

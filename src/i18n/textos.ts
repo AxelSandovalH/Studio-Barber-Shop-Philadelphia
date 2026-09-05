@@ -35,6 +35,17 @@ const es = {
   heroAbrimos: 'Abrimos',
   heroDias: 'dias',
 
+  destacadoCartaTitulo: 'La carta completa',
+  destacadoCartaTexto:
+    'Corte a tijera y a maquina, ritual de barba, coloracion, rizos y facial. Todo en el mismo sitio.',
+  destacadoSucursalesTitulo: '{n} sucursales en Cabo',
+  destacadoSucursalesTexto:
+    'Escribes por WhatsApp a la que te quede mas cerca y te decimos hora. Cada local tiene su propio telefono.',
+  destacadoTrabajoTitulo: 'El trabajo, a la vista',
+  destacadoTrabajoTexto:
+    'Fotos y video de cortes que salen del local, ordenados por servicio para que encuentres el tuyo.',
+  destacadoVerMas: 'Ver mas',
+
   serviciosEtiqueta: 'Carta de servicios',
   serviciosTitulo: 'Lo que hacemos',
   serviciosDescripcion:
@@ -162,6 +173,17 @@ const en: typeof es = {
   heroSucursales: 'Locations',
   heroAbrimos: 'Open',
   heroDias: 'days',
+
+  destacadoCartaTitulo: 'The full menu',
+  destacadoCartaTexto:
+    'Scissor and clipper cuts, beard rituals, colour, curls and facials. All under one roof.',
+  destacadoSucursalesTitulo: '{n} shops in Cabo',
+  destacadoSucursalesTexto:
+    'Message whichever one is closer on WhatsApp and we will give you a time. Each shop has its own number.',
+  destacadoTrabajoTitulo: 'See the work',
+  destacadoTrabajoTexto:
+    'Photos and video of cuts leaving the shop, sorted by service so you can find yours.',
+  destacadoVerMas: 'See more',
 
   serviciosEtiqueta: 'What we do',
   serviciosTitulo: 'Services',

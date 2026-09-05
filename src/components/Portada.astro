@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from './Header.astro';
 import Hero from './Hero.astro';
+import Destacados from './Destacados.astro';
 import Servicios from './Servicios.astro';
 import Galeria from './Galeria.astro';
 import Resenas from './Resenas.astro';
@@ -28,9 +29,14 @@ const datosEstructurados = esquemaPortada(
 ---
 
 <Layout rutas={rutas} datosEstructurados={datosEstructurados}>
-  <Header rutas={rutas} />
+  <Header rutas={rutas} sobreHero />
   <main id="contenido">
     <Hero />
+    {
+      /* Tres mosaicos justo debajo de la portada: que se hace, donde y
+        como se ve el trabajo. */
+    }
+    <Destacados />
     <Servicios />
     <Galeria />
     {

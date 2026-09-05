@@ -1,0 +1,84 @@
+---
+import { Image } from 'astro:assets';
+import { sucursales, retratoDeServicio } from '../data/site';
+import { idiomaDe, rutaInicio } from '../i18n/idiomas';
+import { rellenar, textos } from '../i18n/textos';
+
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
+
+const inicio = rutaInicio(idioma);
+
+/**
+ * Tres mosaicos con lo que hay que saber antes de bajar: que se hace, donde y
+ * como se ve el trabajo.
+ *
+ * Las tres afirmaciones salen de los datos, no de la cabeza de nadie: el numero
+ * de sucursales se cuenta, y las fotos son material real de la galeria. Si un
+ * dia no hay material, el mosaico se queda sin foto pero con su fondo, y no se
+ * cae la seccion.
+ */
+const mosaicos = [
+  {
+    titulo: T.destacadoCartaTitulo,
+    texto: T.destacadoCartaTexto,
+    href: `${inicio}#servicios`,
+    imagen: retratoDeServicio('tijera'),
+  },
+  {
+    titulo: rellenar(T.destacadoSucursalesTitulo, { n: sucursales.length }),
+    texto: T.destacadoSucursalesTexto,
+    href: `${inicio}#sucursales`,
+    imagen: retratoDeServicio('barba'),
+  },
+  {
+    titulo: T.destacadoTrabajoTitulo,
+    texto: T.destacadoTrabajoTexto,
+    href: `${inicio}#galeria`,
+    imagen: retratoDeServicio('fade'),
+  },
+];
+---
+
+<section class="bg-salvia-950">
+  <ul class="grid md:grid-cols-3">
+    {
+      mosaicos.map(({ titulo, texto, href, imagen }, indice) => (
+        <li class="relative">
+          <a href={href} class="group block">
+            <div class="relative min-h-[26rem] overflow-hidden md:min-h-[32rem]">
+              {imagen && (
+                <Image
+                  src={imagen}
+                  alt=""
+                  widths={[400, 800, 1200]}
+                  sizes="(max-width: 767px) 100vw, 34vw"
+                  loading={indice === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  class="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105"
+                />
+              )}
+
+              {/* Velo verde muy oscuro, mas cerrado abajo, que es donde cae el
+                  texto. Es el mismo recurso que la portada y por el mismo
+                  motivo: sin el, el texto blanco desaparece sobre la foto. */}
+              <div class="from-salvia-950/95 via-salvia-950/70 to-salvia-950/40 absolute inset-0 bg-gradient-to-t" />
+
+              <div class="relative flex min-h-[26rem] flex-col justify-end p-8 md:min-h-[32rem] md:p-10">
+                <span class="bg-laton-400 mb-6 h-px w-14" aria-hidden="true" />
+
+                <h3 class="text-fondo-50 text-4xl">{titulo}</h3>
+
+                <p class="text-fondo-100 mt-4 max-w-sm leading-relaxed">{texto}</p>
+
+                <span class="text-laton-300 group-hover:text-fondo-50 mt-6 font-mono text-[0.7rem] tracking-[0.16em] uppercase transition">
+                  {T.destacadoVerMas}
+                </span>
+              </div>
+            </div>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

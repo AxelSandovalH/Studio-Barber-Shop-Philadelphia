@@ -31,6 +31,10 @@
   --color-salvia-600: #0f3a20;
   --color-salvia-700: #0a2c18;
   --color-salvia-800: #061c0f;
+  /* Solo para el velo de la portada a sangre. Es el verde de marca llevado al
+     fondo de la escala, no un negro: el cliente descarto el negro y esto
+     mantiene la foto dentro de la paleta. */
+  --color-salvia-950: #02100a;
 
   /* Verde de las paredes del local: mas claro y mas gris que el de la marca.
      Se usa en tintes muy bajos para las bandas de seccion, de forma que el
@@ -47,6 +51,9 @@
      verde solo no puede dar, que es donde vive la sensacion de lujo. Sale de
      las dos referencias que resuelven lo mismo (#796841 y #8a813e) llevado a
      un tono que convive con el verde de la marca. */
+  /* El 300 es para superficies oscuras: sobre el velo de la portada, el 400
+     se apaga y no llega al contraste minimo. */
+  --color-laton-300: #d9c49a;
   --color-laton-400: #a8916a;
   --color-laton-600: #7c6a43;
   --color-laton-700: #5f5133;
@@ -118,6 +125,12 @@
     background: var(--color-laton-400);
   }
 
+  /* La misma pieza sobre una foto oscura. El laton 700 sobre crema tiene
+     contraste de sobra, pero sobre el velo de la portada se apaga. */
+  .antetitulo-claro {
+    color: var(--color-laton-300);
+  }
+
   /* Franja tricolor del poste de barbero. Se usa como separador de secciones.
      El blanco va explicito y no con un token: en el poste real es blanco, no
      el color de fondo de la pagina. */
@@ -130,6 +143,33 @@
       var(--color-poste-azul) 28px 42px
     );
   }
+}
+
+/* Cabecera sobre la portada a sangre.
+
+   Va FUERA de @layer a proposito. En Tailwind 4 todo vive en capas, y una regla
+   sin capa gana a cualquier regla dentro de una: por eso esto puede con los
+   `text-tinta-900` del marcado sin recurrir a !important. Es la misma leccion
+   que el espaciado del carrusel anclado, resuelta mejor.
+   
+   Mientras la portada esta detras, el contenido de la cabecera va en claro o
+   desaparece contra la foto. */
+[data-cabecera][data-arriba] a,
+[data-cabecera][data-arriba] span,
+[data-cabecera][data-arriba] button {
+  color: var(--color-fondo-50);
+}
+
+/* El boton de agendar se invierte: el verde solido sobre la foto oscura casi
+   no se distingue del velo. */
+[data-cabecera][data-arriba] [data-cita] {
+  background-color: var(--color-fondo-50);
+  color: var(--color-salvia-700);
+}
+
+/* La franja del poste, sobre la foto, corta la imagen sin aportar nada. */
+[data-cabecera][data-arriba] .franja-poste {
+  opacity: 0;
 }
 
 /* Quien haya pedido menos movimiento no ve ninguna animacion. */
