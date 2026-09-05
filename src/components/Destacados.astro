@@ -23,7 +23,10 @@ const mosaicos = [
     titulo: T.destacadoCartaTitulo,
     texto: T.destacadoCartaTexto,
     href: `${inicio}#servicios`,
-    imagen: retratoDeServicio('tijera'),
+    // Se probo con la de tijera y no valia: el sujeto queda bajo y a la
+    // izquierda, y el titulo le caia en la mandibula. En esta la capa ocupa la
+    // franja de abajo, que es justo donde va el texto.
+    imagen: retratoDeServicio('corte-basico'),
   },
   {
     titulo: rellenar(T.destacadoSucursalesTitulo, { n: sucursales.length }),
@@ -55,13 +58,19 @@ const mosaicos = [
                   sizes="(max-width: 767px) 100vw, 34vw"
                   loading={indice === 0 ? 'eager' : 'lazy'}
                   decoding="async"
-                  class="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-105"
+                  class="absolute inset-0 size-full object-cover object-[center_55%] transition duration-700 group-hover:scale-105"
                 />
               )}
 
               {/* Velo verde muy oscuro, mas cerrado abajo, que es donde cae el
                   texto. Es el mismo recurso que la portada y por el mismo
-                  motivo: sin el, el texto blanco desaparece sobre la foto. */}
+                  motivo: sin el, el texto blanco desaparece sobre la foto.
+
+                  El encuadre va desplazado al 55% y no centrado: el material
+                  son verticales de telefono, casi 9:16, y en un mosaico
+                  cuadrado el centro geometrico cae en la barbilla. Con el 55%
+                  la cara sube por encima del degradado sin que se corte la
+                  coronilla. */}
               <div class="from-salvia-950/95 via-salvia-950/70 to-salvia-950/40 absolute inset-0 bg-gradient-to-t" />
 
               <div class="relative flex min-h-[26rem] flex-col justify-end p-8 md:min-h-[32rem] md:p-10">
