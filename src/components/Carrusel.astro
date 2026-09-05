@@ -133,16 +133,24 @@ const preparados = await Promise.all(
                   <source src={medio.mp4} type="video/mp4" />
                 </video>
 
-                <span class="bg-fondo-50/80 text-tinta-900 pointer-events-none absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-mono text-[0.62rem] tracking-[0.12em] uppercase backdrop-blur-sm">
+                {/* Solo el glifo, sin la palabra: la etiqueta con texto se
+                    repetia en cada tarjeta y competia con la foto. La palabra
+                    sigue ahi para quien use lector de pantalla. Y se apaga
+                    mientras el clip corre, que es cuando ya se ve que es un
+                    video. */}
+                <span
+                  data-marca-video
+                  class="bg-fondo-50/70 text-tinta-900 pointer-events-none absolute bottom-3 left-3 flex size-8 items-center justify-center rounded-full backdrop-blur-sm transition-opacity duration-500"
+                >
                   <svg
-                    class="size-3"
+                    class="size-3.5 translate-x-px"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                     aria-hidden="true"
                   >
                     <path d="M8 5v14l11-7z" />
                   </svg>
-                  {T.video}
+                  <span class="sr-only">{T.video}</span>
                 </span>
               </>
             )}
@@ -440,6 +448,17 @@ const preparados = await Promise.all(
     );
 
     videos.forEach((video) => observador.observe(video));
+
+    videos.forEach((video) => {
+      const marca = video.parentElement?.querySelector<HTMLElement>('[data-marca-video]');
+      if (!marca) return;
+      const pintar = () => {
+        marca.style.opacity = video.paused ? '1' : '0';
+      };
+      video.addEventListener('play', pintar);
+      video.addEventListener('pause', pintar);
+      pintar();
+    });
   }
 
   /**
