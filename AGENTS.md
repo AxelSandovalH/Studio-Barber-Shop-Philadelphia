@@ -95,13 +95,18 @@ mexicanos.
   las referencias del cliente, que resuelven lo mismo con un laton casi igual.
   Si se usa en superficies grandes compite con el verde de marca y el sitio deja
   de tener un solo color propio.
-- **La carta de la portada ensena cada servicio con su foto.** Se probo antes
-  como lista de renglones con filete de puntos hasta el precio, que se lee muy
-  bien, pero obligaba a entrar en cada pagina para ver de que va el servicio. La
-  foto sale de `retratoDeServicio()`, o sea de la galeria ya etiquetada: no hay
-  una segunda lista de imagenes que mantener. Un servicio sin material
-  etiquetado deja un hueco del color de las paredes del local; no se le pone la
-  foto de otro.
+- **Cada servicio tiene su banda a ancho completo en la portada.** Se probo
+  antes como lista de renglones (no ensena nada, obliga a entrar en cada pagina)
+  y como rejilla de tarjetas en crema (se quedo descolgada del estilo oscuro del
+  hero). La foto sale de `retratoDeServicio()`, o sea de la galeria ya
+  etiquetada: no hay una segunda lista de imagenes que mantener.
+  - **Se alterna el fondo y el lado de la foto.** El fondo porque ocho bandas
+    oscuras seguidas convierten la pagina en un muro, y el cliente descarto
+    expresamente el negro; el lado porque ocho bandas identicas se leen como una
+    sola y se deja de mirar a la tercera.
+  - **Un servicio sin foto colapsa a banda de texto**, mas baja y en una sola
+    columna. Dejarle el hueco de 700 px que ocuparia la imagen no informa de
+    nada, solo hace bajar. Y no se le pone la foto de otro servicio.
 - **Fotos en `src/assets/`, videos en `public/`.** Las fotos solo se optimizan
   (WebP + srcset) si Astro las importa desde `src/assets`; una foto en `public/`
   se sirve tal cual. Astro no procesa video, por eso ese va en `public/` ya
