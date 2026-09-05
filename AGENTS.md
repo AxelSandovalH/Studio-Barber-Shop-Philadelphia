@@ -132,6 +132,18 @@ mexicanos.
   funciona y anclar pelearia con el. Con `prefers-reduced-motion` tampoco se
   ancla: secuestrar el scroll es justo lo que esa preferencia pide evitar.
 
+- **El chat flotante no lleva IA, y no por falta de ganas.** Un modelo de
+  lenguaje necesita una clave, y en un sitio estatico la clave viaja al
+  navegador de cualquiera que abra el inspector. El chat sirve
+  `preguntasFrecuentes()`, que ya se deriva de los datos del negocio: si cambia
+  un horario o un telefono, cambia la respuesta sola. La primera burbuja dice
+  que las respuestas son automaticas, y el pie lleva a WhatsApp, donde contesta
+  una persona. No se hace pasar por nadie.
+- **El boton del chat nace oculto y lo muestra el script**, como los filtros de
+  la galeria: sin JavaScript no se abriria, y un boton flotante que no hace nada
+  es peor que no tenerlo. Las mismas preguntas siguen en la seccion de preguntas
+  frecuentes de la portada.
+
 ## Desarrollo
 
 ```

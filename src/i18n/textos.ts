@@ -122,6 +122,15 @@ const es = {
   privadosAsunto: 'Consulta sobre servicios privados',
   privadosDesde: 'desde',
 
+  chatAbrir: 'Abrir preguntas rapidas',
+  chatCerrar: 'Cerrar',
+  chatTitulo: 'Preguntas rapidas',
+  chatIntro:
+    'Estas son respuestas automaticas a lo que mas nos preguntan. Si necesitas otra cosa, escribenos por WhatsApp y te contesta una persona.',
+  chatElegir: 'Elige una pregunta',
+  chatOtraCosa: 'Necesito otra cosa',
+  chatWhatsapp: 'WhatsApp {sucursal}',
+
   faqEtiqueta: 'Preguntas frecuentes',
   faqTitulo: 'Lo que suelen preguntarnos',
 
@@ -258,6 +267,15 @@ const en: typeof es = {
   privadosBoton: 'Email {correo}',
   privadosAsunto: 'Enquiry about private services',
   privadosDesde: 'from',
+
+  chatAbrir: 'Open quick answers',
+  chatCerrar: 'Close',
+  chatTitulo: 'Quick answers',
+  chatIntro:
+    'These are automatic answers to what people ask us most. For anything else, message us on WhatsApp and a real person will reply.',
+  chatElegir: 'Pick a question',
+  chatOtraCosa: 'I need something else',
+  chatWhatsapp: 'WhatsApp {sucursal}',
 
   faqEtiqueta: 'FAQ',
   faqTitulo: 'What people usually ask',

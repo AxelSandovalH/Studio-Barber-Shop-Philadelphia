@@ -1,5 +1,6 @@
 ---
 import { Font } from 'astro:assets';
+import ChatFlotante from '../components/ChatFlotante.astro';
 import { negocio, sucursales, direccionEnLinea } from '../data/site';
 import { IDIOMAS, LOCALE, idiomaDe, t, type Idioma } from '../i18n/idiomas';
 import { textos } from '../i18n/textos';
@@ -133,5 +134,11 @@ const imagenCompartir = new URL('/og.jpg', Astro.site).href;
       {T.saltarAlContenido}
     </a>
     <slot />
+
+    {
+      /* Va en el layout y no en cada pagina: se quiere en todas, incluida la
+        de sucursal y la de servicio. */
+    }
+    <ChatFlotante />
   </body>
 </html>
