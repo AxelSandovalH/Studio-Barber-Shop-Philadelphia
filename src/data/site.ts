@@ -37,6 +37,7 @@ import barbaPerfilada from '../assets/galeria/barba-perfilada.jpg';
 import tijeraTazon from '../assets/galeria/tijera-tazon.jpg';
 import corteCortoPixie from '../assets/galeria/corte-corto-pixie.jpg';
 
+import corteBasico1Poster from '../assets/galeria/corte-basico-1-poster.jpg';
 import fade1Poster from '../assets/galeria/fade-1-poster.jpg';
 import fade2Poster from '../assets/galeria/fade-2-poster.jpg';
 import fade3Poster from '../assets/galeria/fade-3-poster.jpg';
@@ -553,6 +554,16 @@ export const galeria: MedioGaleria[] = [
     alt: {
       es: 'Mullet rizado con laterales rapados y barba perfilada',
       en: 'Curly mullet with shaved sides and a shaped beard',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/corte-basico-1.mp4',
+    poster: corteBasico1Poster,
+    servicio: 'corte-basico',
+    alt: {
+      es: 'Corte a maquina muy corto con los contornos perfilados',
+      en: 'Very short clipper cut with the edges cleaned up',
     },
   },
   {
