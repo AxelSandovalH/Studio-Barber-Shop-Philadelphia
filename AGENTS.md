@@ -137,11 +137,19 @@ mexicanos.
   que si algun dia se quita de ahi el boton desaparece solo en vez de quedarse
   apuntando a una cuenta muerta. Hubo antes un chat de preguntas frecuentes en
   ese sitio; esta en el historial (`64a463a`) si se quiere recuperar.
-- **La portada es la fachada del local.** Antes fue un plano del mar, porque no
-  existia ninguna foto horizontal del sitio. En movil la foto se ensena entera
-  como banda superior y no recortada a sangre: es 4:3, y en un hueco vertical el
-  recorte lateral se come los extremos del rotulo, que es justo lo que
-  identifica al negocio.
+- **La portada es la fachada del local, partida en dos: texto y foto.** Antes
+  fue un plano del mar, porque no existia ninguna foto horizontal del sitio, y
+  despues la fachada a sangre con un velo encima. Ese montaje tiene un problema
+  de raiz: el velo es lo unico que separa el texto de la foto, asi que para que
+  el texto se lea hay que tapar la foto al 62% justo cuando lo que se quiere es
+  ensenarla. Partida, el texto va sobre verde solido y **la foto no lleva velo
+  ninguno**.
+  - En movil la foto va arriba, entera y a su 4:3. Recortada a un hueco vertical
+    se pierden los extremos del rotulo, que es lo que identifica al negocio: se
+    leia "DIO BARBER SHOP".
+  - **La cabecera es solida sobre esta portada**, no transparente: en movil la
+    foto sube hasta arriba y el rotulo en claro se perderia sobre el cielo. De
+    ahi el `pt-20` de la seccion, que es la altura de la cabecera fija.
 
 ## Desarrollo
 

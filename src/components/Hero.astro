@@ -10,94 +10,81 @@ const T = textos(idioma);
 ---
 
 {
-  /* Portada a sangre. 92vh y no 100vh a proposito: que asome el borde de la
-    seccion siguiente es lo que dice que la pagina continua.
+  /* Portada partida: el texto en su mitad y la foto en la otra.
 
-    En movil baja a 72vh y la foto se muestra entera arriba en vez de recortada
-    a sangre. Una foto 4:3 en un hueco vertical obliga a recortar de los lados,
-    que es justo donde estan los extremos del rotulo: se leia "DIO BARBER SHOP".
-    Como banda superior se ve el rotulo completo, y el resto del alto lo ocupa
-    el verde del velo, que es donde cae el texto. */
+    Se probo antes a sangre, con la foto de fondo y un velo encima. El problema
+    de ese montaje es que el velo es lo unico que separa el texto de la foto:
+    para que se lea hay que taparla al 62%, y entonces la fachada se ve apagada
+    justo cuando lo que se queria era ensenarla. Partida, cada cosa tiene su
+    sitio: el texto se lee sobre verde solido y la foto va **sin velo ninguno**.
+
+    Tambien le viene bien a esta foto en concreto, que mide 1280 px de ancho: a
+    media pantalla le sobra resolucion, y a pantalla completa se quedaba corta.
+
+    La cabecera vuelve a ser solida sobre esta portada. Transparente no vale: en
+    movil la foto sube hasta arriba y el rotulo en claro se perderia sobre el
+    cielo. De ahi el `pt-20`, que es su altura. */
 }
 <section
   id="inicio"
-  class="bg-salvia-950 relative flex min-h-[72vh] items-end justify-center overflow-hidden sm:min-h-[92vh]"
+  class="bg-salvia-950 relative grid min-h-[92vh] pt-20 lg:grid-cols-2"
 >
   {
-    /* La fachada del local. Antes habia un plano del mar porque no existia
-      ninguna foto horizontal del sitio; esta dice en dos segundos que esto es
-      una barberia, que es lo que el mar no hacia.
-
-      El encuadre va al 42% y no centrado: la fuente es 4:3 y la portada casi
-      16:9, asi que al recortar se pierde alto. Sesgado hacia arriba se conserva
-      el rotulo, que es lo que identifica al negocio, y lo que se va es acera. */
+    /* En movil la foto va arriba, a su proporcion 4:3 y entera: recortada a un
+      hueco vertical se pierden los extremos del rotulo, que es justo lo que
+      identifica al negocio. */
   }
-  <div class="absolute inset-0" aria-hidden="true">
+  <div class="order-first lg:order-last">
     <Image
       src={fachada}
-      alt=""
+      alt={`Fachada de ${negocio.nombre}, sucursal ${sucursales[1]?.nombre ?? ''}`}
       widths={[640, 960, 1280]}
-      sizes="100vw"
+      sizes="(max-width: 1023px) 100vw, 50vw"
       loading="eager"
       fetchpriority="high"
       decoding="async"
-      class="size-full object-contain object-top sm:object-cover sm:object-[center_42%]"
+      class="aspect-[4/3] w-full object-cover lg:aspect-auto lg:h-full"
     />
-
-    {
-      /* El velo es el verde de marca llevado al fondo de la escala, no un
-        negro: el cliente descarto el negro y asi la foto sigue dentro de la
-        paleta. El degradado vertical carga arriba, donde va la cabecera, y
-        abajo, donde acaba el texto. */
-    }
-    <div class="bg-salvia-950/62 absolute inset-0"></div>
-    <div
-      class="from-salvia-950/75 to-salvia-950/85 absolute inset-0 bg-gradient-to-b via-transparent"
-    >
-    </div>
   </div>
 
-  {
-    /* El texto se alinea abajo y no al centro: el rotulo de madera ocupa el
-      tercio superior de la foto y es lo que identifica al negocio. Centrado, el
-      titular le caia justo encima. */
-  }
-  <div class="relative mx-auto max-w-3xl px-5 pt-32 pb-16 text-center sm:pt-40 sm:pb-20">
-    <p class="antetitulo antetitulo-claro justify-center">
-      {rellenar(T.heroAntetitulo, { n: sucursales.length })}
-    </p>
+  <div class="flex items-center px-5 py-16 sm:px-10 md:py-24 lg:px-14">
+    <div class="mx-auto w-full max-w-xl">
+      <p class="antetitulo antetitulo-claro">
+        {rellenar(T.heroAntetitulo, { n: sucursales.length })}
+      </p>
 
-    <h1 class="text-fondo-50 mt-8 text-5xl sm:text-6xl md:text-7xl">
-      {T.heroH1}
-    </h1>
+      <h1 class="text-fondo-50 mt-8 text-5xl sm:text-6xl">
+        {T.heroH1}
+      </h1>
 
-    <p class="font-display text-pared-200 mt-6 text-2xl italic sm:text-3xl">
-      {t(negocio.eslogan, idioma)}
-    </p>
+      <p class="font-display text-pared-200 mt-6 text-2xl italic sm:text-3xl">
+        {t(negocio.eslogan, idioma)}
+      </p>
 
-    <p class="text-fondo-100 mx-auto mt-8 max-w-xl leading-relaxed">
-      {t(negocio.descripcion, idioma)}
-    </p>
+      <p class="text-fondo-100 mt-8 leading-relaxed">
+        {t(negocio.descripcion, idioma)}
+      </p>
 
-    {
-      /* Un boton principal, como en las barberias que se ven bien: la accion
-        que importa es agendar, y darle un segundo boton del mismo peso la
-        diluye. El de servicios va debajo, como enlace. */
-    }
-    <div class="mt-11 flex flex-col items-center gap-6">
-      <a
-        href="#sucursales"
-        class="bg-fondo-50 text-salvia-700 hover:bg-fondo-150 inline-flex items-center justify-center rounded-full px-10 py-4 font-semibold transition"
-      >
-        {T.agendarCita}
-      </a>
+      {
+        /* Un boton principal, como en las barberias que se ven bien: la accion
+          que importa es agendar, y darle un segundo boton del mismo peso la
+          diluye. El de servicios va al lado, como enlace. */
+      }
+      <div class="mt-11 flex flex-wrap items-center gap-x-10 gap-y-5">
+        <a
+          href="#sucursales"
+          class="bg-fondo-50 text-salvia-700 hover:bg-fondo-150 inline-flex items-center justify-center rounded-full px-10 py-4 font-semibold transition"
+        >
+          {T.agendarCita}
+        </a>
 
-      <a
-        href="#servicios"
-        class="text-fondo-100 hover:text-fondo-50 font-mono text-[0.7rem] tracking-[0.16em] uppercase underline underline-offset-8 transition"
-      >
-        {T.verServicios}
-      </a>
+        <a
+          href="#servicios"
+          class="text-fondo-100 hover:text-fondo-50 font-mono text-[0.7rem] tracking-[0.16em] uppercase underline underline-offset-8 transition"
+        >
+          {T.verServicios}
+        </a>
+      </div>
     </div>
   </div>
 </section>
