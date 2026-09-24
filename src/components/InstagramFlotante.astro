@@ -1,0 +1,45 @@
+---
+import { negocio } from '../data/site';
+import { idiomaDe } from '../i18n/idiomas';
+import { rellenar, textos } from '../i18n/textos';
+
+const idioma = idiomaDe(Astro.currentLocale);
+const T = textos(idioma);
+
+/**
+ * Acceso flotante a Instagram.
+ *
+ * Es un enlace, no un widget: funciona sin JavaScript y no carga nada de fuera.
+ * Sale del mismo sitio que el resto de redes, asi que si algun dia se quita
+ * Instagram de `negocio.redes` este boton desaparece solo en vez de quedarse
+ * apuntando a una cuenta que ya no existe.
+ */
+const instagram = negocio.redes.find((red) => red.nombre === 'Instagram');
+---
+
+{
+  instagram && (
+    <a
+      href={instagram.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={rellenar(T.instagramFlotante, { cuenta: negocio.nombreCorto })}
+      class="bg-salvia-600 text-fondo-50 hover:bg-salvia-700 focus-visible:outline-salvia-700 fixed right-4 bottom-4 z-50 flex size-14 items-center justify-center rounded-2xl shadow-xl transition sm:right-6 sm:bottom-6"
+    >
+      <svg
+        class="size-7"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <rect x="2" y="2" width="20" height="20" rx="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+      </svg>
+    </a>
+  )
+}

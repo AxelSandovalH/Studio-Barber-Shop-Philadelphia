@@ -1,51 +1,54 @@
 ---
-import { getImage } from 'astro:assets';
+import { Image } from 'astro:assets';
 import { negocio, sucursales } from '../data/site';
 import { idiomaDe, t } from '../i18n/idiomas';
 import { rellenar, textos } from '../i18n/textos';
-import marPoster from '../assets/portada/mar-rocas-poster.jpg';
-
-// El poster se optimiza como cualquier foto. Es lo que se ve mientras el video
-// no arranca, y en movil y con movimiento reducido es lo unico que se ve.
-const poster = await getImage({ src: marPoster, width: 1600, format: 'webp' });
+import fachada from '../assets/portada/fachada-la-joya.jpg';
 
 const idioma = idiomaDe(Astro.currentLocale);
 const T = textos(idioma);
-
-// Las cifras salen de los datos para que no se queden desfasadas.
-const principal = sucursales[0]!;
-const diasAbiertos = principal.horarios
-  .filter((franja) => !franja.cerrado)
-  .reduce((total, franja) => total + franja.indices.length, 0);
 ---
 
 {
-  /* Portada a sangre: la imagen ocupa la pantalla y el texto va centrado
-    encima. 92vh y no 100vh a proposito: que asome el borde de la seccion
-    siguiente es lo que dice que la pagina continua. */
+  /* Portada a sangre. 92vh y no 100vh a proposito: que asome el borde de la
+    seccion siguiente es lo que dice que la pagina continua.
+
+    En movil baja a 72vh y la foto se muestra entera arriba en vez de recortada
+    a sangre. Una foto 4:3 en un hueco vertical obliga a recortar de los lados,
+    que es justo donde estan los extremos del rotulo: se leia "DIO BARBER SHOP".
+    Como banda superior se ve el rotulo completo, y el resto del alto lo ocupa
+    el verde del velo, que es donde cae el texto. */
 }
 <section
   id="inicio"
-  class="relative flex min-h-[92vh] items-center justify-center overflow-hidden"
+  class="bg-salvia-950 relative flex min-h-[72vh] items-end justify-center overflow-hidden sm:min-h-[92vh]"
 >
+  {
+    /* La fachada del local. Antes habia un plano del mar porque no existia
+      ninguna foto horizontal del sitio; esta dice en dos segundos que esto es
+      una barberia, que es lo que el mar no hacia.
+
+      El encuadre va al 42% y no centrado: la fuente es 4:3 y la portada casi
+      16:9, asi que al recortar se pierde alto. Sesgado hacia arriba se conserva
+      el rotulo, que es lo que identifica al negocio, y lo que se va es acera. */
+  }
   <div class="absolute inset-0" aria-hidden="true">
-    <video
-      data-video-portada
-      class="size-full object-cover"
-      poster={poster.src}
-      muted
-      loop
-      playsinline
-      preload="none"
-    >
-      <source src="/portada/mar-rocas.mp4" type="video/mp4" />
-    </video>
+    <Image
+      src={fachada}
+      alt=""
+      widths={[640, 960, 1280]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      class="size-full object-contain object-top sm:object-cover sm:object-[center_42%]"
+    />
 
     {
       /* El velo es el verde de marca llevado al fondo de la escala, no un
         negro: el cliente descarto el negro y asi la foto sigue dentro de la
         paleta. El degradado vertical carga arriba, donde va la cabecera, y
-        abajo, donde el texto blanco se cruza con la arena clara. */
+        abajo, donde acaba el texto. */
     }
     <div class="bg-salvia-950/62 absolute inset-0"></div>
     <div
@@ -54,7 +57,12 @@ const diasAbiertos = principal.horarios
     </div>
   </div>
 
-  <div class="relative mx-auto max-w-3xl px-5 py-32 text-center">
+  {
+    /* El texto se alinea abajo y no al centro: el rotulo de madera ocupa el
+      tercio superior de la foto y es lo que identifica al negocio. Centrado, el
+      titular le caia justo encima. */
+  }
+  <div class="relative mx-auto max-w-3xl px-5 pt-32 pb-16 text-center sm:pt-40 sm:pb-20">
     <p class="antetitulo antetitulo-claro justify-center">
       {rellenar(T.heroAntetitulo, { n: sucursales.length })}
     </p>
@@ -91,60 +99,5 @@ const diasAbiertos = principal.horarios
         {T.verServicios}
       </a>
     </div>
-
-    <dl
-      class="border-fondo-50/20 mx-auto mt-16 flex max-w-sm justify-center gap-14 border-t pt-8"
-    >
-      <div>
-        <dt class="text-laton-300 font-mono text-[0.65rem] tracking-[0.16em] uppercase">
-          {T.heroSucursales}
-        </dt>
-        <dd class="text-fondo-50 mt-2 font-mono text-2xl tabular-nums">
-          {sucursales.length}
-        </dd>
-      </div>
-      <div>
-        <dt class="text-laton-300 font-mono text-[0.65rem] tracking-[0.16em] uppercase">
-          {T.heroAbrimos}
-        </dt>
-        <dd class="text-fondo-50 mt-2 font-mono text-2xl tabular-nums">
-          {`${diasAbiertos} ${T.heroDias}`}
-        </dd>
-      </div>
-    </dl>
   </div>
 </section>
-
-<script>
-  // El video de la portada es decorativo y solo se descarga cuando aporta algo.
-  // Se queda en el poster —ya pintado y sin coste extra— en tres casos: en
-  // movil, donde ocupa poco y se ve el recorte central; con
-  // "prefers-reduced-motion", porque animar el fondo es justo lo que esa
-  // preferencia pide evitar; y con el ahorro de datos activado.
-  const video = document.querySelector<HTMLVideoElement>('[data-video-portada]');
-
-  if (video) {
-    const escritorio = window.matchMedia('(min-width: 768px)');
-    const reducir = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const conexion = (navigator as Navigator & { connection?: { saveData?: boolean } })
-      .connection;
-
-    const revisar = () => {
-      if (!escritorio.matches || reducir.matches || conexion?.saveData) {
-        video.pause();
-        return;
-      }
-
-      video.preload = 'auto';
-      // Si el archivo no esta, play() rechaza: se queda el poster y ya.
-      video.play().catch(() => {});
-    };
-
-    // Se reevalua al cambiar el ancho o la preferencia: quien carga la pagina
-    // en una ventana estrecha y luego la maximiza tambien merece el video, y
-    // quien activa el movimiento reducido merece que se pare al momento.
-    escritorio.addEventListener('change', revisar);
-    reducir.addEventListener('change', revisar);
-    revisar();
-  }
-</script>

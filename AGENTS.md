@@ -132,17 +132,16 @@ mexicanos.
   funciona y anclar pelearia con el. Con `prefers-reduced-motion` tampoco se
   ancla: secuestrar el scroll es justo lo que esa preferencia pide evitar.
 
-- **El chat flotante no lleva IA, y no por falta de ganas.** Un modelo de
-  lenguaje necesita una clave, y en un sitio estatico la clave viaja al
-  navegador de cualquiera que abra el inspector. El chat sirve
-  `preguntasFrecuentes()`, que ya se deriva de los datos del negocio: si cambia
-  un horario o un telefono, cambia la respuesta sola. La primera burbuja dice
-  que las respuestas son automaticas, y el pie lleva a WhatsApp, donde contesta
-  una persona. No se hace pasar por nadie.
-- **El boton del chat nace oculto y lo muestra el script**, como los filtros de
-  la galeria: sin JavaScript no se abriria, y un boton flotante que no hace nada
-  es peor que no tenerlo. Las mismas preguntas siguen en la seccion de preguntas
-  frecuentes de la portada.
+- **El boton flotante es un enlace a Instagram, no un widget.** Funciona sin
+  JavaScript y no carga nada de fuera. La cuenta sale de `negocio.redes`, asi
+  que si algun dia se quita de ahi el boton desaparece solo en vez de quedarse
+  apuntando a una cuenta muerta. Hubo antes un chat de preguntas frecuentes en
+  ese sitio; esta en el historial (`64a463a`) si se quiere recuperar.
+- **La portada es la fachada del local.** Antes fue un plano del mar, porque no
+  existia ninguna foto horizontal del sitio. En movil la foto se ensena entera
+  como banda superior y no recortada a sangre: es 4:3, y en un hueco vertical el
+  recorte lateral se come los extremos del rotulo, que es justo lo que
+  identifica al negocio.
 
 ## Desarrollo
 
