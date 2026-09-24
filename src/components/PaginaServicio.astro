@@ -10,6 +10,7 @@ import {
   servicios,
   moneda,
   mediosDeServicio,
+  retratoDeServicio,
   type Servicio,
 } from '../data/site';
 import {
@@ -43,21 +44,19 @@ const descripcion = t(servicio.descripcion, idioma);
 // pagina no repite ningun dato: lo saca de ahi.
 const medios = mediosDeServicio(servicio.clave);
 
-// La primera pieza del servicio hace de retrato del hero. Si es un video se usa
-// su poster, que es una foto normal y Astro la optimiza igual.
+// El retrato del hero sale del helper compartido, no de una copia de la logica
+// aqui: se duplicaba, y mientras la carta ya prefería la foto esta pagina
+// seguía sirviendo el poster del primer video, borroso a este tamano.
 //
 // Va al lado del texto y no de fondo a sangre: el material son retratos
 // verticales 3:4, y recortarlos a una banda apaisada deja una tira del centro
 // que no se entiende. Es lo mismo que paso con el arco de la galeria, y la
 // leccion es la misma: el recorte se prueba sobre las fotos reales.
-const primera = medios[0];
-const retrato =
-  primera === undefined
-    ? undefined
-    : primera.tipo === 'foto'
-      ? primera.src
-      : primera.poster;
-const textoRetrato = primera ? t(primera.alt, idioma) : '';
+const retrato = retratoDeServicio(servicio.clave);
+const piezaDelRetrato = medios.find((medio) =>
+  medio.tipo === 'foto' ? medio.src === retrato : medio.poster === retrato,
+);
+const textoRetrato = piezaDelRetrato ? t(piezaDelRetrato.alt, idioma) : '';
 
 const precio =
   servicio.precio === undefined

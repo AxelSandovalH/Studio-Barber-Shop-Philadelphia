@@ -921,15 +921,25 @@ export function mediosDeServicio(clave: ClaveServicio): MedioGaleria[] {
 }
 
 /**
- * Imagen que representa a un servicio: la primera pieza suya de la galeria. Si
- * es un video se usa su poster, que es una foto normal y Astro la optimiza
- * igual. Sin material etiquetado no devuelve nada, y quien la use tiene que
- * apanarselas sin imagen: la foto de otro servicio no vale.
+ * Imagen que representa a un servicio en la carta y en su pagina.
+ *
+ * **Las fotos van antes que los posters de video.** Un poster sale del clip ya
+ * comprimido, o sea 540x960, y las bandas de servicio lo piden a mas del doble
+ * de ancho en una pantalla retina: se ve borroso porque no hay mas pixeles que
+ * servir. Una foto de la camara ronda los 3024x4032 y aguanta cualquier tamano.
+ * Se noto con coloracion, que tenia tres videos y una foto.
+ *
+ * Si no hay foto etiquetada se usa el poster del primer video, que es mejor que
+ * nada. Y sin material no devuelve nada: quien la use tiene que apanarselas sin
+ * imagen, porque la foto de otro servicio no vale.
  */
 export function retratoDeServicio(clave: ClaveServicio): ImageMetadata | undefined {
-  const primera = mediosDeServicio(clave)[0];
-  if (!primera) return undefined;
-  return primera.tipo === 'foto' ? primera.src : primera.poster;
+  const medios = mediosDeServicio(clave);
+  const foto = medios.find((medio) => medio.tipo === 'foto');
+  if (foto) return foto.src;
+
+  const video = medios.find((medio) => medio.tipo === 'video');
+  return video?.poster;
 }
 
 /** Direccion en una sola linea, para meta etiquetas y enlaces de mapa. */
