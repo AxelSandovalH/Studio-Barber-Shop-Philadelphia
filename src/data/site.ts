@@ -236,6 +236,15 @@ export type MedioGaleria =
       poster: ImageMetadata;
     });
 
+/**
+ * Quien hizo el sitio. Aparece en el pie, en pequeno y junto a los derechos:
+ * es una firma, no un anuncio, asi que no compite con el contenido del negocio.
+ */
+export const autoria = {
+  nombre: 'Axel Sandoval',
+  url: 'https://www.axelsandoval.dev',
+} as const;
+
 /** Moneda de los precios. En Cabo circula el dolar, asi que se dice explicito. */
 export const moneda = {
   codigo: 'MXN',

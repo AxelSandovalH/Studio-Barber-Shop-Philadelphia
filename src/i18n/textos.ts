@@ -130,6 +130,7 @@ const es = {
   pieSecciones: 'Secciones',
   pieSucursales: 'Sucursales',
   pieDerechos: 'Todos los derechos reservados.',
+  pieSitioPor: 'Sitio por',
 
   // Aviso de apertura. {hora} y {dia} se sustituyen en el navegador.
   abiertoAhora: 'Abierto ahora · cierra a las {hora}',
@@ -269,6 +270,7 @@ const en: typeof es = {
   pieSecciones: 'Sections',
   pieSucursales: 'Locations',
   pieDerechos: 'All rights reserved.',
+  pieSitioPor: 'Site by',
 
   abiertoAhora: 'Open now · closes at {hora}',
   cerradoAbreHoy: 'Closed · opens today at {hora}',

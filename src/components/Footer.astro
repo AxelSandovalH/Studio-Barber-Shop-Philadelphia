@@ -1,5 +1,5 @@
 ---
-import { negocio, sucursales, enlaceTelefono } from '../data/site';
+import { negocio, sucursales, enlaceTelefono, autoria } from '../data/site';
 import { idiomaDe, rutaSucursal, t } from '../i18n/idiomas';
 import { navegacion, textos } from '../i18n/textos';
 
@@ -111,7 +111,26 @@ const anio = new Date().getFullYear();
       class="border-fondo-200 text-tinta-500 mt-14 flex flex-col gap-2 border-t pt-8 text-xs sm:flex-row sm:items-center sm:justify-between"
     >
       <p>© {anio} {negocio.nombre}. {T.pieDerechos}</p>
-      <p>Cabo San Lucas, Baja California Sur</p>
+
+      <p class="flex flex-wrap items-center gap-x-2">
+        <span>Cabo San Lucas, Baja California Sur</span>
+        <span class="text-fondo-400" aria-hidden="true">·</span>
+        {
+          /* Firma de quien hizo el sitio. rel="author" lo dice en el marcado, no
+            solo a la vista. */
+        }
+        <span>
+          {T.pieSitioPor}{' '}
+          <a
+            href={autoria.url}
+            target="_blank"
+            rel="author noopener noreferrer"
+            class="hover:text-salvia-700 underline underline-offset-4 transition"
+          >
+            {autoria.nombre}
+          </a>
+        </span>
+      </p>
     </div>
   </div>
 </footer>
