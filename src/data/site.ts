@@ -37,6 +37,10 @@ import barbaPerfilada from '../assets/galeria/barba-perfilada.jpg';
 import tijeraTazon from '../assets/galeria/tijera-tazon.jpg';
 import corteCortoPixie from '../assets/galeria/corte-corto-pixie.jpg';
 
+import corteBasicoVolumen from '../assets/galeria/corte-basico-volumen.jpg';
+import rizosFade from '../assets/galeria/rizos-fade.jpg';
+import rizosPerfil from '../assets/galeria/rizos-perfil.jpg';
+import tijeraCapas from '../assets/galeria/tijera-capas.jpg';
 import tijeraVolumen from '../assets/galeria/tijera-volumen.jpg';
 import fadeRaya from '../assets/galeria/fade-raya.jpg';
 import fadeContornos from '../assets/galeria/fade-contornos.jpg';
@@ -404,6 +408,17 @@ export const servicios: Servicio[] = [
     precio: 300,
   },
   {
+    clave: 'corte-nino',
+    nombre: { es: 'Corte de nino', en: "Kids' cut" },
+    descripcion: {
+      es: 'Corte para ninos.',
+      en: 'Haircut for children.',
+    },
+    // TODO(datos-reales): precio del corte de nino. Mientras falte, la tarjeta
+    // dice "Consultar" y los datos estructurados no declaran importe, que es
+    // preferible a inventarse una cifra.
+  },
+  {
     clave: 'fade',
     nombre: { es: 'Fade', en: 'Fade' },
     descripcion: {
@@ -571,6 +586,44 @@ export const barberos: Barbero[] = [];
 export const galeria: MedioGaleria[] = [
   {
     tipo: 'foto',
+    src: rizosFade,
+    servicio: 'rizos',
+    retrato: true,
+    alt: {
+      es: 'Rizos definidos arriba con los laterales desvanecidos',
+      en: 'Defined curls on top with faded sides',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: corteBasicoVolumen,
+    servicio: 'corte-basico',
+    retrato: true,
+    alt: {
+      es: 'Corte con los laterales rebajados y volumen arriba',
+      en: 'Cut with tapered sides and volume on top',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: rizosPerfil,
+    servicio: 'rizos',
+    alt: {
+      es: 'Ondulado trabajado con degradado en los laterales, de perfil',
+      en: 'Worked waves with faded sides, seen from the side',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: tijeraCapas,
+    servicio: 'tijera',
+    alt: {
+      es: 'Corte a tijera en capas largas peinado a un lado',
+      en: 'Long layered scissor cut swept to one side',
+    },
+  },
+  {
+    tipo: 'foto',
     src: fadeRaya,
     servicio: 'fade',
     retrato: true,
@@ -612,7 +665,6 @@ export const galeria: MedioGaleria[] = [
     mp4: '/galeria/corte-basico-1.mp4',
     poster: corteBasico1Poster,
     servicio: 'corte-basico',
-    retrato: true,
     alt: {
       es: 'Corte a maquina muy corto con los contornos perfilados',
       en: 'Very short clipper cut with the edges cleaned up',

@@ -127,20 +127,28 @@ grep -rn "TODO(datos-reales)" src astro.config.mjs public/robots.txt
    asigna. Cuando este contratado y apuntando, se define `SITE_URL` en las
    variables de entorno del proyecto en Vercel y se ajustan solos la URL
    canonica, el sitemap y el `robots.txt`.
-9. **Permiso para publicar a clientes menores de edad.** En
-   `media-original/fotos/` hay ocho fotos buenas que no estan en la web porque
-   sale gente que parece menor de edad: `Fade12`, `FadeNino`,
-   `NinoCortePicudoFade`, `PhiladelphiaBarbershopStudioFoto2`, `Tijera5`,
-   `Tijera6`, `FadeColoracionMechas` y `PhiladelphiaBarbershopStudioFoto3`. En
-   cuanto haya permiso de los padres se copian a `src/assets/galeria/` y se
-   anaden a `galeria`. La edad la juzgo por la foto, asi que repasadlas: puede
-   que alguna sea un adulto joven y este esperando de mas.
-10. **Resenas.** Hay cinco copiadas de la ficha de Google de Brisas el 1 de
-    septiembre de 2026. Van **literales**: sin corregir faltas, sin recortar y
-    sin traducir. Cada una lleva su `idioma`, que se usa en el atributo `lang`
-    del `<blockquote>`. Llevan tildes aunque el resto del codigo fuente no las
-    use: esa convencion es para lo que escribimos nosotros, y quitarselas a una
-    cita seria editarla.
+9. **Precio del corte de nino.** El servicio ya esta en la carta y tiene su
+   pagina, pero sin importe: la tarjeta dice "Consultar" y los datos
+   estructurados no declaran precio. En cuanto se sepa, se anade `precio` en
+   `site.ts` y aparece solo en la carta, en la pagina y en las preguntas
+   frecuentes.
+10. **Permiso para publicar a clientes menores de edad.** En
+    `media-original/fotos/pendiente-permiso/` hay ocho fotos de ninos pensadas
+    para el corte de nino, y en `media-original/fotos/` otras ocho donde sale
+    gente que parece menor: `Fade12`, `FadeNino`, `NinoCortePicudoFade`,
+    `PhiladelphiaBarbershopStudioFoto2`, `Tijera5`, `Tijera6`,
+    `FadeColoracionMechas` y `PhiladelphiaBarbershopStudioFoto3`.
+
+**No se publican sin permiso de los padres.** Son caras identificables de
+menores en el sitio comercial de un negocio real, y eso no es un detalle de
+estilo. En cuanto haya permiso se copian a `src/assets/galeria/` y se anaden
+a `galeria`. La edad la juzgamos por la foto, asi que conviene repasarlas:
+puede que alguna sea un adulto joven y este esperando de mas. 11. **Resenas.** Hay cinco copiadas de la ficha de Google de Brisas el 1 de
+septiembre de 2026. Van **literales**: sin corregir faltas, sin recortar y
+sin traducir. Cada una lleva su `idioma`, que se usa en el atributo `lang`
+del `<blockquote>`. Llevan tildes aunque el resto del codigo fuente no las
+use: esa convencion es para lo que escribimos nosotros, y quitarselas a una
+cita seria editarla.
 
     **No se muestra la fecha.** Google solo publica la antiguedad relativa
     ("hace 9 meses"), asi que el campo `fecha` es un calculo aproximado que
@@ -156,10 +164,10 @@ grep -rn "TODO(datos-reales)" src astro.config.mjs public/robots.txt
     resultados enriquecidos del sitio, incluidos el horario y las preguntas
     frecuentes, que si son legitimos. Se muestran como texto y nada mas.
 
-11. **Valoracion de Google.** Las 5.0 estrellas con 71 resenas estan copiadas a
-    mano de la ficha de Brisas. Conviene repasarlas de vez en cuando: si Google
-    ya va por mas, la web esta vendiendo menos de lo que teneis. La Joya no tiene
-    ficha, y por eso solo aparece una.
+12. **Valoracion de Google.** Las 5.0 estrellas con 71 resenas estan copiadas a
+mano de la ficha de Brisas. Conviene repasarlas de vez en cuando: si Google
+ya va por mas, la web esta vendiendo menos de lo que teneis. La Joya no tiene
+ficha, y por eso solo aparece una.
 
 ## Galeria: fotos y videos
 
