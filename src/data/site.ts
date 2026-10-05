@@ -28,7 +28,6 @@ import clasicoPoster from '../assets/galeria/clasico-poster.jpg';
 import estilizadoPoster from '../assets/galeria/estilizado-poster.jpg';
 
 // Fotos y posters de la tanda de septiembre de 2026.
-import fadeMullet from '../assets/galeria/fade-mullet.jpg';
 import fadeRayaBarba from '../assets/galeria/fade-raya-barba.jpg';
 import colorPlatino from '../assets/galeria/color-platino.jpg';
 import barbaToallaLavabo from '../assets/galeria/barba-toalla-lavabo.jpg';
@@ -746,15 +745,6 @@ export const galeria: MedioGaleria[] = [
     alt: {
       es: 'Degradado con los contornos perfilados, visto de tres cuartos',
       en: 'Fade with the edges cleaned up, seen three-quarters on',
-    },
-  },
-  {
-    tipo: 'foto',
-    src: fadeMullet,
-    servicio: 'fade',
-    alt: {
-      es: 'Mullet rizado con laterales rapados y barba perfilada',
-      en: 'Curly mullet with shaved sides and a shaped beard',
     },
   },
   {
