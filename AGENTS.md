@@ -107,6 +107,19 @@ mexicanos.
   - **Un servicio sin foto colapsa a banda de texto**, mas baja y en una sola
     columna. Dejarle el hueco de 700 px que ocuparia la imagen no informa de
     nada, solo hace bajar. Y no se le pone la foto de otro servicio.
+  - **La pieza que representa a un servicio se marca con `retrato: true`** en
+    `galeria`. Antes se cogia la primera foto etiquetada, asi que reordenar la
+    galeria cambiaba en silencio la imagen de un servicio. Sin ninguna marcada
+    se recurre a la primera foto, y en ultimo caso al poster de un video: un
+    poster sale del clip comprimido, 540x960, y a tamano de banda se ve borroso.
+  - **La proporcion de la banda sigue a la foto**, no al reves. Forzar 4:5 a una
+    foto apaisada le corta los lados igual que un 16:9 le corta la cabeza a una
+    vertical: es el mismo error del arco, al reves.
+  - **Las dimensiones se leen de `ImageMetadata`, que ya viene con el EXIF
+    aplicado.** Las fotos de telefono llegan con `orientation: 6`: `sips` y
+    cualquier miniatura hecha a mano ensenan los pixeles sin rotar, asi que una
+    vertical parece apaisada. Si hay que decidir por orientacion, se mira lo que
+    publica Astro, no lo que dice el archivo.
 - **Fotos en `src/assets/`, videos en `public/`.** Las fotos solo se optimizan
   (WebP + srcset) si Astro las importa desde `src/assets`; una foto en `public/`
   se sirve tal cual. Astro no procesa video, por eso ese va en `public/` ya

@@ -26,12 +26,19 @@ const enlaceSucursales = `${rutaInicio(idioma)}#sucursales`;
  * material son retratos 3:4 y una banda apaisada les corta la cabeza. Es la
  * misma leccion que el arco de la galeria y que el primer hero de servicio.
  */
-const carta = servicios.map((servicio, indice) => ({
-  servicio,
-  retrato: retratoDeServicio(servicio.clave),
-  oscura: indice % 2 === 1,
-  invertida: indice % 2 === 1,
-}));
+const carta = servicios.map((servicio, indice) => {
+  const retrato = retratoDeServicio(servicio.clave);
+  return {
+    servicio,
+    retrato,
+    // La proporcion sigue a la foto en vez de imponerle una. Forzar 4:5 a una
+    // foto apaisada le corta los lados igual que un 16:9 le corta la cabeza a
+    // una vertical: es el mismo error, al reves.
+    apaisada: retrato !== undefined && retrato.width > retrato.height,
+    oscura: indice % 2 === 1,
+    invertida: indice % 2 === 1,
+  };
+});
 
 // Las dos primeras se ven al llegar a la seccion: esas cargan de entrada.
 const CARGA_INMEDIATA = 2;
@@ -52,7 +59,7 @@ const CARGA_INMEDIATA = 2;
 
   <ul>
     {
-      carta.map(({ servicio, retrato, oscura, invertida }, indice) => (
+      carta.map(({ servicio, retrato, apaisada, oscura, invertida }, indice) => (
         <li class:list={[oscura ? 'bg-salvia-950' : 'bg-fondo-100']}>
           <a href={rutaServicio(idioma, servicio.clave)} class="group block">
             {/* Sin foto, la banda no deja un rectangulo vacio de 700 px: se
@@ -81,7 +88,10 @@ const CARGA_INMEDIATA = 2;
                     sizes="(max-width: 1023px) 92vw, 38vw"
                     loading={indice < CARGA_INMEDIATA ? 'eager' : 'lazy'}
                     decoding="async"
-                    class="aspect-[4/5] size-full object-cover transition duration-700 group-hover:scale-[1.03]"
+                    class:list={[
+                      'size-full object-cover transition duration-700 group-hover:scale-[1.03]',
+                      apaisada ? 'aspect-[4/3]' : 'aspect-[4/5]',
+                    ]}
                   />
                 </figure>
               )}

@@ -37,6 +37,9 @@ import barbaPerfilada from '../assets/galeria/barba-perfilada.jpg';
 import tijeraTazon from '../assets/galeria/tijera-tazon.jpg';
 import corteCortoPixie from '../assets/galeria/corte-corto-pixie.jpg';
 
+import tijeraVolumen from '../assets/galeria/tijera-volumen.jpg';
+import fadeRaya from '../assets/galeria/fade-raya.jpg';
+import fadeContornos from '../assets/galeria/fade-contornos.jpg';
 import corteBasico1Poster from '../assets/galeria/corte-basico-1-poster.jpg';
 import fade1Poster from '../assets/galeria/fade-1-poster.jpg';
 import fade2Poster from '../assets/galeria/fade-2-poster.jpg';
@@ -223,6 +226,16 @@ type BaseMedio = {
    * que colgarla de una categoria que no le toca.
    */
   servicio?: ClaveServicio;
+  /**
+   * Esta es la pieza que representa a su servicio en la carta de la portada y
+   * en la cabecera de su pagina.
+   *
+   * Existe para que esa eleccion sea explicita. Antes se cogia la primera foto
+   * etiquetada, asi que reordenar la galeria cambiaba en silencio la imagen de
+   * un servicio. Como mucho una por servicio; sin ninguna se recurre a la
+   * primera foto, y en ultimo caso al poster de un video.
+   */
+  retrato?: boolean;
 };
 
 export type MedioGaleria =
@@ -556,6 +569,35 @@ export const barberos: Barbero[] = [];
  * 440 MB y no forma parte del sitio.
  */
 export const galeria: MedioGaleria[] = [
+  {
+    tipo: 'foto',
+    src: fadeRaya,
+    servicio: 'fade',
+    retrato: true,
+    alt: {
+      es: 'Degradado con raya marcada y contornos perfilados, de perfil',
+      en: 'Fade with a hard part and cleaned-up edges, seen from the side',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: tijeraVolumen,
+    servicio: 'tijera',
+    retrato: true,
+    alt: {
+      es: 'Corte a tijera con volumen arriba y caida al lado, de perfil',
+      en: 'Scissor cut with volume on top sweeping to one side, seen from the side',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: fadeContornos,
+    servicio: 'fade',
+    alt: {
+      es: 'Degradado con los contornos perfilados, visto de tres cuartos',
+      en: 'Fade with the edges cleaned up, seen three-quarters on',
+    },
+  },
   {
     tipo: 'foto',
     src: fadeMullet,
@@ -944,6 +986,12 @@ export function mediosDeServicio(clave: ClaveServicio): MedioGaleria[] {
  */
 export function retratoDeServicio(clave: ClaveServicio): ImageMetadata | undefined {
   const medios = mediosDeServicio(clave);
+
+  // Marcada a mano, primero: es la unica forma de que la eleccion no dependa
+  // del orden del array.
+  const marcada = medios.find((medio) => medio.retrato);
+  if (marcada) return marcada.tipo === 'foto' ? marcada.src : marcada.poster;
+
   const foto = medios.find((medio) => medio.tipo === 'foto');
   if (foto) return foto.src;
 
