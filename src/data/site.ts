@@ -401,6 +401,24 @@ export const sucursales: Sucursal[] = [
  */
 export const servicios: Servicio[] = [
   {
+    clave: 'tijera',
+    nombre: { es: 'Corte de tijera', en: 'Scissor cut' },
+    descripcion: {
+      es: 'Trabajo enteramente a tijera, sin maquina.',
+      en: 'All-scissor work, no clippers.',
+    },
+    precio: 350,
+  },
+  {
+    clave: 'fade',
+    nombre: { es: 'Fade', en: 'Fade' },
+    descripcion: {
+      es: 'Degradado trabajado de la nuca hacia arriba.',
+      en: 'Gradient worked up from the neckline.',
+    },
+    precio: 350,
+  },
+  {
     clave: 'corte-basico',
     nombre: { es: 'Corte basico', en: 'Basic cut' },
     descripcion: {
@@ -421,24 +439,6 @@ export const servicios: Servicio[] = [
     // preferible a inventarse una cifra.
   },
   {
-    clave: 'fade',
-    nombre: { es: 'Fade', en: 'Fade' },
-    descripcion: {
-      es: 'Degradado trabajado de la nuca hacia arriba.',
-      en: 'Gradient worked up from the neckline.',
-    },
-    precio: 350,
-  },
-  {
-    clave: 'tijera',
-    nombre: { es: 'Corte de tijera', en: 'Scissor cut' },
-    descripcion: {
-      es: 'Trabajo enteramente a tijera, sin maquina.',
-      en: 'All-scissor work, no clippers.',
-    },
-    precio: 350,
-  },
-  {
     clave: 'barba',
     nombre: { es: 'Ritual de barba', en: 'Beard ritual' },
     descripcion: {
@@ -448,21 +448,21 @@ export const servicios: Servicio[] = [
     precio: 250,
   },
   {
-    clave: 'rizos',
-    nombre: { es: 'Rizos y ondulacion', en: 'Curls and waves' },
-    descripcion: {
-      es: 'Ondulado permanente. El precio depende del largo y del cabello.',
-      en: 'Permanent waving. The price depends on length and hair type.',
-    },
-    precio: 1000,
-    desde: true,
-  },
-  {
     clave: 'color',
     nombre: { es: 'Coloracion', en: 'Colour' },
     descripcion: {
       es: 'Color a medida. El precio depende del largo y del tono buscado.',
       en: 'Custom colour. The price depends on length and the shade you want.',
+    },
+    precio: 1000,
+    desde: true,
+  },
+  {
+    clave: 'rizos',
+    nombre: { es: 'Rizos y ondulacion', en: 'Curls and waves' },
+    descripcion: {
+      es: 'Ondulado permanente. El precio depende del largo y del cabello.',
+      en: 'Permanent waving. The price depends on length and hair type.',
     },
     precio: 1000,
     desde: true,
