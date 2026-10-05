@@ -31,13 +31,14 @@ import estilizadoPoster from '../assets/galeria/estilizado-poster.jpg';
 import fadeMullet from '../assets/galeria/fade-mullet.jpg';
 import fadeRayaBarba from '../assets/galeria/fade-raya-barba.jpg';
 import colorPlatino from '../assets/galeria/color-platino.jpg';
-import barbaToalla from '../assets/galeria/barba-toalla.jpg';
 import barbaToallaLavabo from '../assets/galeria/barba-toalla-lavabo.jpg';
 import barbaPerfilada from '../assets/galeria/barba-perfilada.jpg';
 import tijeraTazon from '../assets/galeria/tijera-tazon.jpg';
 import corteCortoPixie from '../assets/galeria/corte-corto-pixie.jpg';
 
 import barbaBlanca from '../assets/galeria/barba-blanca.jpg';
+import barbaOscura from '../assets/galeria/barba-oscura.jpg';
+import colorPlatinoNuca from '../assets/galeria/color-platino-nuca.jpg';
 import corteBasico2Poster from '../assets/galeria/corte-basico-2-poster.jpg';
 import corteBasicoVolumen from '../assets/galeria/corte-basico-volumen.jpg';
 import rizosFade from '../assets/galeria/rizos-fade.jpg';
@@ -588,8 +589,27 @@ export const barberos: Barbero[] = [];
 export const galeria: MedioGaleria[] = [
   {
     tipo: 'foto',
+    src: colorPlatinoNuca,
+    servicio: 'color',
+    alt: {
+      es: 'Decoloracion a platino sobre corte muy corto, vista desde atras',
+      en: 'Platinum bleach on a very short cut, seen from behind',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: barbaOscura,
+    servicio: 'barba',
+    alt: {
+      es: 'Barba cerrada perfilada, reclinado junto a la ventana',
+      en: 'Full beard shaped up, reclined by the window',
+    },
+  },
+  {
+    tipo: 'foto',
     src: barbaBlanca,
     servicio: 'barba',
+    retrato: true,
     alt: {
       es: 'Barba blanca recien perfilada con la toalla caliente puesta',
       en: 'Freshly shaped white beard with the hot towel on',
@@ -702,15 +722,6 @@ export const galeria: MedioGaleria[] = [
     },
   },
   {
-    tipo: 'foto',
-    src: barbaToalla,
-    servicio: 'barba',
-    alt: {
-      es: 'Toalla caliente puesta durante el ritual de barba',
-      en: 'Hot towel applied during the beard ritual',
-    },
-  },
-  {
     tipo: 'video',
     mp4: '/galeria/color-1.mp4',
     poster: color1Poster,
@@ -761,6 +772,7 @@ export const galeria: MedioGaleria[] = [
     tipo: 'foto',
     src: colorPlatino,
     servicio: 'color',
+    retrato: true,
     alt: {
       es: 'Decoloracion a platino con degradado a piel en los laterales',
       en: 'Platinum bleach with a skin fade on the sides',
@@ -892,10 +904,10 @@ export const galeria: MedioGaleria[] = [
     tipo: 'video',
     mp4: '/galeria/barba-1.mp4',
     poster: barba1Poster,
-    servicio: 'barba',
+    servicio: 'corte-basico',
     alt: {
-      es: 'Corte de barba en el sillon, con el local al fondo',
-      en: 'Beard trim in the chair, with the shop behind',
+      es: 'Corte corto terminado, en el sillon con el local al fondo',
+      en: 'Finished short cut, in the chair with the shop behind',
     },
   },
   {
