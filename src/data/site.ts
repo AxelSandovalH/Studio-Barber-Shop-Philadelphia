@@ -612,6 +612,7 @@ export const galeria: MedioGaleria[] = [
     mp4: '/galeria/corte-basico-1.mp4',
     poster: corteBasico1Poster,
     servicio: 'corte-basico',
+    retrato: true,
     alt: {
       es: 'Corte a maquina muy corto con los contornos perfilados',
       en: 'Very short clipper cut with the edges cleaned up',

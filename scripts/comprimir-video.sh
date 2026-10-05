@@ -91,6 +91,14 @@ ffmpeg -loglevel error -y -i "$entrada" \
 #
 #   ffmpeg -ss 6.6 -i entrada.mov -vf "scale=-2:'min(960,ih)'" \
 #     -frames:v 1 -q:v 3 src/assets/galeria/nombre-poster.jpg
+#
+# Los 960 de alto son de sobra para una tarjeta del carrusel, pero no para la
+# banda de servicio de la portada, que pide mas del doble de ancho en una
+# pantalla retina. Si el poster va a ser ademas la foto de cabecera de un
+# servicio (`retrato: true`), se saca sin reescalar:
+#
+#   ffmpeg -ss 6.6 -i entrada.mov -frames:v 1 -q:v 2 \
+#     src/assets/galeria/nombre-poster.jpg
 echo "→ Poster…"
 duracion=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$entrada")
 mitad=$(awk -v d="$duracion" 'BEGIN { printf "%.2f", d / 2 }')
