@@ -27,3 +27,12 @@ pnpm-debug.log*
 # forman parte del sitio: lo que se publica son los .mp4 y .webm que genera
 # scripts/comprimir-video.sh.
 media-original/
+
+# Video en crudo, nunca. Los originales de camara viven en media-original/ y lo
+# que se publica son los .mp4 ya comprimidos de public/galeria. Un .MOV de 4K
+# son decenas de megas y, una vez en el historial, no se quitan sin reescribirlo:
+# ya paso una vez con dos de corte basico.
+*.mov
+*.MOV
+*.heic
+*.HEIC

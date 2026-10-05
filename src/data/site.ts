@@ -37,6 +37,8 @@ import barbaPerfilada from '../assets/galeria/barba-perfilada.jpg';
 import tijeraTazon from '../assets/galeria/tijera-tazon.jpg';
 import corteCortoPixie from '../assets/galeria/corte-corto-pixie.jpg';
 
+import barbaBlanca from '../assets/galeria/barba-blanca.jpg';
+import corteBasico2Poster from '../assets/galeria/corte-basico-2-poster.jpg';
 import corteBasicoVolumen from '../assets/galeria/corte-basico-volumen.jpg';
 import rizosFade from '../assets/galeria/rizos-fade.jpg';
 import rizosPerfil from '../assets/galeria/rizos-perfil.jpg';
@@ -586,6 +588,15 @@ export const barberos: Barbero[] = [];
 export const galeria: MedioGaleria[] = [
   {
     tipo: 'foto',
+    src: barbaBlanca,
+    servicio: 'barba',
+    alt: {
+      es: 'Barba blanca recien perfilada con la toalla caliente puesta',
+      en: 'Freshly shaped white beard with the hot towel on',
+    },
+  },
+  {
+    tipo: 'foto',
     src: rizosFade,
     servicio: 'rizos',
     retrato: true,
@@ -666,8 +677,18 @@ export const galeria: MedioGaleria[] = [
     poster: corteBasico1Poster,
     servicio: 'corte-basico',
     alt: {
-      es: 'Corte a maquina muy corto con los contornos perfilados',
-      en: 'Very short clipper cut with the edges cleaned up',
+      es: 'Corte corto a maquina terminado, visto de frente',
+      en: 'Finished short clipper cut, seen from the front',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/corte-basico-2.mp4',
+    poster: corteBasico2Poster,
+    servicio: 'corte-basico',
+    alt: {
+      es: 'Corte corto a maquina con los contornos perfilados, de perfil',
+      en: 'Short clipper cut with the edges cleaned up, seen from the side',
     },
   },
   {
