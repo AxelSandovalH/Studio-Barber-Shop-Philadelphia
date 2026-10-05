@@ -120,6 +120,11 @@ mexicanos.
     cualquier miniatura hecha a mano ensenan los pixeles sin rotar, asi que una
     vertical parece apaisada. Si hay que decidir por orientacion, se mira lo que
     publica Astro, no lo que dice el archivo.
+- **El video y el HEIC en crudo estan en `.gitignore`.** Un `.MOV` de 4K son
+  decenas de megas y una vez en el historial no se quita sin reescribirlo: ya
+  paso. Efecto colateral que conviene recordar: **`git status` no los ve**, asi
+  que si alguien deja material nuevo en `src/assets/galeria/` hay que mirar el
+  directorio, no el estado de git. Para verlos: `git status --ignored`.
 - **Fotos en `src/assets/`, videos en `public/`.** Las fotos solo se optimizan
   (WebP + srcset) si Astro las importa desde `src/assets`; una foto en `public/`
   se sirve tal cual. Astro no procesa video, por eso ese va en `public/` ya

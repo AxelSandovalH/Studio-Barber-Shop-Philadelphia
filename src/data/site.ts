@@ -37,6 +37,12 @@ import tijeraTazon from '../assets/galeria/tijera-tazon.jpg';
 import corteCortoPixie from '../assets/galeria/corte-corto-pixie.jpg';
 
 import barbaBlanca from '../assets/galeria/barba-blanca.jpg';
+import barba5Poster from '../assets/galeria/barba-5-poster.jpg';
+import colorAzul from '../assets/galeria/color-azul.jpg';
+import colorProceso1Poster from '../assets/galeria/color-proceso-1-poster.jpg';
+import colorProceso2Poster from '../assets/galeria/color-proceso-2-poster.jpg';
+import colorResultadoPoster from '../assets/galeria/color-resultado-poster.jpg';
+import corteBasico3Poster from '../assets/galeria/corte-basico-3-poster.jpg';
 import barbaOscura from '../assets/galeria/barba-oscura.jpg';
 import colorPlatinoNuca from '../assets/galeria/color-platino-nuca.jpg';
 import corteBasico2Poster from '../assets/galeria/corte-basico-2-poster.jpg';
@@ -589,6 +595,66 @@ export const barberos: Barbero[] = [];
 export const galeria: MedioGaleria[] = [
   {
     tipo: 'foto',
+    src: colorAzul,
+    servicio: 'color',
+    retrato: true,
+    alt: {
+      es: 'Coloracion azul turquesa con degradado a piel en los laterales',
+      en: 'Turquoise blue colour with a skin fade on the sides',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/color-proceso-1.mp4',
+    poster: colorProceso1Poster,
+    servicio: 'color',
+    alt: {
+      es: 'Mechas en papel de aluminio durante la coloracion',
+      en: 'Foils in place during the colour service',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/color-resultado.mp4',
+    poster: colorResultadoPoster,
+    servicio: 'color',
+    alt: {
+      es: 'Decoloracion terminada sobre corte muy corto con degradado',
+      en: 'Finished bleach on a very short cut with a fade',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/corte-basico-3.mp4',
+    poster: corteBasico3Poster,
+    servicio: 'corte-basico',
+    alt: {
+      es: 'Corte corto terminado, visto desde atras',
+      en: 'Finished short cut, seen from behind',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/barba-5.mp4',
+    poster: barba5Poster,
+    servicio: 'barba',
+    alt: {
+      es: 'Ritual de barba pelirroja con la toalla caliente puesta',
+      en: 'Ginger beard ritual with the hot towel on',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/color-proceso-2.mp4',
+    poster: colorProceso2Poster,
+    servicio: 'color',
+    alt: {
+      es: 'Papel de aluminio colocado, de perfil, durante la coloracion',
+      en: 'Foils in place, seen from the side, during the colour service',
+    },
+  },
+  {
+    tipo: 'foto',
     src: colorPlatinoNuca,
     servicio: 'color',
     alt: {
@@ -772,7 +838,6 @@ export const galeria: MedioGaleria[] = [
     tipo: 'foto',
     src: colorPlatino,
     servicio: 'color',
-    retrato: true,
     alt: {
       es: 'Decoloracion a platino con degradado a piel en los laterales',
       en: 'Platinum bleach with a skin fade on the sides',
