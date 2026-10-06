@@ -35,6 +35,14 @@ import barbaPerfilada from '../assets/galeria/barba-perfilada.jpg';
 import tijeraTazon from '../assets/galeria/tijera-tazon.jpg';
 import corteCortoPixie from '../assets/galeria/corte-corto-pixie.jpg';
 
+import ninoTupe from '../assets/galeria/nino-tupe.jpg';
+import ninoLinea1 from '../assets/galeria/nino-linea-1.jpg';
+import ninoLinea2 from '../assets/galeria/nino-linea-2.jpg';
+import ninoTexturizado1 from '../assets/galeria/nino-texturizado-1.jpg';
+import ninoTexturizado2 from '../assets/galeria/nino-texturizado-2.jpg';
+import ninoFade1 from '../assets/galeria/nino-fade-1.jpg';
+import ninoFade2 from '../assets/galeria/nino-fade-2.jpg';
+import ninoCorto from '../assets/galeria/nino-corto.jpg';
 import barbaBlanca from '../assets/galeria/barba-blanca.jpg';
 import barba5Poster from '../assets/galeria/barba-5-poster.jpg';
 import colorAzul from '../assets/galeria/color-azul.jpg';
@@ -592,6 +600,79 @@ export const barberos: Barbero[] = [];
  * 440 MB y no forma parte del sitio.
  */
 export const galeria: MedioGaleria[] = [
+  {
+    tipo: 'foto',
+    src: ninoTupe,
+    servicio: 'corte-nino',
+    retrato: true,
+    alt: {
+      es: 'Tupe con las puntas aclaradas y degradado en los laterales',
+      en: 'Quiff with lightened tips and faded sides',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: ninoLinea1,
+    servicio: 'corte-nino',
+    alt: {
+      es: 'Corte con pua arriba y una linea rasurada en el lateral',
+      en: 'Spiky cut with a shaved line on the side',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: ninoFade1,
+    servicio: 'corte-nino',
+    alt: {
+      es: 'Degradado con el flequillo texturizado hacia delante',
+      en: 'Fade with the fringe textured forward',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: ninoTexturizado1,
+    servicio: 'corte-nino',
+    alt: {
+      es: 'Corte texturizado arriba con los laterales rebajados',
+      en: 'Textured cut on top with tapered sides',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: ninoLinea2,
+    servicio: 'corte-nino',
+    alt: {
+      es: 'Linea rasurada y degradado a piel, visto de perfil',
+      en: 'Shaved line and skin fade, seen from the side',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: ninoFade2,
+    servicio: 'corte-nino',
+    alt: {
+      es: 'Degradado terminado, de perfil',
+      en: 'Finished fade, seen from the side',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: ninoTexturizado2,
+    servicio: 'corte-nino',
+    alt: {
+      es: 'Corte texturizado terminado, de perfil',
+      en: 'Finished textured cut, seen from the side',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: ninoCorto,
+    servicio: 'corte-nino',
+    alt: {
+      es: 'Corte corto terminado, de frente',
+      en: 'Finished short cut, seen from the front',
+    },
+  },
   {
     tipo: 'foto',
     src: colorAzul,
