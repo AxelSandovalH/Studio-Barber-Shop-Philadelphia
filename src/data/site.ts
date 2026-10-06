@@ -318,11 +318,14 @@ export const negocio: Negocio = {
   // TODO(datos-reales): si hay correo de contacto, ponerlo aqui. Si no, se
   // queda fuera y la web solo ofrece telefono, WhatsApp y redes.
   email: undefined,
-  // TODO(datos-reales): telefono de Juan Carlos para los servicios privados.
-  // La seccion esta hecha y se muestra sola en cuanto esto tenga valor; sin el
-  // no aparece, porque invitar a escribir a un numero que no existe es peor que
-  // no tener la seccion.
-  privados: undefined,
+  // Es el mismo numero que la sucursal Brisas. Se repite a proposito y no se
+  // deriva de ella: si manana los privados pasan a otra linea, se cambia aqui
+  // sin tocar la ficha de la sucursal.
+  privados: {
+    nombre: 'Juan Carlos',
+    telefono: '+52 624 100 4975',
+    whatsapp: '526241004975',
+  },
 
   redes: [
     {
