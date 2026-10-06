@@ -448,9 +448,7 @@ export const servicios: Servicio[] = [
       es: 'Corte para ninos.',
       en: 'Haircut for children.',
     },
-    // TODO(datos-reales): precio del corte de nino. Mientras falte, la tarjeta
-    // dice "Consultar" y los datos estructurados no declaran importe, que es
-    // preferible a inventarse una cifra.
+    precio: 250,
   },
   {
     clave: 'barba',
