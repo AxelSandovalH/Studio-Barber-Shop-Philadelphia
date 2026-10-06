@@ -35,6 +35,11 @@ import barbaPerfilada from '../assets/galeria/barba-perfilada.jpg';
 import tijeraTazon from '../assets/galeria/tijera-tazon.jpg';
 import corteCortoPixie from '../assets/galeria/corte-corto-pixie.jpg';
 
+import facial1Poster from '../assets/galeria/facial-1-poster.jpg';
+import facial2Poster from '../assets/galeria/facial-2-poster.jpg';
+import facial3Poster from '../assets/galeria/facial-3-poster.jpg';
+import facial4Poster from '../assets/galeria/facial-4-poster.jpg';
+import facial5Poster from '../assets/galeria/facial-5-poster.jpg';
 import ninoTupe from '../assets/galeria/nino-tupe.jpg';
 import ninoLinea1 from '../assets/galeria/nino-linea-1.jpg';
 import ninoLinea2 from '../assets/galeria/nino-linea-2.jpg';
@@ -620,6 +625,57 @@ export const barberos: Barbero[] = [];
  * 440 MB y no forma parte del sitio.
  */
 export const galeria: MedioGaleria[] = [
+  {
+    tipo: 'video',
+    mp4: '/galeria/facial-1.mp4',
+    poster: facial1Poster,
+    servicio: 'facial',
+    alt: {
+      es: 'Masaje de limpieza con guantes al empezar el facial',
+      en: 'Cleansing massage with gloves at the start of the facial',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/facial-2.mp4',
+    poster: facial2Poster,
+    servicio: 'facial',
+    alt: {
+      es: 'Vapor sobre el rostro para abrir el poro',
+      en: 'Steam over the face to open the pores',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/facial-3.mp4',
+    poster: facial3Poster,
+    servicio: 'facial',
+    alt: {
+      es: 'Vaporizacion del rostro, de cerca',
+      en: 'Facial steaming, seen up close',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/facial-4.mp4',
+    poster: facial4Poster,
+    servicio: 'facial',
+    alt: {
+      es: 'Toallas calientes preparadas para el facial',
+      en: 'Hot towels prepared for the facial',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/facial-5.mp4',
+    poster: facial5Poster,
+    servicio: 'facial',
+    retrato: true,
+    alt: {
+      es: 'Mascarilla hidratante aplicada durante el facial',
+      en: 'Hydrating mask applied during the facial',
+    },
+  },
   {
     tipo: 'foto',
     src: ninoTupe,

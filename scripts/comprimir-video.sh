@@ -39,6 +39,17 @@ fi
 entrada="$1"
 nombre="$2"
 perfil="${3:-galeria}"
+
+# Recorte opcional, con variables de entorno para no alargar los posicionales:
+#
+#   INICIO=130 DURACION=8 ./scripts/comprimir-video.sh entrada.mov nombre
+#
+# Hace falta mas de lo que parece: una grabacion de cinco minutos en una
+# tarjeta del carrusel no la ve nadie entera, y ademas pesa. Los clips de la
+# galeria rondan los 3 a 20 segundos.
+recorte=()
+[ -n "${INICIO:-}" ] && recorte+=(-ss "$INICIO")
+[ -n "${DURACION:-}" ] && recorte+=(-t "$DURACION")
 raiz="$(cd "$(dirname "$0")/.." && pwd)"
 
 case "$perfil" in
@@ -74,7 +85,7 @@ mkdir -p "$raiz/public/$perfil" "$raiz/src/assets/$perfil"
 # Safari se queda esperando. -g 48 mete un fotograma clave cada segundo y medio,
 # para que empiece a pintar antes.
 echo "→ MP4…"
-ffmpeg -loglevel error -y -i "$entrada" \
+ffmpeg -loglevel error -y "${recorte[@]}" -i "$entrada" \
   -vf "$escala" \
   -c:v libx264 "${calidad[@]}" -preset slow -profile:v high -pix_fmt yuv420p \
   -g 48 \
@@ -100,8 +111,13 @@ ffmpeg -loglevel error -y -i "$entrada" \
 #   ffmpeg -ss 6.6 -i entrada.mov -frames:v 1 -q:v 2 \
 #     src/assets/galeria/nombre-poster.jpg
 echo "→ Poster…"
-duracion=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$entrada")
-mitad=$(awk -v d="$duracion" 'BEGIN { printf "%.2f", d / 2 }')
+if [ -n "${DURACION:-}" ]; then
+  # Con recorte, la mitad es la del trozo que se publica, no la del original.
+  mitad=$(awk -v i="${INICIO:-0}" -v d="$DURACION" 'BEGIN { printf "%.2f", i + d / 2 }')
+else
+  duracion=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$entrada")
+  mitad=$(awk -v d="$duracion" 'BEGIN { printf "%.2f", d / 2 }')
+fi
 ffmpeg -loglevel error -y -ss "$mitad" -i "$entrada" \
   -vf "$escala" -frames:v 1 -q:v 3 \
   "$raiz/src/assets/$perfil/$nombre-poster.jpg"

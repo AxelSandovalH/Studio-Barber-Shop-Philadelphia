@@ -125,6 +125,15 @@ mexicanos.
   paso. Efecto colateral que conviene recordar: **`git status` no los ve**, asi
   que si alguien deja material nuevo en `src/assets/galeria/` hay que mirar el
   directorio, no el estado de git. Para verlos: `git status --ignored`.
+- **Los clips se recortan antes de publicarlos.** Los de la galeria rondan los
+  3 a 20 segundos: una grabacion de cinco minutos en una tarjeta del carrusel no
+  la ve nadie entera y ademas pesa. El script acepta recorte por variables de
+  entorno, y el poster se saca de la mitad del trozo recortado, no del original:
+
+  ```bash
+  INICIO=130 DURACION=8 ./scripts/comprimir-video.sh entrada.mov nombre
+  ```
+
 - **Fotos en `src/assets/`, videos en `public/`.** Las fotos solo se optimizan
   (WebP + srcset) si Astro las importa desde `src/assets`; una foto en `public/`
   se sirve tal cual. Astro no procesa video, por eso ese va en `public/` ya
