@@ -116,10 +116,23 @@ grep -rn "TODO(datos-reales)" src astro.config.mjs public/robots.txt
    que lleven el distintivo.
 3. **Horario de la sucursal La Joya.** Ahora mismo asume el mismo que Brisas.
 4. **Que el telefono de La Joya reciba WhatsApp.** El de Brisas esta confirmado.
-5. **Servicios privados y el correo al que se piden.** La seccion esta hecha y
-   se oculta sola: aparece en cuanto `serviciosPrivados` tenga algo y
-   `negocio.email` este relleno. Sin las dos cosas no se muestra, porque
-   invitar a escribir a una direccion que no existe seria peor que no tenerla.
+5. **Telefono de Juan Carlos para los servicios privados.** La seccion esta
+   hecha, con su foto y su boton de WhatsApp, y se muestra sola en cuanto
+   `negocio.privados` tenga valor:
+
+   ```ts
+   privados: {
+     nombre: 'Juan Carlos',
+     telefono: '+52 624 000 0000',
+     whatsapp: '526240000000',
+   },
+   ```
+
+   Sin eso no aparece: invitar a escribir a un numero que no esta puesto es
+   peor que no tener la seccion. La lista `serviciosPrivados` es opcional, y
+   ahora mismo esta vacia a proposito: lo que se ofrece ahi es hablar con
+   alguien, no elegir de una carta.
+
 6. **Equipo**, si se quiere mostrar. La lista esta vacia a proposito.
 7. **"Atendemos con y sin cita"**, que aparece bajo la carta de servicios. Lo
    escribi yo sin confirmarlo: si no aceptais gente sin cita, hay que quitarlo.

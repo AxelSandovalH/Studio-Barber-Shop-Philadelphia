@@ -117,9 +117,10 @@ const es = {
   privadosEtiqueta: 'A puerta cerrada',
   privadosTitulo: 'Servicios privados',
   privadosDescripcion:
-    'Estos no se agendan por WhatsApp. Escribenos y lo organizamos contigo.',
-  privadosBoton: 'Escribir a {correo}',
+    'Estos no se agendan como el resto. Los lleva Juan Carlos y se organizan hablando directamente con el.',
+  privadosBoton: 'Escribir a {nombre}',
   privadosAsunto: 'Consulta sobre servicios privados',
+  privadosFoto: '{nombre} trabajando fuera del local',
   privadosDesde: 'desde',
 
   instagramFlotante: 'Ver {cuenta} en Instagram, se abre en otra pestana',
@@ -257,9 +258,10 @@ const en: typeof es = {
   privadosEtiqueta: 'By arrangement',
   privadosTitulo: 'Private services',
   privadosDescripcion:
-    'These are not booked over WhatsApp. Email us and we will arrange it with you.',
-  privadosBoton: 'Email {correo}',
+    'These are not booked like the rest. Juan Carlos handles them and you arrange it directly with him.',
+  privadosBoton: 'Message {nombre}',
   privadosAsunto: 'Enquiry about private services',
+  privadosFoto: '{nombre} working away from the shop',
   privadosDesde: 'from',
 
   instagramFlotante: 'See {cuenta} on Instagram, opens in a new tab',

@@ -92,6 +92,18 @@ export interface Negocio {
   descripcion: Bilingue;
   /** Opcional: si no hay correo, la fila no se muestra. */
   email?: string;
+  /**
+   * Contacto de los servicios privados. No se agendan por la via normal: los
+   * lleva una persona concreta y se habla con ella. Mientras no este puesto, la
+   * seccion de servicios privados no se muestra.
+   */
+  privados?: {
+    nombre: string;
+    /** Como se escribe para que lo lea una persona. */
+    telefono: string;
+    /** Solo digitos, con el codigo de pais, para el enlace de WhatsApp. */
+    whatsapp?: string;
+  };
   redes: Red[];
 }
 
@@ -306,6 +318,11 @@ export const negocio: Negocio = {
   // TODO(datos-reales): si hay correo de contacto, ponerlo aqui. Si no, se
   // queda fuera y la web solo ofrece telefono, WhatsApp y redes.
   email: undefined,
+  // TODO(datos-reales): telefono de Juan Carlos para los servicios privados.
+  // La seccion esta hecha y se muestra sola en cuanto esto tenga valor; sin el
+  // no aparece, porque invitar a escribir a un numero que no existe es peor que
+  // no tener la seccion.
+  privados: undefined,
 
   redes: [
     {
@@ -516,6 +533,8 @@ export const servicios: Servicio[] = [
  *     precioDesde: 1500,
  *   },
  */
+// La lista es opcional: la seccion se sostiene sin ella, con la foto y el
+// contacto. Si algun dia se detallan los servicios, apareceran aqui.
 export const serviciosPrivados: ServicioPrivado[] = [];
 
 // TODO(datos-reales): resenas reales copiadas de la ficha de Google. Van
