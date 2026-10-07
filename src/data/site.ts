@@ -35,6 +35,13 @@ import barbaPerfilada from '../assets/galeria/barba-perfilada.jpg';
 import tijeraTazon from '../assets/galeria/tijera-tazon.jpg';
 import corteCortoPixie from '../assets/galeria/corte-corto-pixie.jpg';
 
+import cejasFrontal1 from '../assets/galeria/cejas-frontal-1.jpg';
+import cejasFrontal2 from '../assets/galeria/cejas-frontal-2.jpg';
+import cejasPerfil from '../assets/galeria/cejas-perfil.jpg';
+import cejasDetalle from '../assets/galeria/cejas-detalle.jpg';
+import cejas1Poster from '../assets/galeria/cejas-1-poster.jpg';
+import cejas2Poster from '../assets/galeria/cejas-2-poster.jpg';
+import cejas3Poster from '../assets/galeria/cejas-3-poster.jpg';
 import facial1Poster from '../assets/galeria/facial-1-poster.jpg';
 import facial2Poster from '../assets/galeria/facial-2-poster.jpg';
 import facial3Poster from '../assets/galeria/facial-3-poster.jpg';
@@ -625,6 +632,73 @@ export const barberos: Barbero[] = [];
  * 440 MB y no forma parte del sitio.
  */
 export const galeria: MedioGaleria[] = [
+  {
+    tipo: 'foto',
+    src: cejasFrontal1,
+    servicio: 'cejas',
+    retrato: true,
+    alt: {
+      es: 'Cejas perfiladas, vistas de frente',
+      en: 'Shaped eyebrows, seen from the front',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/cejas-1.mp4',
+    poster: cejas1Poster,
+    servicio: 'cejas',
+    alt: {
+      es: 'Perfilado de cejas con el cliente reclinado',
+      en: 'Eyebrow shaping with the client reclined',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: cejasPerfil,
+    servicio: 'cejas',
+    alt: {
+      es: 'Ceja recien perfilada, de perfil',
+      en: 'Freshly shaped eyebrow, seen from the side',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/cejas-2.mp4',
+    poster: cejas2Poster,
+    servicio: 'cejas',
+    alt: {
+      es: 'Trabajo de perfilado sobre la ceja, de cerca',
+      en: 'Shaping work on the eyebrow, up close',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: cejasFrontal2,
+    servicio: 'cejas',
+    alt: {
+      es: 'Las dos cejas perfiladas y simetricas',
+      en: 'Both eyebrows shaped and even',
+    },
+  },
+  {
+    tipo: 'video',
+    mp4: '/galeria/cejas-3.mp4',
+    poster: cejas3Poster,
+    servicio: 'cejas',
+    alt: {
+      es: 'Perfilado de cejas terminandose',
+      en: 'Eyebrow shaping being finished',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: cejasDetalle,
+    servicio: 'cejas',
+    alt: {
+      es: 'Detalle de la ceja terminada, desde arriba',
+      en: 'Close-up of the finished eyebrow, from above',
+    },
+  },
   {
     tipo: 'video',
     mp4: '/galeria/facial-1.mp4',
