@@ -1371,6 +1371,39 @@ export function retratoDeServicio(clave: ClaveServicio): ImageMetadata | undefin
   return video?.poster;
 }
 
+/**
+ * Las primeras `cuantas` imagenes de un servicio, sin repetir.
+ *
+ * Primero la marcada con `retrato`, luego las fotos y por ultimo los posters de
+ * video. Ese orden importa: una foto de camara ronda los 3000 px y un poster
+ * sale del clip ya comprimido, asi que si hay fotos disponibles no tiene
+ * sentido gastar un hueco en un poster.
+ *
+ * Devuelve menos de las pedidas si no hay mas, y quien la use tiene que
+ * apanarselas con lo que haya.
+ */
+export function retratosDeServicio(
+  clave: ClaveServicio,
+  cuantas: number,
+): ImageMetadata[] {
+  const medios = mediosDeServicio(clave);
+  const imagen = (medio: MedioGaleria) =>
+    medio.tipo === 'foto' ? medio.src : medio.poster;
+
+  const ordenados = [
+    ...medios.filter((medio) => medio.retrato),
+    ...medios.filter((medio) => !medio.retrato && medio.tipo === 'foto'),
+    ...medios.filter((medio) => !medio.retrato && medio.tipo === 'video'),
+  ];
+
+  const vistas = new Set<ImageMetadata>();
+  for (const medio of ordenados) {
+    if (vistas.size >= cuantas) break;
+    vistas.add(imagen(medio));
+  }
+  return [...vistas];
+}
+
 /** Direccion en una sola linea, para meta etiquetas y enlaces de mapa. */
 export function direccionEnLinea(sucursal: Sucursal): string {
   const { calle, colonia, ciudad, region, codigoPostal } = sucursal.direccion;

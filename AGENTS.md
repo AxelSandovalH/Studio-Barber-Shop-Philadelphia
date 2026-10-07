@@ -112,8 +112,14 @@ mexicanos.
     galeria cambiaba en silencio la imagen de un servicio. Sin ninguna marcada
     se recurre a la primera foto, y en ultimo caso al poster de un video: un
     poster sale del clip comprimido, 540x960, y a tamano de banda se ve borroso.
-  - **La proporcion de la banda sigue a la foto**, no al reves. Forzar 4:5 a una
-    foto apaisada le corta los lados igual que un 16:9 le corta la cabeza a una
+  - **Cada banda lleva dos imagenes**, con la segunda escalonada hacia abajo:
+    dos rectangulos alineados se leen como una tabla y escalonados como un par.
+    Salen de `retratosDeServicio()`, que pone primero la marcada con `retrato`,
+    luego las fotos y por ultimo los posters de video: una foto de camara ronda
+    los 3000 px y un poster sale del clip comprimido, asi que no se gasta un
+    hueco en un poster habiendo fotos.
+  - **La proporcion la decide cada imagen, no la banda.** Forzar 4:5 a una foto
+    apaisada le corta los lados igual que un 16:9 le corta la cabeza a una
     vertical: es el mismo error del arco, al reves.
   - **Las dimensiones se leen de `ImageMetadata`, que ya viene con el EXIF
     aplicado.** Las fotos de telefono llegan con `orientation: 6`: `sips` y
