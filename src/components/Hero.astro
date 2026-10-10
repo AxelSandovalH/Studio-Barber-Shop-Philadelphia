@@ -18,8 +18,8 @@ const T = textos(idioma);
     justo cuando lo que se queria era ensenarla. Partida, cada cosa tiene su
     sitio: el texto se lee sobre verde solido y la foto va **sin velo ninguno**.
 
-    Tambien le viene bien a esta foto en concreto, que mide 1280 px de ancho: a
-    media pantalla le sobra resolucion, y a pantalla completa se quedaba corta.
+    Tambien le viene bien a esta foto en concreto, que mide 840 px de ancho: a
+    media pantalla llega justa, y a pantalla completa se quedaba muy corta.
 
     La cabecera vuelve a ser solida sobre esta portada. Transparente no vale: en
     movil la foto sube hasta arriba y el rotulo en claro se perderia sobre el
@@ -38,7 +38,7 @@ const T = textos(idioma);
     <Image
       src={fachada}
       alt={`Fachada de ${negocio.nombre}, sucursal ${sucursales[1]?.nombre ?? ''}`}
-      widths={[640, 960, 1280]}
+      widths={[420, 640, 840]}
       sizes="(max-width: 1023px) 100vw, 50vw"
       loading="eager"
       fetchpriority="high"
