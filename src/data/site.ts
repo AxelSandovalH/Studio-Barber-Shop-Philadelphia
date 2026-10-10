@@ -206,7 +206,15 @@ export interface Red {
  * existen una sola vez.
  */
 export type ClaveServicio =
-  'corte-basico' | 'fade' | 'tijera' | 'barba' | 'rizos' | 'color' | 'facial' | 'cejas';
+  | 'corte-basico'
+  | 'corte-nino'
+  | 'fade'
+  | 'tijera'
+  | 'barba'
+  | 'rizos'
+  | 'color'
+  | 'facial'
+  | 'cejas';
 
 export interface Servicio {
   clave: ClaveServicio;
@@ -1076,7 +1084,7 @@ export const galeria: MedioGaleria[] = [
   {
     tipo: 'foto',
     src: tazonDegradado,
-    servicio: 'fade',
+    servicio: 'corte-nino',
     alt: {
       es: 'Corte tazon con flequillo recto y degradado en los laterales',
       en: 'Bowl cut with a blunt fringe and faded sides',
@@ -1306,7 +1314,7 @@ export const galeria: MedioGaleria[] = [
     tipo: 'video',
     mp4: '/galeria/fade-5.mp4',
     poster: fade5Poster,
-    servicio: 'fade',
+    servicio: 'corte-basico',
     alt: {
       es: 'Degradado con textura arriba, visto de perfil',
       en: 'Fade with texture on top, seen from the side',
