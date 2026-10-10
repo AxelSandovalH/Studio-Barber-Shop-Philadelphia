@@ -117,7 +117,10 @@ const es = {
   privadosEtiqueta: 'A puerta cerrada',
   privadosTitulo: 'Servicios privados',
   privadosDescripcion:
-    'Estos no se agendan como el resto. Los lleva Juan Carlos y se organizan hablando directamente con el.',
+    'Estos no se agendan como el resto. Juan Carlos se desplaza con su equipo a donde estes, y se organizan hablando directamente con el.',
+  /* Donde se presta el servicio. Es lo que lo distingue de la carta: no es
+     otro corte, es el mismo corte en otro sitio. */
+  privadosLugares: ['En tu villa', 'En la playa', 'A puerta cerrada en el local'],
   privadosBoton: 'Escribir a {nombre}',
   privadosAsunto: 'Consulta sobre servicios privados',
   privadosFoto: '{nombre} trabajando fuera del local',
@@ -258,7 +261,8 @@ const en: typeof es = {
   privadosEtiqueta: 'By arrangement',
   privadosTitulo: 'Private services',
   privadosDescripcion:
-    'These are not booked like the rest. Juan Carlos handles them and you arrange it directly with him.',
+    'These are not booked like the rest. Juan Carlos travels to you with his kit, and you arrange it directly with him.',
+  privadosLugares: ['At your villa', 'On the beach', 'After hours at the shop'],
   privadosBoton: 'Message {nombre}',
   privadosAsunto: 'Enquiry about private services',
   privadosFoto: '{nombre} working away from the shop',
