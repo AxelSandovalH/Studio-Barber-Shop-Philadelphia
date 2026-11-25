@@ -363,7 +363,7 @@ export const negocio: Negocio = {
   ],
 };
 
-/** Horario habitual del local. */
+/** Horario del local, confirmado por el negocio. */
 const HORARIO_HABITUAL: FranjaHoraria[] = [
   {
     dias: { es: 'Lunes a sabado', en: 'Monday to Saturday' },
@@ -415,8 +415,8 @@ export const sucursales: Sucursal[] = [
     // de la calle no coincida palabra por palabra con el de Google.
     mapaUrl: 'https://maps.google.com/?cid=13981233976724700449',
     mapaEmbedUrl: 'https://maps.google.com/maps?cid=13981233976724700449&output=embed',
-    // TODO(datos-reales): confirmar el horario de esta sucursal. De momento se
-    // asume el mismo que el de Brisas.
+    // Confirmado por el negocio tras el cierre de Brisas: se queda el mismo
+    // horario que ya estaba puesto.
     horarios: HORARIO_HABITUAL,
   },
 ];
