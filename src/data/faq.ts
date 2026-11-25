@@ -44,12 +44,16 @@ export function preguntasFrecuentes(idioma: Idioma): Pregunta[] {
       idioma === 'en' ? `Where is ${negocio.nombre}?` : `¿Donde esta ${negocio.nombre}?`,
     respuesta:
       idioma === 'en'
-        ? `We have ${sucursales.length} shops in Cabo San Lucas: ${sucursales
-            .map((s) => `${s.nombre} (${direccionEnLinea(s)})`)
-            .join('; ')}.`
-        : `Tenemos ${sucursales.length} sucursales en Cabo San Lucas: ${sucursales
-            .map((s) => `${s.nombre} (${direccionEnLinea(s)})`)
-            .join('; ')}.`,
+        ? `${
+            sucursales.length === 1
+              ? 'We are in Cabo San Lucas'
+              : `We have ${sucursales.length} shops in Cabo San Lucas`
+          }: ${sucursales.map((s) => `${s.nombre} (${direccionEnLinea(s)})`).join('; ')}.`
+        : `${
+            sucursales.length === 1
+              ? 'Estamos en Cabo San Lucas'
+              : `Tenemos ${sucursales.length} sucursales en Cabo San Lucas`
+          }: ${sucursales.map((s) => `${s.nombre} (${direccionEnLinea(s)})`).join('; ')}.`,
   });
 
   // Horario
@@ -68,12 +72,16 @@ export function preguntasFrecuentes(idioma: Idioma): Pregunta[] {
       idioma === 'en' ? 'How do I book an appointment?' : '¿Como agendo una cita?',
     respuesta:
       idioma === 'en'
-        ? `Message the shop you prefer on WhatsApp, or call: ${sucursales
-            .map((s) => `${s.nombre} ${s.telefono}`)
-            .join(', ')}.`
-        : `Escribenos por WhatsApp a la sucursal que prefieras, o llamanos: ${sucursales
-            .map((s) => `${s.nombre} ${s.telefono}`)
-            .join(', ')}.`,
+        ? `${
+            sucursales.length === 1
+              ? 'Message us on WhatsApp, or call'
+              : 'Message the shop you prefer on WhatsApp, or call'
+          }: ${sucursales.map((s) => `${s.nombre} ${s.telefono}`).join(', ')}.`
+        : `${
+            sucursales.length === 1
+              ? 'Escribenos por WhatsApp, o llamanos'
+              : 'Escribenos por WhatsApp a la sucursal que prefieras, o llamanos'
+          }: ${sucursales.map((s) => `${s.nombre} ${s.telefono}`).join(', ')}.`,
   });
 
   // Que servicios hay
@@ -99,14 +107,18 @@ export function preguntasFrecuentes(idioma: Idioma): Pregunta[] {
     respuesta:
       conPrecio.length > 0
         ? idioma === 'en'
-          ? `${listaPrecios}. All prices in Mexican pesos, the same at both shops.`
-          : `${listaPrecios}. Todos los precios en pesos mexicanos, iguales en las dos sucursales.`
+          ? `${listaPrecios}. All prices in Mexican pesos${
+              sucursales.length > 1 ? ', the same at every shop' : ''
+            }.`
+          : `${listaPrecios}. Todos los precios en pesos mexicanos${
+              sucursales.length > 1 ? ', iguales en todas las sucursales' : ''
+            }.`
         : idioma === 'en'
           ? 'Prices depend on the service. Message us on WhatsApp and we will tell you before you come in.'
           : 'Depende del servicio. Escribenos por WhatsApp y te decimos antes de que vengas.',
   });
 
-  // Cual de las dos sucursales
+  // A cual ir, solo si hay donde elegir
   if (sucursales.length > 1) {
     lista.push({
       pregunta:

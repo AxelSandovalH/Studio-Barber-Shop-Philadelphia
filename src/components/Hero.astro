@@ -2,11 +2,16 @@
 import { Image } from 'astro:assets';
 import { negocio, sucursales } from '../data/site';
 import { idiomaDe, t } from '../i18n/idiomas';
-import { rellenar, textos } from '../i18n/textos';
+import { rellenar, segunCuantas, textos } from '../i18n/textos';
 import fachada from '../assets/portada/fachada-la-joya.jpg';
 
 const idioma = idiomaDe(Astro.currentLocale);
 const T = textos(idioma);
+
+// La foto de la portada es la fachada de La Joya. Se busca por id y no por
+// posicion en el array: cuando cerro Brisas el indice 1 dejo de existir y el
+// texto alternativo se quedaba en "sucursal ".
+const fachadaDe = sucursales.find((sucursal) => sucursal.id === 'la-joya');
 ---
 
 {
@@ -37,7 +42,7 @@ const T = textos(idioma);
   <div class="order-first lg:order-last">
     <Image
       src={fachada}
-      alt={`Fachada de ${negocio.nombre}, sucursal ${sucursales[1]?.nombre ?? ''}`}
+      alt={`Fachada de ${negocio.nombre}, sucursal ${fachadaDe?.nombre ?? ''}`}
       widths={[420, 640, 840]}
       sizes="(max-width: 1023px) 100vw, 50vw"
       loading="eager"
@@ -50,7 +55,14 @@ const T = textos(idioma);
   <div class="flex items-center px-5 py-16 sm:px-10 md:py-24 lg:px-14">
     <div class="mx-auto w-full max-w-xl">
       <p class="antetitulo antetitulo-claro">
-        {rellenar(T.heroAntetitulo, { n: sucursales.length })}
+        {
+          rellenar(
+            segunCuantas(sucursales.length, T.heroAntetituloUna, T.heroAntetitulo),
+            {
+              n: sucursales.length,
+            },
+          )
+        }
       </p>
 
       <h1 class="text-fondo-50 mt-8 text-5xl sm:text-6xl">

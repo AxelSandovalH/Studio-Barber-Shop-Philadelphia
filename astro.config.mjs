@@ -27,6 +27,19 @@ const dominio =
 export default defineConfig({
   site: dominio,
 
+  /**
+   * Sucursales que ya no existen.
+   *
+   * Brisas tenia su pagina en los dos idiomas y llevaba meses indexada. Al
+   * quitarla del sitio esas dos direcciones se quedarian en 404, asi que van
+   * redirigidas a la sucursal que queda: quien llegue desde Google acaba donde
+   * puede reservar, en vez de en una pagina de error.
+   */
+  redirects: {
+    '/sucursales/brisas': '/sucursales/la-joya',
+    '/en/locations/brisas': '/en/locations/la-joya',
+  },
+
   // Espanol sin prefijo en la raiz, ingles bajo /en. Cabo recibe mucho turismo
   // estadounidense y "barber shop cabo san lucas" no lleva a una web que solo
   // existe en espanol.

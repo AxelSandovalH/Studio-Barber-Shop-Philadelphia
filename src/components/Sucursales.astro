@@ -1,7 +1,7 @@
 ---
 import { sucursales } from '../data/site';
 import { idiomaDe } from '../i18n/idiomas';
-import { textos } from '../i18n/textos';
+import { segunCuantas, textos } from '../i18n/textos';
 import TituloSeccion from './TituloSeccion.astro';
 import TarjetaSucursal from './TarjetaSucursal.astro';
 
@@ -17,15 +17,27 @@ const T = textos(idioma);
     <TituloSeccion
       etiqueta={T.sucursalesEtiqueta}
       titulo={T.sucursalesTitulo}
-      descripcion={T.sucursalesDescripcion}
+      descripcion={segunCuantas(
+        sucursales.length,
+        T.sucursalesDescripcionUna,
+        T.sucursalesDescripcion,
+      )}
     />
 
     {
-      /* Las dos sucursales una al lado de otra: son una eleccion, no una lista,
-        y comparadas de un vistazo se elige antes. */
+      /* Varias sucursales van una al lado de otra: son una eleccion, no una
+        lista, y comparadas de un vistazo se elige antes. Con una sola no hay
+        nada que comparar, asi que ocupa el ancho y usa la disposicion amplia,
+        con el mapa al lado de los datos en vez de encima. */
     }
-    <div class="mt-14 grid gap-6 lg:mt-8 lg:grid-cols-2">
-      {sucursales.map((sucursal) => <TarjetaSucursal sucursal={sucursal} compacta />)}
+    <div
+      class:list={['mt-14 grid gap-6 lg:mt-8', sucursales.length > 1 && 'lg:grid-cols-2']}
+    >
+      {
+        sucursales.map((sucursal) => (
+          <TarjetaSucursal sucursal={sucursal} compacta={sucursales.length > 1} />
+        ))
+      }
     </div>
   </div>
 </section>

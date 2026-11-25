@@ -6,7 +6,7 @@
  * este archivo y nada mas.
  *
  * OJO: "Philadelphia" es la marca, no la ciudad. El negocio esta en Cabo San
- * Lucas, Baja California Sur, y tiene dos sucursales.
+ * Lucas, Baja California Sur.
  *
  * Los datos verificados salen del perfil de Instagram del negocio y de su ficha
  * en Fresha. Lo que sigue marcado con TODO(datos-reales) no se pudo confirmar
@@ -331,11 +331,11 @@ export const negocio: Negocio = {
   },
   descripcion: {
     es:
-      'Barberia en Cabo San Lucas con dos sucursales. Corte a tijera y a ' +
-      'maquina, ritual de barba, coloracion, rizos y servicio facial.',
+      'Barberia en Cabo San Lucas. Corte a tijera y a maquina, ritual de ' +
+      'barba, coloracion, rizos y servicio facial.',
     en:
-      'Barber shop in Cabo San Lucas with two locations. Scissor and clipper ' +
-      'cuts, beard rituals, colour, curls and facial treatments.',
+      'Barber shop in Cabo San Lucas. Scissor and clipper cuts, beard ' +
+      'rituals, colour, curls and facial treatments.',
   },
   // TODO(datos-reales): si hay correo de contacto, ponerlo aqui. Si no, se
   // queda fuera y la web solo ofrece telefono, WhatsApp y redes.
@@ -363,7 +363,7 @@ export const negocio: Negocio = {
   ],
 };
 
-/** Horario compartido por las dos sucursales, para no repetirlo. */
+/** Horario habitual del local. */
 const HORARIO_HABITUAL: FranjaHoraria[] = [
   {
     dias: { es: 'Lunes a sabado', en: 'Monday to Saturday' },
@@ -381,39 +381,16 @@ const HORARIO_HABITUAL: FranjaHoraria[] = [
 ];
 
 /**
- * Las dos sucursales. El orden es el que se ve en la web.
+ * Las sucursales abiertas. El orden es el que se ve en la web.
  *
- * Los telefonos salen de la biografia de Instagram, que los reparte asi:
- * "Citas Brisas Terranova" y "Citas Sucursal La Joya & Leona Vicario".
+ * Brisas cerro: la renta no se sostenia con el movimiento que tenia. Su ficha
+ * sigue en el historial (mira este archivo antes del cierre) por si algun dia
+ * se reabre, y las dos rutas que tenia estan redirigidas en astro.config.
+ *
+ * El telefono sale de la biografia de Instagram, que lo da como
+ * "Citas Sucursal La Joya & Leona Vicario".
  */
 export const sucursales: Sucursal[] = [
-  {
-    id: 'brisas',
-    nombre: 'Brisas',
-    telefono: '+52 624 100 4975',
-    // Confirmado: el negocio responde "le paso WhatsApp 6241004975" en los
-    // comentarios de su propio Instagram.
-    whatsapp: '526241004975',
-    direccion: {
-      calle: 'Carretera Cabo San Lucas - Todos los Santos 25-L 1, local 11',
-      colonia: 'Brisas del Pacifico',
-      ciudad: 'Cabo San Lucas',
-      region: 'B.C.S.',
-      codigoPostal: '23473',
-      pais: 'Mexico',
-      paisCodigo: 'MX',
-      referencia: {
-        es: 'Sobre la carretera a Todos los Santos, en el local 11',
-        en: 'On the Todos Santos highway, unit 11',
-      },
-    },
-    // TODO(datos-reales): copiado de la ficha de Google. Conviene repasarlo de
-    // vez en cuando: si la web dice 71 resenas y Google ya va por 120, la web
-    // esta vendiendo menos de lo que teneis.
-    valoracion: { puntuacion: 5, total: 77, consultado: '2026-09-01' },
-    // Horario publicado en Fresha.
-    horarios: HORARIO_HABITUAL,
-  },
   {
     id: 'la-joya',
     nombre: 'La Joya',
@@ -445,7 +422,7 @@ export const sucursales: Sucursal[] = [
 ];
 
 /**
- * Servicios y precios, en pesos, iguales en las dos sucursales.
+ * Servicios y precios, en pesos.
  *
  * Los precios los paso el negocio. Los dos que llevan `desde` son eso, un
  * minimo: la tarjeta lo dice y los datos estructurados lo declaran como precio

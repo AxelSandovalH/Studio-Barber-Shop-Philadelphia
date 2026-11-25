@@ -27,6 +27,7 @@ const es = {
   // busqueda local, y el eslogan solo no la da.
   heroH1: 'Barberia en Cabo San Lucas',
   heroAntetitulo: '{n} sucursales en Cabo San Lucas',
+  heroAntetituloUna: 'Cabo San Lucas, B.C.S.',
 
   cambiarIdioma: 'English',
   idiomaActual: 'Espanol',
@@ -39,6 +40,7 @@ const es = {
   destacadoCartaTexto:
     'Corte a tijera y a maquina, ritual de barba, coloracion, rizos y facial. Todo en el mismo sitio.',
   destacadoSucursalesTitulo: '{n} sucursales en Cabo',
+  destacadoSucursalesTituloUna: 'Nuestra sucursal en Cabo',
   destacadoSucursalesTexto:
     'Escribes por WhatsApp a la que te quede mas cerca y te decimos hora. Cada local tiene su propio telefono.',
   destacadoTrabajoTitulo: 'El trabajo, a la vista',
@@ -97,6 +99,8 @@ const es = {
   sucursalesTitulo: 'Donde encontrarnos',
   sucursalesDescripcion:
     'Dos locales en Cabo San Lucas. Cada uno con su propio telefono, asi que escribe directamente al que te quede mas cerca.',
+  sucursalesDescripcionUna:
+    'Nuestro local en Cabo San Lucas. Escribe directamente al telefono de la sucursal.',
   sucursal: 'Sucursal',
   abrirEnMaps: 'Abrir en Google Maps',
   cerrado: 'Cerrado',
@@ -173,6 +177,7 @@ const en: typeof es = {
 
   heroH1: 'Barber Shop in Cabo San Lucas',
   heroAntetitulo: '{n} locations in Cabo San Lucas',
+  heroAntetituloUna: 'Cabo San Lucas, B.C.S.',
 
   cambiarIdioma: 'Espanol',
   idiomaActual: 'English',
@@ -185,6 +190,7 @@ const en: typeof es = {
   destacadoCartaTexto:
     'Scissor and clipper cuts, beard rituals, colour, curls and facials. All under one roof.',
   destacadoSucursalesTitulo: '{n} shops in Cabo',
+  destacadoSucursalesTituloUna: 'Our shop in Cabo',
   destacadoSucursalesTexto:
     'Message whichever one is closer on WhatsApp and we will give you a time. Each shop has its own number.',
   destacadoTrabajoTitulo: 'See the work',
@@ -243,6 +249,7 @@ const en: typeof es = {
   sucursalesTitulo: 'Where to find us',
   sucursalesDescripcion:
     'Two shops in Cabo San Lucas, each with its own phone number, so message whichever one is closer to you.',
+  sucursalesDescripcionUna: 'Our shop in Cabo San Lucas. Message the shop directly.',
   sucursal: 'Shop',
   abrirEnMaps: 'Open in Google Maps',
   cerrado: 'Closed',
@@ -305,6 +312,17 @@ export function textos(idioma: Idioma): Textos {
 }
 
 /** Sustituye {marcadores} en una cadena del diccionario. */
+/**
+ * Elige entre la version de una sucursal y la de varias.
+ *
+ * No es un pluralizador general: el espanol y el ingles coinciden en que el 1
+ * va en singular, y con dos casos no hace falta mas. Existe porque un
+ * "1 sucursales" en la portada se ve a la legua.
+ */
+export function segunCuantas<T>(n: number, una: T, varias: T): T {
+  return n === 1 ? una : varias;
+}
+
 export function rellenar(plantilla: string, valores: Record<string, string | number>) {
   return plantilla.replace(/\{(\w+)\}/g, (_, clave) => String(valores[clave] ?? ''));
 }

@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import { sucursales, retratoDeServicio } from '../data/site';
 import { idiomaDe, rutaInicio } from '../i18n/idiomas';
-import { rellenar, textos } from '../i18n/textos';
+import { rellenar, textos, segunCuantas } from '../i18n/textos';
 
 const idioma = idiomaDe(Astro.currentLocale);
 const T = textos(idioma);
@@ -29,7 +29,14 @@ const mosaicos = [
     imagen: retratoDeServicio('corte-basico'),
   },
   {
-    titulo: rellenar(T.destacadoSucursalesTitulo, { n: sucursales.length }),
+    titulo: rellenar(
+      segunCuantas(
+        sucursales.length,
+        T.destacadoSucursalesTituloUna,
+        T.destacadoSucursalesTitulo,
+      ),
+      { n: sucursales.length },
+    ),
     texto: T.destacadoSucursalesTexto,
     href: `${inicio}#sucursales`,
     imagen: retratoDeServicio('barba'),
