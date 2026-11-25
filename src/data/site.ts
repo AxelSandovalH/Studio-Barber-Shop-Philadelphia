@@ -55,6 +55,8 @@ import ninoTexturizado2 from '../assets/galeria/nino-texturizado-2.jpg';
 import ninoFade1 from '../assets/galeria/nino-fade-1.jpg';
 import ninoFade2 from '../assets/galeria/nino-fade-2.jpg';
 import ninoCorto from '../assets/galeria/nino-corto.jpg';
+import ninoPelirrojo1 from '../assets/galeria/nino-pelirrojo-1.jpg';
+import ninoPelirrojo2 from '../assets/galeria/nino-pelirrojo-2.jpg';
 import barbaBlanca from '../assets/galeria/barba-blanca.jpg';
 import barba5Poster from '../assets/galeria/barba-5-poster.jpg';
 import colorAzul from '../assets/galeria/color-azul.jpg';
@@ -829,6 +831,24 @@ export const galeria: MedioGaleria[] = [
     alt: {
       es: 'Corte corto terminado, de frente',
       en: 'Finished short cut, seen from the front',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: ninoPelirrojo1,
+    servicio: 'corte-nino',
+    alt: {
+      es: 'Corte con tupe peinado a un lado en cabello pelirrojo',
+      en: 'Side-swept quiff on red hair',
+    },
+  },
+  {
+    tipo: 'foto',
+    src: ninoPelirrojo2,
+    servicio: 'corte-nino',
+    alt: {
+      es: 'Tupe pelirrojo peinado y los laterales degradados, de perfil',
+      en: 'Styled red quiff with faded sides, seen from the side',
     },
   },
   {
