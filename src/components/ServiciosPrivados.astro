@@ -36,9 +36,9 @@ const whatsapp = contacto?.whatsapp
 {
   contacto && (
     <section id="privados" class="bg-salvia-950 overflow-hidden">
-      <div class="mx-auto grid max-w-7xl lg:grid-cols-[1fr_0.85fr]">
-        <div class="flex items-center px-5 py-24 sm:px-10 md:py-32 lg:px-14">
-          <div class="w-full max-w-xl">
+      <div class="grid lg:min-h-[46rem] lg:grid-cols-2">
+        <div class="flex items-center px-5 py-24 sm:px-10 md:py-32 lg:px-14 lg:py-40">
+          <div class="mx-auto w-full max-w-xl">
             <p class="antetitulo antetitulo-claro">{T.privadosEtiqueta}</p>
 
             <h2 class="text-fondo-50 mt-8 text-6xl sm:text-7xl">{T.privadosTitulo}</h2>
@@ -47,14 +47,22 @@ const whatsapp = contacto?.whatsapp
               {T.privadosDescripcion}
             </p>
 
-            {/* Donde se presta, con el mismo filete de laton que abre cada
-                antetitulo: la pieza ya existe en el sitio y aqui se repite en
-                pequeno en vez de inventar un adorno nuevo. */}
-            <ul class="border-laton-700 mt-12 grid gap-4 border-t pt-8">
-              {T.privadosLugares.map((lugar) => (
-                <li class="text-fondo-100 flex items-center gap-4 font-mono text-[0.7rem] tracking-[0.16em] uppercase">
-                  <span class="bg-laton-400 h-px w-7 shrink-0" aria-hidden="true" />
-                  {lugar}
+            {/* Donde se presta. En mono y en versalitas se leia como una ficha
+                tecnica, que es el registro de los horarios y los telefonos y no
+                el de esto. En serif grande y en cursiva se lee como la carta de
+                un hotel, que es lo que pide la seccion. Un renglon por linea,
+                separados por filete de laton. */}
+            <ul class="mt-14">
+              {T.privadosLugares.map((lugar, posicion) => (
+                <li
+                  class:list={[
+                    'border-laton-700 border-t py-5',
+                    posicion === T.privadosLugares.length - 1 && 'border-b',
+                  ]}
+                >
+                  <p class="font-display text-fondo-50 text-2xl italic sm:text-3xl">
+                    {lugar}
+                  </p>
                 </li>
               ))}
             </ul>
@@ -120,7 +128,7 @@ const whatsapp = contacto?.whatsapp
             tarjeta flotando en crema la dejaba al nivel del resto de bloques, y
             esta seccion tiene que leerse aparte. En movil se queda en 4:5, que
             es la proporcion de la foto. */}
-        <figure class="relative min-h-[26rem] lg:min-h-0">
+        <figure class="relative min-h-[30rem] lg:min-h-0">
           <Image
             src={juanCarlos}
             alt={rellenar(T.privadosFoto, { nombre: contacto.nombre })}
